@@ -10,11 +10,11 @@ map<string, Matrix(*)(const Matrix&)> Matrix::functionm = {
 	{"R",r},{"T",transpose},{"D",det},{"det",det},{"I",inverse},{"inv",inverse1},{ "G",GaussianElimination },{"id",identity},
 	{"O",SchmidtOrtho},{"A",adjugate},{ "adj",adjugate },{"E",eigenvalue},{"tr",tr},{"diag",diagonalize},
 	{"sin",sinm},{"cos",cosm},{"tan",tanm},{"ln",lnm},{"log",lnm},{"sqrt",sqrtm},{"sum",sum},{"pro",product},
-	{"deg",deg},{"rad",rad},{"row",row},{"col",col},{"ones",ones},{"zero",zero},
+	{"deg",deg},{"rad",rad},{"row",row},{"col",col},{"ones",ones},{"zero",zero},{"exp",expm}
 };
 
 map<string, Matrix(*)(const Matrix&, const Matrix&)>Matrix::functionm2 = {
-	{"interR",interR},{"interC",interC},{"ones",ones},{"zero",zero},{"getR",getRow},{"getC",getCol},{"delR",deleteRow},{"delC",deleteCol} 
+	{"interR",interR},{"interC",interC},{"ones",ones},{"zero",zero},{"getR",getRow},{"getC",getCol},{"delR",deleteRow},{"delC",deleteCol}
 };
 
 map<string, Matrix(*)(const Matrix&, const Matrix&, const Matrix&)>Matrix::functionm3 = {
@@ -64,11 +64,6 @@ Matrix Matrix::operator+(const Matrix& other) const {
 			result.set(i, j, data[i][j] + other.get(i, j));
 		}
 	}
-	for (int i = 0; i < result.getRows(); i++) {
-		for (int j = 0; j < result.getCols(); j++) {
-			if (fabs(result.data[i][j]) < 1e-10) result.data[i][j] = 0;
-		}
-	}
 	return result;
 }
 
@@ -80,11 +75,6 @@ Matrix Matrix::operator-(const Matrix& other) const {
 	for (int i = 0; i < rows; ++i) {
 		for (int j = 0; j < cols; ++j) {
 			result.set(i, j, data[i][j] - other.get(i, j));
-		}
-	}
-	for (int i = 0; i < result.getRows(); i++) {
-		for (int j = 0; j < result.getCols(); j++) {
-			if (fabs(result.data[i][j]) < 1e-10) result.data[i][j] = 0;
 		}
 	}
 	return result;
@@ -116,11 +106,6 @@ Matrix Matrix::operator*(const Matrix& other) const {
 			result.set(i, j, sum);
 		}
 	}
-	for (int i = 0; i < result.getRows(); i++) {
-		for (int j = 0; j < result.getCols(); j++) {
-			if (fabs(result.data[i][j]) < 1e-10) result.data[i][j] = 0;
-		}
-	}
 	return result;
 }
 
@@ -129,11 +114,6 @@ Matrix operator*(const double& scalar, const Matrix& other) {
 	for (int i = 0; i < other.rows; ++i) {
 		for (int j = 0; j < other.cols; ++j) {
 			result.set(i, j, other.data[i][j] * scalar);
-		}
-	}
-	for (int i = 0; i < result.getRows(); i++) {
-		for (int j = 0; j < result.getCols(); j++) {
-			if (fabs(result.data[i][j]) < 1e-10) result.data[i][j] = 0;
 		}
 	}
 	return result;
@@ -156,23 +136,21 @@ Matrix Matrix::operator*(const double& scalar) const {
 			result.set(i, j, data[i][j] * scalar);
 		}
 	}
-	for (int i = 0; i < result.getRows(); i++) {
-		for (int j = 0; j < result.getCols(); j++) {
-			if (fabs(result.data[i][j]) < 1e-10) result.data[i][j] = 0;
-		}
-	}
 	return result;
 }
 
 Matrix Matrix::operator^(const Matrix& n) const {
-	//处理指数：确保指数为自然数
-	if (rows != cols)throw invalid_argument("Matrix power operations are only defined for square matrices.");
-	if (n.rows != 1 || n.cols != 1)throw invalid_argument("The exponent cannot be a matrix.");
-	if (rows == 1)return pow(data[0][0], n.data[0][0]);
-	int num = static_cast<int>(floor(n.data[0][0]));
-	if (fabs(n.data[0][0] - num) > 1e-10)throw runtime_error("The exponent for matrix must be a integer.");
-	//计算
-	else return (*this) ^ num;
+	if (rows != cols || n.rows != cols)throw invalid_argument("Matrix power operations are only defined for square matrices.");
+	if (rows == 1 && n.rows == 1)return Matrix(pow(get(0, 0), n.get(0, 0)));
+	else if (rows == 1) {
+		if (get(0, 0) < 1e-10)throw runtime_error("When the exponent is a matrix, the base must be positive.");
+		return expm(n * log(get(0, 0)));
+	}
+	else if (n.rows == 1) {
+		if (!n.isInteger())throw runtime_error("When the base is a matrix, the exponent need to be an integer.");
+		return (*this) ^ static_cast<int>(n.get(0, 0));
+	}
+	else throw runtime_error("The power operation of two matrices is undefined.");
 }
 
 Matrix Matrix::operator/(const Matrix& other) const {
@@ -212,7 +190,7 @@ bool Matrix::operator==(const Matrix& other)const {
 void Matrix::print() const {
 	for (int i = 0; i < rows; ++i) {
 		for (int j = 0; j < cols; ++j) {
-			if (fabs(data[i][j]) < 1e-15)cout << 0 << " ";
+			if (fabs(data[i][j]) < 1e-10)cout << 0 << " ";
 			else cout << data[i][j] << " ";
 		}
 		cout << endl;
@@ -249,12 +227,35 @@ bool Matrix::hasSet() const {
 	return false;
 }
 
+bool Matrix::diagonalizable() const{
+	if (rows != cols)return false;
+	vector<double>evalue = eigenvalue(*this).data[0];
+	if (evalue.size() != rows)return false;
+	Matrix I = identity(rows), result(rows, cols);
+	map<double, int>frequency;
+	int r = 0, c = 0;
+	for (double i : evalue) {
+		frequency[i]++;
+	}
+	for (auto it = frequency.begin(); it != frequency.end(); it++) {
+		Matrix X = basicSolutionSet(*this - it->first * I);
+		c += X.cols;
+		r = X.rows;
+	}
+	if (r == c)return true;
+	else return false;
+}
+
 Matrix Matrix::identity(const int& n) {
 	Matrix I(n, n);
 	for (int i = 0; i < n; i++) {
 		I.data[i][i] = 1.0;
 	}
 	return I;
+}
+
+double Matrix::norm() const {
+    return sqrt((transpose(*this) * (*this)).trace());
 }
 
 Matrix Matrix::identity(const Matrix& m) {
@@ -302,6 +303,24 @@ Matrix Matrix::rad(const Matrix& deg) {
 	return Matrix(deg * 3.14159265358979323846264 / 180);
 }
 
+Matrix Matrix::norm(const Matrix& m){
+	return Matrix(m.norm());
+}
+
+Matrix Matrix::expm(const Matrix& m){
+	if (m.rows != m.cols)throw invalid_argument("The matrix must be square.");
+	Matrix result = identity(m.rows);
+	Matrix temp = identity(m.rows);
+	int i = 1;
+	while (true) {
+		temp = temp * m / i;
+		result = result + temp;
+		if (temp.norm() < 1e-20)break;
+		i++;
+	}
+	return result;
+}
+
 Matrix Matrix::interR(const Matrix& m1, const Matrix& m2) {
 	return m1.interR(m2);
 }
@@ -336,7 +355,7 @@ Matrix Matrix::zero(const Matrix& r, const Matrix& c) {
 	return Matrix(_r, _c);
 }
 
-Matrix Matrix::getRow(const Matrix& m, const Matrix& row){
+Matrix Matrix::getRow(const Matrix& m, const Matrix& row) {
 	if (!row.isInteger())throw invalid_argument("The row number must be an integer.");
 	int r = static_cast<int>(row.get(0, 0));
 	if (r < 0 || r >= m.rows)throw invalid_argument("Index out of bounds.");
@@ -347,7 +366,7 @@ Matrix Matrix::getRow(const Matrix& m, const Matrix& row){
 	return result;
 }
 
-Matrix Matrix::getCol(const Matrix& m, const Matrix& col){
+Matrix Matrix::getCol(const Matrix& m, const Matrix& col) {
 	if (!col.isInteger())throw invalid_argument("The column number must be an integer.");
 	int c = static_cast<int>(col.get(0, 0));
 	if (c < 0 || c >= m.cols)throw invalid_argument("Index out of bounds.");
@@ -358,7 +377,7 @@ Matrix Matrix::getCol(const Matrix& m, const Matrix& col){
 	return result;
 }
 
-Matrix Matrix::deleteRow(const Matrix& m, const Matrix& row){
+Matrix Matrix::deleteRow(const Matrix& m, const Matrix& row) {
 	if (m.rows == 1)throw invalid_argument("The result matrix must have at least one row.");
 	if (!row.isInteger())throw invalid_argument("The row number must be an integer.");
 	int r = static_cast<int>(row.get(0, 0));
@@ -375,7 +394,7 @@ Matrix Matrix::deleteRow(const Matrix& m, const Matrix& row){
 	return result;
 }
 
-Matrix Matrix::deleteCol(const Matrix& m, const Matrix& col){
+Matrix Matrix::deleteCol(const Matrix& m, const Matrix& col) {
 	if (m.cols == 1)throw invalid_argument("The result matrix must have at least one column.");
 	if (!col.isInteger())throw invalid_argument("The column number must be an integer.");
 	int c = static_cast<int>(col.get(0, 0));
@@ -442,13 +461,11 @@ Matrix Matrix::subMatrix(const int& excludeRow, const int& excludeCol) const {
 	return subMatrix;
 }
 
-Matrix Matrix::row(const Matrix& m)
-{
+Matrix Matrix::row(const Matrix& m) {
 	return Matrix(m.rows);
 }
 
-Matrix Matrix::col(const Matrix& m)
-{
+Matrix Matrix::col(const Matrix& m) {
 	return Matrix(m.cols);
 }
 
@@ -643,7 +660,7 @@ Matrix Matrix::multiplyCols(const Matrix& m, const Matrix& col, const Matrix& sc
 	return result;
 }
 
-Matrix Matrix::subMatrix(const Matrix& m, const Matrix& excludeRow, const Matrix& excludeCol){
+Matrix Matrix::subMatrix(const Matrix& m, const Matrix& excludeRow, const Matrix& excludeCol) {
 	if (!excludeRow.isInteger() || !excludeCol.isInteger())throw invalid_argument("The two parameters must be integers.");
 	int r = static_cast<int>(excludeRow.get(0, 0)), c = static_cast<int>(excludeCol.get(0, 0));
 	if (r < 0 || r >= m.rows || c < 0 || c >= m.cols)throw invalid_argument("Index out of bounds.");
@@ -651,7 +668,7 @@ Matrix Matrix::subMatrix(const Matrix& m, const Matrix& excludeRow, const Matrix
 	return result;
 }
 
-Matrix Matrix::cofactor(const Matrix& m, const Matrix& row, const Matrix& col){
+Matrix Matrix::cofactor(const Matrix& m, const Matrix& row, const Matrix& col) {
 	if (!row.isInteger() || !col.isInteger())throw invalid_argument("The two parameters must be integers.");
 	int r = static_cast<int>(row.get(0, 0)), c = static_cast<int>(col.get(0, 0));
 	if (r < 0 || r >= m.rows || c < 0 || c >= m.cols)throw invalid_argument("Index out of bounds.");
@@ -660,7 +677,7 @@ Matrix Matrix::cofactor(const Matrix& m, const Matrix& row, const Matrix& col){
 	return Matrix(result);
 }
 
-Matrix Matrix::Acofactor(const Matrix& m, const Matrix& row, const Matrix& col){
+Matrix Matrix::Acofactor(const Matrix& m, const Matrix& row, const Matrix& col) {
 	if (!row.isInteger() || !col.isInteger())throw invalid_argument("The two parameters must be integers.");
 	int r = static_cast<int>(row.get(0, 0)), c = static_cast<int>(col.get(0, 0));
 	if (r < 0 || r >= m.rows || c < 0 || c >= m.cols)throw invalid_argument("Index out of bounds.");
@@ -849,8 +866,9 @@ Matrix Matrix::tanm(const Matrix& m) {
 }
 
 Matrix Matrix::lnm(const Matrix& m) {
-	if (m.rows != 1 || m.cols != 1)throw invalid_argument("Invalid function for matrix.");
-	return Matrix(log(m.data[0][0]));
+	if (m.rows != m.cols)throw invalid_argument("The matrix must be square for logarithm.");
+	if (fabs(m.determinant()) < 1e-10)throw invalid_argument("The matrix must be invertible for logarithm.");
+
 }
 
 Matrix Matrix::sqrtm(const Matrix& m) {
@@ -963,18 +981,8 @@ Matrix Matrix::diagonalize(const Matrix& m) {
 	if (m.rows != m.cols)throw invalid_argument("The matrix must be square.");
 	vector<double>evalue = eigenvalue(m).data[0];
 	if (evalue.size() != m.rows)throw runtime_error("The matrix may have imaginary eigenvalues.");
-	Matrix I = identity(m.rows), result(m.rows, m.cols);
-	map<double, int>frequency;
-	int r = 0, c = 0;
-	for (double i : evalue) {
-		frequency[i]++;
-	}
-	for (auto it = frequency.begin(); it != frequency.end(); it++) {
-		Matrix X = basicSolutionSet(m - it->first * I);
-		c += X.cols;
-		r = X.rows;
-	}
-	if (r != c) {
+	Matrix result(m.rows, m.cols);
+	if (!m.diagonalizable()) {
 		cout << "The matrix cannot be diagonalized. Now finding its Jordan normal form." << endl;
 		for (int i = 0; i < m.rows; i++) {
 			result.set(i, i, evalue[i]);
@@ -1584,7 +1592,7 @@ void Matrix::newMatrix() {
 		else cout << "Invalid choice. Choose again." << endl;
 	} while (choice != 'Y' && choice != 'N');
 
-	matrices["PI"] = Matrix(3.14159265358979323846264);
+	matrices["PI"] = Matrix(3.141592653589793238462643383279502);
 	matrices["E"] = Matrix(2.7182818284590452353602874);
 	matrices["ANS"] = Matrix();
 	storem(matrices);

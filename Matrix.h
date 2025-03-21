@@ -70,11 +70,13 @@ public:
 	Matrix Hessenberg()const;
 	bool upper()const;
 	bool hasSet() const;
+	bool diagonalizable()const;
 	void eigenvector()const;
 	Matrix ev() const;
 	Matrix interR(const Matrix& other)const;
 	Matrix interC(const Matrix& other)const;
 	static Matrix identity(const int& n);
+	double norm()const;
 
 	//旧版操作系统
 	static Matrix input();
@@ -119,6 +121,8 @@ public:
 	static Matrix product(const Matrix& m);
 	static Matrix deg(const Matrix& rad);
 	static Matrix rad(const Matrix& deg);
+	static Matrix norm(const Matrix& m);
+	static Matrix expm(const Matrix& m);
 
 	//二参数函数
 	static Matrix interR(const Matrix& m1, const Matrix& m2);

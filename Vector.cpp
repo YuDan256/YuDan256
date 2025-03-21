@@ -16,7 +16,8 @@ map<string, Vector(*)(const Vector&, const Vector&)>Vector::functionv2 = {
 void Vector::print()const {
 	if (n == 0)return;
 	if (n == 1) {
-		cout << data[0] << endl;
+		if (fabs(data[0]) < 1e-10)cout << 0 << endl;
+		else std::cout << data[0] << endl;
 		return;
 	}
 	std::cout << "(";
