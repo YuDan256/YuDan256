@@ -359,6 +359,7 @@ Matrix Matrix::getCol(const Matrix& m, const Matrix& col){
 }
 
 Matrix Matrix::deleteRow(const Matrix& m, const Matrix& row){
+	if (m.rows == 1)throw invalid_argument("The result matrix must have at least one row.");
 	if (!row.isInteger())throw invalid_argument("The row number must be an integer.");
 	int r = static_cast<int>(row.get(0, 0));
 	if (r < 0 || r >= m.rows)throw invalid_argument("Index out of bounds.");
@@ -375,6 +376,7 @@ Matrix Matrix::deleteRow(const Matrix& m, const Matrix& row){
 }
 
 Matrix Matrix::deleteCol(const Matrix& m, const Matrix& col){
+	if (m.cols == 1)throw invalid_argument("The result matrix must have at least one column.");
 	if (!col.isInteger())throw invalid_argument("The column number must be an integer.");
 	int c = static_cast<int>(col.get(0, 0));
 	if (c < 0 || c >= m.cols)throw invalid_argument("Index out of bounds.");
