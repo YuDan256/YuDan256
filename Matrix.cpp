@@ -878,7 +878,6 @@ Matrix Matrix::lnm(const Matrix& m) {
 		Matrix temp = m - identity(m.rows);
 		int i = 1;
 		while (true) {
-			if (temp.norm() >= 1)throw runtime_error("The matrix might not converge.");
 			if (((temp ^ i) / i).norm() < 1e-20)break;
 			result = result + pow(-1, i + 1) * (temp ^ i) / i;
 			i++;
