@@ -70,11 +70,13 @@ public:
 	Matrix Hessenberg()const;
 	bool upper()const;
 	bool hasSet() const;
+	bool NoImagEig()const;
 	bool diagonalizable()const;
 	void eigenvector()const;
 	Matrix ev() const;
 	Matrix integR(const Matrix& other)const;
 	Matrix integC(const Matrix& other)const;
+	Matrix integD(const Matrix& other)const;
 	static Matrix identity(const int& n);
 	double norm()const;
 
@@ -128,6 +130,7 @@ public:
 	//二参数函数
 	static Matrix integR(const Matrix& m1, const Matrix& m2);
 	static Matrix integC(const Matrix& m1, const Matrix& m2);
+	static Matrix integD(const Matrix& m1, const Matrix& m2);
 	static Matrix Ldivide(const Matrix& m1, const Matrix& m2);
 	static Matrix ones(const Matrix& r, const Matrix& c);
 	static Matrix zero(const Matrix& r, const Matrix& c);

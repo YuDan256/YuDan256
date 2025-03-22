@@ -10,11 +10,13 @@ map<string, Matrix(*)(const Matrix&)> Matrix::functionm = {
 	{"R",r},{"T",transpose},{"D",det},{"det",det},{"I",inverse},{"inv",inverse1},{ "G",GaussianElimination },{"id",identity},
 	{"O",SchmidtOrtho},{"A",adjugate},{ "adj",adjugate },{"E",eigenvalue},{"tr",tr},{"diag",diagonalize},
 	{"sin",sinm},{"cos",cosm},{"tan",tanm},{"ln",lnm},{"log",lnm},{"sqrt",sqrtm},{"sum",sum},{"pro",product},
-	{"deg",deg},{"rad",rad},{"row",row},{"col",col},{"ones",ones},{"zero",zero},{"exp",expm},{"P",pForDiag}
+	{"deg",deg},{"rad",rad},{"row",row},{"col",col},{"ones",ones},{"zero",zero},{"exp",expm},{"P",pForDiag},
+	{"N",norm}
 };
 
 map<string, Matrix(*)(const Matrix&, const Matrix&)>Matrix::functionm2 = {
-	{"integR",integR},{"integC",integC},{"ones",ones},{"zero",zero},{"getR",getRow},{"getC",getCol},{"delR",deleteRow},{"delC",deleteCol}
+	{"integR",integR},{"integC",integC},{"ones",ones},{"zero",zero},{"getR",getRow},{"getC",getCol},{"delR",deleteRow},{"delC",deleteCol},
+	{"LD",Ldivide},{"integD",integD}
 };
 
 map<string, Matrix(*)(const Matrix&, const Matrix&, const Matrix&)>Matrix::functionm3 = {
@@ -228,10 +230,16 @@ bool Matrix::hasSet() const {
 	return false;
 }
 
-bool Matrix::diagonalizable() const {
+bool Matrix::NoImagEig() const {
 	if (rows != cols)return false;
 	vector<double>evalue = eigenvalue(*this).data[0];
 	if (evalue.size() != rows)return false;
+	else return true;
+}
+
+bool Matrix::diagonalizable() const {
+	if (!NoImagEig())return false;
+	vector<double>evalue = eigenvalue(*this).data[0];
 	Matrix I = identity(rows), result(rows, cols);
 	map<double, int>frequency;
 	int r = 0, c = 0;
@@ -329,6 +337,10 @@ Matrix Matrix::integR(const Matrix& m1, const Matrix& m2) {
 
 Matrix Matrix::integC(const Matrix& m1, const Matrix& m2) {
 	return m1.integC(m2);
+}
+
+Matrix Matrix::integD(const Matrix& m1, const Matrix& m2) {
+	return m1.integD(m2);
 }
 
 Matrix Matrix::Ldivide(const Matrix& m1, const Matrix& m2) {
@@ -876,7 +888,7 @@ Matrix Matrix::lnm(const Matrix& m) {
 	else {
 		Matrix result(m.rows, m.cols);
 		Matrix temp = m - identity(m.rows);
-		if(temp.norm()<1){
+		if (temp.norm() < 1) {
 			int i = 1;
 			while (true) {
 				if (((temp ^ i) / i).norm() < 1e-20)break;
@@ -887,7 +899,7 @@ Matrix Matrix::lnm(const Matrix& m) {
 		}
 		else if (m.diagonalizable()) {
 			Matrix P = pForDiag(m), D = diagonalize(m);
-			if (D.get(0, 0) <= 0)throw invalid_argument("The matrix must be positive definite.");
+			if (D.get(0, 0) < 1e-10)throw invalid_argument("The matrix must be positive definite.");
 			if ((inverse(P) * m * P - D).norm() < 1e-11) {
 				Matrix result(m.rows, m.cols);
 				for (int i = 0; i < m.rows; i++) {
@@ -1004,6 +1016,21 @@ Matrix Matrix::integC(const Matrix& other) const {
 	return result;
 }
 
+Matrix Matrix::integD(const Matrix& other) const {
+	Matrix result(rows + other.rows, cols + other.cols);
+	for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < cols; j++) {
+			result.set(i, j, get(i, j));
+		}
+	}
+	for (int i = 0; i < other.rows; i++) {
+		for (int j = 0; j < other.cols; j++) {
+			result.set(i + rows, j + cols, other.get(i, j));
+		}
+	}
+	return result;
+}
+
 Matrix Matrix::tr(const Matrix& m) {
 	return Matrix(m.trace());
 }
@@ -1011,18 +1038,9 @@ Matrix Matrix::tr(const Matrix& m) {
 Matrix Matrix::diagonalize(const Matrix& m) {
 	if (m.rows != m.cols)throw invalid_argument("The matrix must be square.");
 	vector<double>evalue = eigenvalue(m).data[0];
-	if (evalue.size() != m.rows)throw runtime_error("The matrix may have imaginary eigenvalues.");
+	if (evalue.size() != m.rows)throw runtime_error("The matrix might have imaginary eigenvalues.");
 	Matrix result(m.rows, m.cols);
-	if (!m.diagonalizable()) {
-		cout << "The matrix cannot be diagonalized. Now finding its Jordan normal form." << endl;
-		for (int i = 0; i < m.rows; i++) {
-			result.set(i, i, evalue[i]);
-		}
-		for (int i = 1; i < m.rows; i++) {
-			int j = i - 1;
-			if (result.data[j][j] == result.data[i][i])result.data[j][i] = 1;
-		}
-	}
+	if (!m.diagonalizable())throw invalid_argument("The matrix is not diagonalizable.");
 	else {
 		for (int i = 0; i < m.rows; i++) {
 			result.set(i, i, evalue[i]);
