@@ -876,13 +876,29 @@ Matrix Matrix::lnm(const Matrix& m) {
 	else {
 		Matrix result(m.rows, m.cols);
 		Matrix temp = m - identity(m.rows);
-		int i = 1;
-		while (true) {
-			if (((temp ^ i) / i).norm() < 1e-20)break;
-			result = result + pow(-1, i + 1) * (temp ^ i) / i;
-			i++;
+		if(temp.norm()<1){
+			int i = 1;
+			while (true) {
+				if (((temp ^ i) / i).norm() < 1e-20)break;
+				result = result + pow(-1, i + 1) * (temp ^ i) / i;
+				i++;
+			}
+			return result;
 		}
-		return result;
+		else if (m.diagonalizable()) {
+			Matrix P = pForDiag(m), D = diagonalize(m);
+			if (D.get(0, 0) <= 0)throw invalid_argument("The matrix must be positive definite.");
+			if ((inverse(P) * m * P - D).norm() < 1e-11) {
+				Matrix result(m.rows, m.cols);
+				for (int i = 0; i < m.rows; i++) {
+					result.set(i, i, log(D.data[i][i]));
+				}
+				result = P * result * inverse(P);
+				return result;
+			}
+			else throw invalid_argument("The logarithm cannot be calculated");
+		}
+		else throw invalid_argument("The logarithm cannot be calculated");
 	}
 }
 
