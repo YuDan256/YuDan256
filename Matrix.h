@@ -73,8 +73,8 @@ public:
 	bool diagonalizable()const;
 	void eigenvector()const;
 	Matrix ev() const;
-	Matrix interR(const Matrix& other)const;
-	Matrix interC(const Matrix& other)const;
+	Matrix integR(const Matrix& other)const;
+	Matrix integC(const Matrix& other)const;
 	static Matrix identity(const int& n);
 	double norm()const;
 
@@ -114,6 +114,7 @@ public:
 	static Matrix eigenvalue(const Matrix& m);
 	static Matrix tr(const Matrix& m);
 	static Matrix diagonalize(const Matrix& m);
+	static Matrix pForDiag(const Matrix& m);
 	static Matrix identity(const Matrix& m);
 	static Matrix ones(const Matrix& m);
 	static Matrix zero(const Matrix& m);
@@ -125,8 +126,8 @@ public:
 	static Matrix expm(const Matrix& m);
 
 	//二参数函数
-	static Matrix interR(const Matrix& m1, const Matrix& m2);
-	static Matrix interC(const Matrix& m1, const Matrix& m2);
+	static Matrix integR(const Matrix& m1, const Matrix& m2);
+	static Matrix integC(const Matrix& m1, const Matrix& m2);
 	static Matrix Ldivide(const Matrix& m1, const Matrix& m2);
 	static Matrix ones(const Matrix& r, const Matrix& c);
 	static Matrix zero(const Matrix& r, const Matrix& c);

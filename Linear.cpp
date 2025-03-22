@@ -24,7 +24,7 @@ void Matrix::doLinearEquations() {
 			cerr << "Error: " << e.what() << endl;
 			continue;
 		}
-	
+
 		if (equationNum <= 0 || variableNum <= 0) {
 			cout << "The numbers of equations and variables must be positive." << endl;
 			continue;
@@ -139,7 +139,7 @@ void Matrix::doBasicSolutionSet(const Matrix& coefficient) {
 Matrix Matrix::basicSolutionSet(const Matrix& coefficient) {
 	Matrix _coefficient(coefficient);
 	_coefficient = GaussianElimination(_coefficient);
-	int rank = coefficient.rank();
+	int rank = _coefficient.rank();
 	if (_coefficient.getCols() == rank)return Matrix(_coefficient.getCols(), _coefficient.getCols() - rank);
 	Matrix BasicSolutionSet(_coefficient.getCols(), _coefficient.getCols() - rank);
 	Matrix NonMainCoefficient(rank, _coefficient.getCols() - rank);

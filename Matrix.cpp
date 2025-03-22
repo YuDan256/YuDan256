@@ -10,11 +10,11 @@ map<string, Matrix(*)(const Matrix&)> Matrix::functionm = {
 	{"R",r},{"T",transpose},{"D",det},{"det",det},{"I",inverse},{"inv",inverse1},{ "G",GaussianElimination },{"id",identity},
 	{"O",SchmidtOrtho},{"A",adjugate},{ "adj",adjugate },{"E",eigenvalue},{"tr",tr},{"diag",diagonalize},
 	{"sin",sinm},{"cos",cosm},{"tan",tanm},{"ln",lnm},{"log",lnm},{"sqrt",sqrtm},{"sum",sum},{"pro",product},
-	{"deg",deg},{"rad",rad},{"row",row},{"col",col},{"ones",ones},{"zero",zero},{"exp",expm}
+	{"deg",deg},{"rad",rad},{"row",row},{"col",col},{"ones",ones},{"zero",zero},{"exp",expm},{"P",pForDiag}
 };
 
 map<string, Matrix(*)(const Matrix&, const Matrix&)>Matrix::functionm2 = {
-	{"interR",interR},{"interC",interC},{"ones",ones},{"zero",zero},{"getR",getRow},{"getC",getCol},{"delR",deleteRow},{"delC",deleteCol}
+	{"integR",integR},{"integC",integC},{"ones",ones},{"zero",zero},{"getR",getRow},{"getC",getCol},{"delR",deleteRow},{"delC",deleteCol}
 };
 
 map<string, Matrix(*)(const Matrix&, const Matrix&, const Matrix&)>Matrix::functionm3 = {
@@ -140,17 +140,18 @@ Matrix Matrix::operator*(const double& scalar) const {
 }
 
 Matrix Matrix::operator^(const Matrix& n) const {
-	if (rows != cols || n.rows != cols)throw invalid_argument("Matrix power operations are only defined for square matrices.");
+	if (rows != cols || n.rows != n.cols)throw invalid_argument("Matrix power operations are only defined for square matrices.");
 	if (rows == 1 && n.rows == 1)return Matrix(pow(get(0, 0), n.get(0, 0)));
 	else if (rows == 1) {
 		if (get(0, 0) < 1e-10)throw runtime_error("When the exponent is a matrix, the base must be positive.");
 		return expm(n * log(get(0, 0)));
 	}
-	else if (n.rows == 1) {
-		if (!n.isInteger())throw runtime_error("When the base is a matrix, the exponent need to be an integer.");
+	else if (n.isInteger()) {
 		return (*this) ^ static_cast<int>(n.get(0, 0));
 	}
-	else throw runtime_error("The power operation of two matrices is undefined.");
+	else {
+		return expm(n * lnm(*this));
+	}
 }
 
 Matrix Matrix::operator/(const Matrix& other) const {
@@ -227,7 +228,7 @@ bool Matrix::hasSet() const {
 	return false;
 }
 
-bool Matrix::diagonalizable() const{
+bool Matrix::diagonalizable() const {
 	if (rows != cols)return false;
 	vector<double>evalue = eigenvalue(*this).data[0];
 	if (evalue.size() != rows)return false;
@@ -255,7 +256,7 @@ Matrix Matrix::identity(const int& n) {
 }
 
 double Matrix::norm() const {
-    return sqrt((transpose(*this) * (*this)).trace());
+	return sqrt((transpose(*this) * (*this)).trace());
 }
 
 Matrix Matrix::identity(const Matrix& m) {
@@ -303,11 +304,11 @@ Matrix Matrix::rad(const Matrix& deg) {
 	return Matrix(deg * 3.14159265358979323846264 / 180);
 }
 
-Matrix Matrix::norm(const Matrix& m){
+Matrix Matrix::norm(const Matrix& m) {
 	return Matrix(m.norm());
 }
 
-Matrix Matrix::expm(const Matrix& m){
+Matrix Matrix::expm(const Matrix& m) {
 	if (m.rows != m.cols)throw invalid_argument("The matrix must be square.");
 	Matrix result = identity(m.rows);
 	Matrix temp = identity(m.rows);
@@ -317,16 +318,17 @@ Matrix Matrix::expm(const Matrix& m){
 		result = result + temp;
 		if (temp.norm() < 1e-20)break;
 		i++;
+		if (i == 1e6)throw invalid_argument("The matrix does not converge.");
 	}
 	return result;
 }
 
-Matrix Matrix::interR(const Matrix& m1, const Matrix& m2) {
-	return m1.interR(m2);
+Matrix Matrix::integR(const Matrix& m1, const Matrix& m2) {
+	return m1.integR(m2);
 }
 
-Matrix Matrix::interC(const Matrix& m1, const Matrix& m2) {
-	return m1.interC(m2);
+Matrix Matrix::integC(const Matrix& m1, const Matrix& m2) {
+	return m1.integC(m2);
 }
 
 Matrix Matrix::Ldivide(const Matrix& m1, const Matrix& m2) {
@@ -544,7 +546,7 @@ Matrix Matrix::inverse1(const Matrix& m) {
 	Matrix result(m.rows, m.cols);
 	if (m.rows != m.cols)throw invalid_argument("Inverse is only defined for square matrices.");
 	if (fabs(m.determinant()) < 1e-10)throw runtime_error("Matrix is singular and cannot be inverted.");
-	Matrix temp = m.interR(identity(m.rows));
+	Matrix temp = m.integR(identity(m.rows));
 	temp = GaussianElimination(temp);
 	for (int i = 0; i < m.rows; i++) {
 		for (int j = 0; j < m.cols; j++) {
@@ -866,9 +868,23 @@ Matrix Matrix::tanm(const Matrix& m) {
 }
 
 Matrix Matrix::lnm(const Matrix& m) {
-	if (m.rows != m.cols)throw invalid_argument("The matrix must be square for logarithm.");
-	if (fabs(m.determinant()) < 1e-10)throw invalid_argument("The matrix must be invertible for logarithm.");
-
+	if (m.rows != m.cols)throw invalid_argument("The matrix must be square.");
+	if (m.rows == 1) {
+		if (m.data[0][0] <= 0)throw invalid_argument("The number must be positive.");
+		return Matrix(log(m.data[0][0]));
+	}
+	else {
+		Matrix result(m.rows, m.cols);
+		Matrix temp = m - identity(m.rows);
+		int i = 1;
+		while (true) {
+			if (temp.norm() >= 1)throw runtime_error("The matrix might not converge.");
+			if (((temp ^ i) / i).norm() < 1e-20)break;
+			result = result + pow(-1, i + 1) * (temp ^ i) / i;
+			i++;
+		}
+		return result;
+	}
 }
 
 Matrix Matrix::sqrtm(const Matrix& m) {
@@ -946,7 +962,7 @@ Matrix Matrix::ev()const {
 	return Matrix(1, cols, vector<vector<double>>(1, B));
 }
 
-Matrix Matrix::interR(const Matrix& other) const {
+Matrix Matrix::integR(const Matrix& other) const {
 	if (rows != other.rows)throw invalid_argument("The rows of the matrices do not match.");
 	Matrix result(rows, cols + other.cols);
 	for (int i = 0; i < rows; i++) {
@@ -960,7 +976,7 @@ Matrix Matrix::interR(const Matrix& other) const {
 	return result;
 }
 
-Matrix Matrix::interC(const Matrix& other) const {
+Matrix Matrix::integC(const Matrix& other) const {
 	if (cols != other.cols)throw invalid_argument("The cols of the matrices do not match.");
 	Matrix result(rows + other.rows, cols);
 	for (int i = 0; i < rows; i++) {
@@ -996,6 +1012,20 @@ Matrix Matrix::diagonalize(const Matrix& m) {
 		for (int i = 0; i < m.rows; i++) {
 			result.set(i, i, evalue[i]);
 		}
+	}
+	return result;
+}
+
+Matrix Matrix::pForDiag(const Matrix& m) {
+	Matrix D = diagonalize(m), I = identity(D.rows);
+	vector<double>evalue;
+	for (int i = 0; i < D.rows; i++) {
+		if (evalue.empty() || evalue.back() != D.get(i, i))evalue.push_back(D.get(i, i));
+		else continue;
+	}
+	Matrix result(D.rows, 0);
+	for (double e : evalue) {
+		result = integR(result, basicSolutionSet(m - e * I));
 	}
 	return result;
 }
