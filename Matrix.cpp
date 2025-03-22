@@ -749,34 +749,34 @@ Matrix Matrix::GaussianElimination(const Matrix& m) {
 	int currentRow = 0;
 	double mainElement;
 	for (int i = 0; i < m.cols; i++) {
-		bool downZero = true;
-		for (int j = currentRow; j < m.rows; j++) {
-			if (fabs(temp.data[j][i]) > 1e-10) {
-				mainElement = temp.data[j][i];
-				temp.swapRows(currentRow, j);
-				downZero = false;
-				break;
+		// 部分选主元
+		int maxRow = currentRow;
+		for (int j = currentRow + 1; j < m.rows; j++) {
+			if (fabs(temp.data[j][i]) > fabs(temp.data[maxRow][i])) {
+				maxRow = j;
 			}
 		}
-		if (downZero)continue;
+		if (fabs(temp.data[maxRow][i]) < 1e-10) continue; // 如果主元接近0，跳过此列
+		temp.swapRows(currentRow, maxRow);
+
+		mainElement = temp.data[currentRow][i];
 		temp.multiplyRows(currentRow, 1.0 / mainElement);
 		for (int j = currentRow + 1; j < m.rows; j++) {
 			temp.addRows(j, currentRow, -temp.data[j][i]);
 		}
 		currentRow += 1;
 	}
-	for (int i = m.cols - 1; i > -1; i--) {
-		if (temp.isZeroCol(i))continue;
-		double mainElement;
-		int nonZeroRow = 0;
-		for (int j = m.rows - 1; j > -1; j--) {
-			if (temp.data[j][i] != 0) {
-				mainElement = temp.data[j][i];
+	for (int i = m.cols - 1; i >= 0; i--) {
+		if (temp.isZeroCol(i)) continue;
+		int nonZeroRow = -1;
+		for (int j = m.rows - 1; j >= 0; j--) {
+			if (fabs(temp.data[j][i]) > 1e-10) {
 				nonZeroRow = j;
 				break;
 			}
 		}
-		for (int j = nonZeroRow - 1; j > -1; j--) {
+		if (nonZeroRow == -1) continue;
+		for (int j = nonZeroRow - 1; j >= 0; j--) {
 			temp.addRows(j, nonZeroRow, -temp.data[j][i]);
 		}
 	}
@@ -1056,15 +1056,9 @@ void Matrix::eigenvector()const {
 	}
 	double a;
 	for (auto it = frequency.begin(); it != frequency.end(); it++) {
-		if (fabs(it->first) < 1e-10)a = 0;
-		else a = it->first;
+		a = it->first;
 		cout << "For eigenvalue " << a << " (" << it->second << "-fold):" << endl;
 		Matrix A = m - a * I;
-		for (int i = 0; i < A.rows; i++) {
-			for (int j = 0; j < A.cols; j++) {
-				if (fabs(A.data[i][j]) < 1e-7)A.data[i][j] = 0;
-			}
-		}
 		doBasicSolutionSet(A);
 	}
 }
