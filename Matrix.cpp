@@ -374,7 +374,7 @@ Matrix Matrix::magic(const Matrix& m) {
 		}
 		for (int i = 0; i < u; i++) {
 			for (int j = 0; j < t; j++) {
-				if (i == (u - 1) / 2)result.swap(i, (u - 1)/2 + j, u + i, (u - 1)/2 + j);
+				if (i == (u - 1) / 2)result.swap(i, (u - 1) / 2 + j, u + i, (u - 1) / 2 + j);
 				else result.swap(i, j, u + i, j);
 			}
 		}
