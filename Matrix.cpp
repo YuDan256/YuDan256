@@ -316,7 +316,6 @@ Matrix Matrix::norm(const Matrix& m) {
 	return Matrix(m.norm());
 }
 
-
 Matrix Matrix::magic(const Matrix& m) {
 	if (!m.isInteger() || m.get(0, 0) <= 0) {
 		throw invalid_argument("The size of the matrix must be a positive integer.");
@@ -386,6 +385,7 @@ Matrix Matrix::magic(const Matrix& m) {
 	}
 	return result;
 }
+
 Matrix Matrix::expm(const Matrix& m) {
 	if (m.rows != m.cols)throw invalid_argument("The matrix must be square.");
 	if (m.rows == 1 && m.cols == 1)return Matrix(exp(m.get(0, 0)));
