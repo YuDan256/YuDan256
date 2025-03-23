@@ -304,12 +304,12 @@ Matrix Matrix::product(const Matrix& m) {
 
 Matrix Matrix::deg(const Matrix& rad) {
 	if (rad.rows != 1 || rad.cols != 1)throw invalid_argument("The radian must be a real number.");
-	return Matrix(rad / 3.14159265358979323846264 * 180);
+	return Matrix(rad / 3.1415926535897932384626433832 * 180);
 }
 
 Matrix Matrix::rad(const Matrix& deg) {
 	if (deg.rows != 1 || deg.cols != 1)throw invalid_argument("The degree must be a real number.");
-	return Matrix(deg * 3.14159265358979323846264 / 180);
+	return Matrix(deg * 3.1415926535897932384626433832 / 180);
 }
 
 Matrix Matrix::norm(const Matrix& m) {
