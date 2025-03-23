@@ -32,7 +32,7 @@ public:
 	void set(const int& row, const int& col, const double& value);
 	double get(const int& row, const int& col) const;
 
-	void swapElements(const int& row1, const int& col1, const int& row2, const int& col2);
+	void swap(const int& row1, const int& col1, const int& row2, const int& col2);
 	bool isZeroRow(const int& row)const;
 	bool isZeroCol(const int& col)const;
 	bool isNumber()const;
@@ -123,6 +123,7 @@ public:
 	static Matrix identity(const Matrix& m);
 	static Matrix ones(const Matrix& m);
 	static Matrix zero(const Matrix& m);
+	static Matrix magic(const Matrix& m);
 	static Matrix sum(const Matrix& m);
 	static Matrix product(const Matrix& m);
 	static Matrix deg(const Matrix& rad);

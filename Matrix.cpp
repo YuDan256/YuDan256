@@ -11,7 +11,7 @@ map<string, Matrix(*)(const Matrix&)> Matrix::functionm = {
 	{"O",SchmidtOrtho},{"A",adjugate},{ "adj",adjugate },{"E",eigenvalue},{"tr",tr},{"diag",diagonalize},
 	{"sin",sinm},{"cos",cosm},{"tan",tanm},{"ln",lnm},{"log",lnm},{"sqrt",sqrtm},{"sum",sum},{"pro",product},
 	{"deg",deg},{"rad",rad},{"row",row},{"col",col},{"ones",ones},{"zero",zero},{"exp",expm},{"P",pForDiag},
-	{"N",norm},{"sinh",sinh},{"cosh",cosh},{"tanh",tanh},{"sh",sinh},{"ch",cosh},{"th",tanh}
+	{"N",norm},{"sinh",sinh},{"cosh",cosh},{"tanh",tanh},{"sh",sinh},{"ch",cosh},{"th",tanh},{"magic",magic}
 };
 
 map<string, Matrix(*)(const Matrix&, const Matrix&)>Matrix::functionm2 = {
@@ -316,6 +316,76 @@ Matrix Matrix::norm(const Matrix& m) {
 	return Matrix(m.norm());
 }
 
+
+Matrix Matrix::magic(const Matrix& m) {
+	if (!m.isInteger() || m.get(0, 0) <= 0) {
+		throw invalid_argument("The size of the matrix must be a positive integer.");
+	}
+	int n = static_cast<int>(m.get(0, 0));
+	if (n < 3)throw runtime_error("The size must be greater than 2.");
+	Matrix result(n, n);
+
+	if (n % 2 == 1) {
+		// N 为奇数时
+		int num = 1;
+		int i = 0, j = n / 2;
+		result.set(i, j, num++);
+
+		while (num <= n * n) {
+			int newi = (i - 1 + n) % n;
+			int newj = (j + 1) % n;
+
+			if (result.get(newi, newj) != 0) {
+				newi = (i + 1) % n;
+				newj = j;
+			}
+
+			result.set(newi, newj, num++);
+			i = newi;
+			j = newj;
+		}
+	}
+	else if (n % 4 == 0) {
+		// N 为4的倍数时
+		int num = 1;
+		for (int i = 0; i < n; ++i) {
+			for (int j = 0; j < n; ++j) {
+				result.set(i, j, num++);
+			}
+		}
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n / 2; j++) {
+				if (i % 4 == j % 4)result.swap(i, j, n - 1 - i, n - 1 - j);
+				if (i % 4 + j % 4 == 3)result.swap(i, j, n - 1 - i, n - 1 - j);
+			}
+		}
+	}
+	else {
+		// N 为其它偶数时 (4n+2)
+		int u = n / 2, v = n * n / 4, t = (n - 2) / 4;
+		Matrix subSquare = magic(u);
+		for (int i = 0; i < u; i++) {
+			for (int j = 0; j < u; j++) {
+				result.set(i, j, subSquare.get(i, j));
+				result.set(i + u, j + u, subSquare.get(i, j) + v);
+				result.set(i + u, j, subSquare.get(i, j) + 3 * v);
+				result.set(i, j + u, subSquare.get(i, j) + 2 * v);
+			}
+		}
+		for (int i = 0; i < u; i++) {
+			for (int j = 0; j < t; j++) {
+				if (i == (u - 1) / 2)result.swap(i, (u - 1)/2 + j, u + i, (u - 1)/2 + j);
+				else result.swap(i, j, u + i, j);
+			}
+		}
+		for (int j = 0; j < t - 1; j++) {
+			for (int i = 0; i < u; i++) {
+				result.swap(i, u + (u - 1) / 2 - j, u + i, u + (u - 1) / 2 - j);
+			}
+		}
+	}
+	return result;
+}
 Matrix Matrix::expm(const Matrix& m) {
 	if (m.rows != m.cols)throw invalid_argument("The matrix must be square.");
 	if (m.rows == 1 && m.cols == 1)return Matrix(exp(m.get(0, 0)));
@@ -593,7 +663,7 @@ double Matrix::trace() const {
 	return result;
 }
 
-void Matrix::swapElements(const int& row1, const int& col1, const int& row2, const int& col2) {
+void Matrix::swap(const int& row1, const int& col1, const int& row2, const int& col2) {
 	double temp;
 	temp = get(row1, col1);
 	set(row1, col1, get(row2, col2));
@@ -602,12 +672,12 @@ void Matrix::swapElements(const int& row1, const int& col1, const int& row2, con
 
 void Matrix::swapRows(const int& row1, const int& row2) {
 	for (int i = 0; i < cols; i++) {
-		swapElements(row1, i, row2, i);
+		swap(row1, i, row2, i);
 	}
 }
 void Matrix::swapCols(const int& col1, const int& col2) {
 	for (int i = 0; i < rows; i++) {
-		swapElements(i, col1, i, col2);
+		swap(i, col1, i, col2);
 	}
 }
 
@@ -920,15 +990,15 @@ Matrix Matrix::tanm(const Matrix& m) {
 	}
 }
 
-Matrix Matrix::sinh(const Matrix& m){
+Matrix Matrix::sinh(const Matrix& m) {
 	return (expm(m) - expm(-m)) / 2;
 }
 
-Matrix Matrix::cosh(const Matrix& m){
+Matrix Matrix::cosh(const Matrix& m) {
 	return (expm(m) + expm(-m)) / 2;
 }
 
-Matrix Matrix::tanh(const Matrix& m){
+Matrix Matrix::tanh(const Matrix& m) {
 	return sinh(m) / cosh(m);
 }
 
@@ -1788,7 +1858,7 @@ void Matrix::newMatrix() {
 			cout << "All one square matrix - ones(N+)" << endl;
 			cout << "All zero square matrix - zero(N+)" << endl;
 			cout << "Degree - deg(R)" << endl;
-			cout << "Radian - rad(R)" << endl<< endl;
+			cout << "Radian - rad(R)" << endl << endl;
 			continue;
 		}
 		if (expression == "save") {
