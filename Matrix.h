@@ -111,6 +111,9 @@ public:
 	static Matrix sinm(const Matrix& m);
 	static Matrix cosm(const Matrix& m);
 	static Matrix tanm(const Matrix& m);
+	static Matrix sinh(const Matrix& m);
+	static Matrix cosh(const Matrix& m);
+	static Matrix tanh(const Matrix& m);
 	static Matrix lnm(const Matrix& m);
 	static Matrix sqrtm(const Matrix& m);
 	static Matrix eigenvalue(const Matrix& m);

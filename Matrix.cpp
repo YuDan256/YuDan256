@@ -11,7 +11,7 @@ map<string, Matrix(*)(const Matrix&)> Matrix::functionm = {
 	{"O",SchmidtOrtho},{"A",adjugate},{ "adj",adjugate },{"E",eigenvalue},{"tr",tr},{"diag",diagonalize},
 	{"sin",sinm},{"cos",cosm},{"tan",tanm},{"ln",lnm},{"log",lnm},{"sqrt",sqrtm},{"sum",sum},{"pro",product},
 	{"deg",deg},{"rad",rad},{"row",row},{"col",col},{"ones",ones},{"zero",zero},{"exp",expm},{"P",pForDiag},
-	{"N",norm}
+	{"N",norm},{"sinh",sinh},{"cosh",cosh},{"tanh",tanh},{"sh",sinh},{"ch",cosh},{"th",tanh}
 };
 
 map<string, Matrix(*)(const Matrix&, const Matrix&)>Matrix::functionm2 = {
@@ -318,17 +318,20 @@ Matrix Matrix::norm(const Matrix& m) {
 
 Matrix Matrix::expm(const Matrix& m) {
 	if (m.rows != m.cols)throw invalid_argument("The matrix must be square.");
-	Matrix result = identity(m.rows);
-	Matrix temp = identity(m.rows);
-	int i = 1;
-	while (true) {
-		temp = temp * m / i;
-		result = result + temp;
-		if (temp.norm() < 1e-20)break;
-		i++;
-		if (i == 1e6)throw invalid_argument("The matrix does not converge.");
+	if (m.rows == 1 && m.cols == 1)return Matrix(exp(m.get(0, 0)));
+	else {
+		Matrix result = identity(m.rows);
+		Matrix temp = identity(m.rows);
+		int i = 1;
+		while (true) {
+			temp = temp * m / i;
+			result = result + temp;
+			if (temp.norm() < 1e-20)break;
+			i++;
+			if (i == 1e6)throw invalid_argument("The matrix does not converge.");
+		}
+		return result;
 	}
-	return result;
 }
 
 Matrix Matrix::integR(const Matrix& m1, const Matrix& m2) {
@@ -915,6 +918,18 @@ Matrix Matrix::tanm(const Matrix& m) {
 		Matrix result = sinm(m) / cosm(m);
 		return result;
 	}
+}
+
+Matrix Matrix::sinh(const Matrix& m){
+	return (expm(m) - expm(-m)) / 2;
+}
+
+Matrix Matrix::cosh(const Matrix& m){
+	return (expm(m) + expm(-m)) / 2;
+}
+
+Matrix Matrix::tanh(const Matrix& m){
+	return sinh(m) / cosh(m);
 }
 
 Matrix Matrix::lnm(const Matrix& m) {
@@ -1747,6 +1762,9 @@ void Matrix::newMatrix() {
 			cout << "Sine - sin(M)" << endl;
 			cout << "Cosine - cos(M)" << endl;
 			cout << "Tangent - tan(M)" << endl;
+			cout << "Sinh - sinh(M) or sh(M)" << endl;
+			cout << "Cosh - cosh(M) or ch(M)" << endl;
+			cout << "Tanh - tanh(M) or th(M)" << endl;
 			cout << "Square root - sqrt(M)" << endl;
 			cout << "Natural logarithm - ln(M) or log(M)" << endl;
 			cout << "Swap Rows - swapR(M,N,N)" << endl;
