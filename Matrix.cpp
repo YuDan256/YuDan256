@@ -8,7 +8,7 @@ map<char, int>Matrix::mop = { {'+', 1}, {'-', 1}, {'*', 2}, {'/', 2},{'\\',3}, {
 
 map<string, Matrix(*)(const Matrix&)> Matrix::functionm = {
 	{"R",r},{"T",transpose},{"D",det},{"det",det},{"I",inverse},{"inv",inverse1},{ "G",GaussianElimination },{"id",identity},
-	{"O",SchmidtOrtho},{"A",adjugate},{ "adj",adjugate },{"E",eigenvalue},{"tr",tr},{"diag",diagonalize},
+	{"O",SchmidtOrtho},{"A",adjugate},{"adj",adjugate},{"E",eigenvalue},{"tr",tr},{"diag",diagonalize},
 	{"sin",sinm},{"cos",cosm},{"tan",tanm},{"ln",lnm},{"log",lnm},{"sqrt",sqrtm},{"sum",sum},{"pro",product},
 	{"deg",deg},{"rad",rad},{"row",row},{"col",col},{"ones",ones},{"zero",zero},{"exp",expm},{"P",pForDiag},
 	{"N",norm},{"sinh",sinh},{"cosh",cosh},{"tanh",tanh},{"sh",sinh},{"ch",cosh},{"th",tanh},{"magic",magic}
@@ -1047,7 +1047,7 @@ Matrix Matrix::sqrtm(const Matrix& m) {
 		Matrix result(m.rows, m.cols);
 		if (D.get(0, 0) < 0)throw runtime_error("The matrix must be positive semi-definite.");
 		for (int i = 0; i < m.rows; i++) {
-			result.set(i, i, sqrt(D.get(i,i)));
+			result.set(i, i, sqrt(D.get(i, i)));
 		}
 		result = P * result * inverse(P);
 		return result;
