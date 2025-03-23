@@ -1038,8 +1038,22 @@ Matrix Matrix::lnm(const Matrix& m) {
 }
 
 Matrix Matrix::sqrtm(const Matrix& m) {
-	if (m.rows != 1 || m.cols != 1)throw invalid_argument("Invalid function for matrix.");
-	return Matrix(sqrt(m.data[0][0]));
+	if (m.rows != m.cols)throw invalid_argument("The matrix must be square.");
+	if (m.rows == 1) {
+		return Matrix(sqrt(m.get(0, 0)));
+	}
+	else if (m.diagonalizable()) {
+		Matrix P = pForDiag(m), D = diagonalize(m);
+		Matrix result(m.rows, m.cols);
+		if (D.get(0, 0) < 0)throw runtime_error("The matrix must be positive semi-definite.");
+		for (int i = 0; i < m.rows; i++) {
+			result.set(i, i, sqrt(D.get(i,i)));
+		}
+		result = P * result * inverse(P);
+		return result;
+	}
+	else if ((m - identity(m.rows)).norm() < 1)return m ^ Matrix(0.5);
+	else throw runtime_error("The square root of the matrix cannot be calculated.");
 }
 
 Matrix Matrix::Hessenberg()const {
