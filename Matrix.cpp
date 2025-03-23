@@ -865,18 +865,56 @@ Matrix Matrix::SchmidtOrtho(const Matrix& m) {
 }
 
 Matrix Matrix::sinm(const Matrix& m) {
-	if (m.rows != 1 || m.cols != 1)throw invalid_argument("Invalid function for matrix.");
-	return Matrix(sin(m.data[0][0]));
+	if (m.rows != m.cols)throw invalid_argument("The matrix must be square.");
+	if (m.rows == 1) {
+		return Matrix(sin(m.data[0][0]));
+	}
+	else {
+		Matrix temp = m;
+		Matrix result(m.rows, m.cols);
+		int i = 1;
+		while (true) {
+			result = result + temp;
+			temp = -temp * m * m / (2 * i * (2 * i + 1));
+			if (temp.norm() < 1e-20)break;
+			i++;
+			if (i > 1e6)throw invalid_argument("The matrix does not converge.");
+		}
+		return result;
+	}
 }
 
 Matrix Matrix::cosm(const Matrix& m) {
-	if (m.rows != 1 || m.cols != 1)throw invalid_argument("Invalid function for matrix.");
-	return Matrix(cos(m.data[0][0]));
+	if (m.rows != m.cols)throw invalid_argument("The matrix must be square.");
+	if (m.rows == 1) {
+		return Matrix(cos(m.data[0][0]));
+	}
+	else {
+		Matrix temp = -m * m / 2;
+		Matrix result = identity(m.rows);
+		int i = 2;
+		while (true) {
+			result = result + temp;
+			temp = -temp * m * m / (2 * i * (2 * i - 1));
+			if (temp.norm() < 1e-20)break;
+			i++;
+			if (i > 1e6)throw invalid_argument("The matrix does not converge.");
+		}
+		return result;
+	}
 }
 
 Matrix Matrix::tanm(const Matrix& m) {
-	if (m.rows != 1 || m.cols != 1)throw invalid_argument("Invalid function for matrix.");
-	return Matrix(tan(m.data[0][0]));
+	if (m.rows != m.cols)throw invalid_argument("The matrix must be square.");
+	if (m.rows == 1) {
+		if (cos(m.data[0][0]) == 0)throw invalid_argument("The tangent value is undefined.");
+		return Matrix(tan(m.data[0][0]));
+	}
+	else {
+		if ((cosm(m)).determinant() == 0)throw invalid_argument("The tangent value is undefined.");
+		Matrix result = sinm(m) / cosm(m);
+		return result;
+	}
 }
 
 Matrix Matrix::lnm(const Matrix& m) {
@@ -1699,12 +1737,18 @@ void Matrix::newMatrix() {
 			cout << "Adjugate matrix - A(M) or adj(M)" << endl;
 			cout << "Reduced row echelon form - G(M)" << endl;
 			cout << "Orthogonalization - O(M)" << endl;
+			cout << "Norm - N(M)" << endl;
 			cout << "Diagonalization - diag(M)" << endl;
 			cout << "Eigenvalue - E(M)" << endl;
 			cout << "Identity matrix - id(N+)" << endl;
 			cout << "Sum of all elements - sum(M)" << endl;
 			cout << "Product of all elements - pro(M)" << endl;
 			cout << "Trace - tr(M)" << endl;
+			cout << "Sine - sin(M)" << endl;
+			cout << "Cosine - cos(M)" << endl;
+			cout << "Tangent - tan(M)" << endl;
+			cout << "Square root - sqrt(M)" << endl;
+			cout << "Natural logarithm - ln(M) or log(M)" << endl;
 			cout << "Swap Rows - swapR(M,N,N)" << endl;
 			cout << "Swap Columns - swapC(M,N,N)" << endl;
 			cout << "Mutiply Rows - multiR(M,N,R)" << endl;
@@ -1725,13 +1769,8 @@ void Matrix::newMatrix() {
 			cout << "All zero matrix - zero(N+,N+)" << endl;
 			cout << "All one square matrix - ones(N+)" << endl;
 			cout << "All zero square matrix - zero(N+)" << endl;
-			cout << "Sine - sin(R)" << endl;
-			cout << "Cosine - cos(R)" << endl;
-			cout << "Tangent - tan(R)" << endl;
-			cout << "Square root - sqrt(R)" << endl;
 			cout << "Degree - deg(R)" << endl;
-			cout << "Radian - rad(R)" << endl;
-			cout << "Natural logarithm - ln(R) or log(R)" << endl << endl;
+			cout << "Radian - rad(R)" << endl<< endl;
 			continue;
 		}
 		if (expression == "save") {
