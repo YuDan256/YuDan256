@@ -38,7 +38,7 @@ void store(const map<string, T>& variables, const string& fileName) {
 		throw invalid_argument("The file " + filename + " cannot be opened.");
 	}
 	for (const auto& [name, value] : variables) {
-		fout << name << " " << value << endl;
+		fout << fixed << setprecision(15) << name << " " << value << endl;
 	}
 }
 
