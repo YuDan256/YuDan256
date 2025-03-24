@@ -84,7 +84,7 @@ void Function::newInput(map<string, Function>& functions) {
 
 	while (1) {
 		bool invalidSave = false;
-		cout << "Name:" << endl;
+		cout << "Name (enter \"end\" to finish):" << endl;
 		cin >> name;
 		for (char i : name) {
 			if (!isalpha(i)) {

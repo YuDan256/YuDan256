@@ -216,7 +216,7 @@ void Vector::newInput(map<string, Vector>& vectors) {
 	cout << "Enter \"end\" to finish definition." << endl;
 	while (1) {
 		bool invalidInput = false;
-		cout << "Enter the name of the vector:" << endl;
+		cout << "Enter the name of the vector (enter \"end\" to finish):" << endl;
 		cin >> name;
 		for (char i : name) {
 			if (!isalpha(i)) {

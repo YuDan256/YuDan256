@@ -156,7 +156,7 @@ void Normal::input(map<string, double>& variables) {
 	cout << "Enter \"end\" to finish definition." << endl;
 	while (1) {
 		bool invalidInput = false;
-		cout << "Name:" << endl;
+		cout << "Name (enter \"end\" to finish):" << endl;
 		cin >> name;
 		if (name == "end")break;
 		for (char i : name) {

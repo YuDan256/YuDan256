@@ -259,7 +259,7 @@ void Base::newInput(map<string, Base>& baseNumbers) {
 	Base result;
 	while (1) {
 		bool invalidInput = false;
-		cout << "Enter the name of the number:" << endl;
+		cout << "Enter the name of the number (enter \"end\" to finish):" << endl;
 		cin >> name;
 		for (char i : name) {
 			if (!isalpha(i)) {

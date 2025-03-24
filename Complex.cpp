@@ -308,7 +308,7 @@ void Complex::newInput(map<string, Complex>& numbers) {
 	double a, b;
 	while (1) {
 		bool invalidInput = false;
-		cout << "Name: " << endl;
+		cout << "Name (enter \"end\" to finish): " << endl;
 		cin >> name;
 		for (char i : name) {
 			if (!isalpha(i)) {
