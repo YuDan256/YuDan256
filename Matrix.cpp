@@ -1841,7 +1841,6 @@ void Matrix::newMatrix() {
 			cout << "Norm - N(M)" << endl;
 			cout << "Diagonalization - diag(M)" << endl;
 			cout << "Eigenvalue - E(M)" << endl;
-			cout << "Identity matrix - id(N+)" << endl;
 			cout << "Sum of all elements - sum(M)" << endl;
 			cout << "Product of all elements - pro(M)" << endl;
 			cout << "Trace - tr(M)" << endl;
@@ -1877,6 +1876,8 @@ void Matrix::newMatrix() {
 			cout << "All zero matrix - zero(N+,N+)" << endl;
 			cout << "All one square matrix - ones(N+)" << endl;
 			cout << "All zero square matrix - zero(N+)" << endl;
+			cout << "Identity matrix - id(N+)" << endl;
+			cout << "Magic matrix - magic(N+)" << endl;
 			cout << "Degree - deg(R)" << endl;
 			cout << "Radian - rad(R)" << endl << endl;
 			continue;
