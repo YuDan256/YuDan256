@@ -107,6 +107,7 @@ Complex Complex::operator^(const Complex& other) const {
 	if (getModulus() < 1e-10 && (fabs(other.image) > 1e-10 || other.real <= 1e-10)) {
 		throw runtime_error("When the base is 0, the exponent can only be a positive real number.");
 	}
+	if (fabs(image) < 1e-15 && fabs(other.image) < 1e-15)return pow(real, other.real);
 	else if (getModulus() == 0)return 0;
 	double a = argument(), r = modulus;
 	Complex index(log(r), a);
@@ -234,11 +235,13 @@ Complex Complex::lnc(const Complex& z) {
 }
 
 Complex Complex::sinc(const Complex& z) {
+	if (fabs(z.image) < 1e-15)return sin(z.real);
 	Complex i(0, 1);
 	return ((E ^ (i * z)) - (E ^ (-i * z))) / (2 * i);
 }
 
 Complex Complex::cosc(const Complex& z) {
+	if (fabs(z.image) < 1e-15)return cos(z.real);
 	Complex i(0, 1);
 	return ((E ^ (i * z)) + (E ^ (-i * z))) / 2;
 }
