@@ -360,6 +360,7 @@ void Base::newBase() {
 			cout << "Change base - change(B,N+)" << endl;
 			cout << "Power - pow(B,B)" << endl;
 			cout << "Check base - base(B)" << endl;
+			cout << "Check number in 10-base system - num(B)" << endl;
 			continue;
 		}
 		if (expression == "save") {
