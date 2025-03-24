@@ -421,7 +421,7 @@ Base Base::parseFunctionb(const string& expr, const map<string, Base>& baseNumbe
 		}
 	}
 	currentPos = 0;
-	Base result=parseExpressionb(expr, currentPos, baseNumbers);
+	Base result = parseExpressionb(expr, currentPos, baseNumbers);
 	if (currentPos == expr.length())return result;
 	else throw invalid_argument("Unexpected character: " + string(1, expr[currentPos]));
 }
