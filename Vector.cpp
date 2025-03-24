@@ -229,13 +229,15 @@ void Vector::newInput(map<string, Vector>& vectors) {
 		if (name == "end")break;
 		cout << "Enter the dimension of the vector:" << endl;
 		cin >> _n;
-		try {
-			n = stoi(_n);
+		for (char i : _n) {
+			if (!isdigit(i)) {
+				cout << "Invalid dimension." << endl;
+				invalidInput = true;
+				break;
+			}
 		}
-		catch (const exception& e) {
-			cerr << "Error: " << e.what() << endl;
-			continue;
-		}
+		if (invalidInput)continue;
+		n = stoi(_n);
 		if (n <= 0) {
 			cout << "The dimension of the vector must be positive." << endl;
 			continue;

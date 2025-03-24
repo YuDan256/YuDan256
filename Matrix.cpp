@@ -1283,14 +1283,23 @@ void Matrix::newInput(map<string, Matrix>& matrices) {
 		if (invalidInput)continue;
 		cout << "Enter the number of rows and columns for the matrix: ";
 		std::cin >> _rows >> _cols;
-		try {
-			rows = stoi(_rows);
-			cols = stoi(_cols);
+		for (char i : _rows) {
+			if (!isdigit(i)) {
+				cout << "Invalid input." << endl;
+				invalidInput = true;
+				break;
+			}
 		}
-		catch (const exception& e) {
-			cerr << "Error: " << e.what() << endl;
-			continue;
+		for (char i : _cols) {
+			if (!isdigit(i)) {
+				cout << "Invalid input." << endl;
+				invalidInput = true;
+				break;
+			}
 		}
+		if (invalidInput)continue;
+		rows = stoi(_rows);
+		cols = stoi(_cols);
 		if (rows <= 0 || cols <= 0) {
 			cout << "The dimensions of the matrix must be positive." << endl;
 			continue;

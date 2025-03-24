@@ -25,6 +25,7 @@ ull Base::length()const {
 }
 
 void Base::print()const {
+	cout << "[";
 	ull len = length();
 	ull* print = new ull[len + 1];
 	for (int i = 0; i < len + 1; i++) {
@@ -39,7 +40,6 @@ void Base::print()const {
 		for (int i = 0; i < len; i++) {
 			cout << print[len - i - 1];
 		}
-		cout << endl;
 	}
 	else if (base <= 36) {
 		for (int i = 0; i < len; i++) {
@@ -47,14 +47,13 @@ void Base::print()const {
 				cout << static_cast<char>(static_cast<ull>('A') - 10 + print[len - i - 1]);
 			else cout << print[len - i - 1];
 		}
-		cout << endl;
 	}
 	else {
 		for (int i = 0; i < len; i++) {
 			cout << print[len - i - 1] << " ";
 		}
-		cout << endl;
 	}
+	cout << "]_" << base << endl;
 	delete[] print;
 }
 
@@ -272,13 +271,12 @@ void Base::newInput(map<string, Base>& baseNumbers) {
 		if (name == "end")break;
 		cout << "Enter the base of the number:" << endl;
 		cin >> _base;
-		try {
-			base = stoull(_base);
+		for (char i : _base) {
+			if (!isdigit(i)) {
+				throw invalid_argument("Invalid base.");
+			}
 		}
-		catch (const exception& e) {
-			cerr << "Error: " << e.what() << endl;
-			continue;
-		}
+		base = stoull(_base);
 		if (base < 2) {
 			cout << "The base cannot less than 2." << endl;
 			continue;
