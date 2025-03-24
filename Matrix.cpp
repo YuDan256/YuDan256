@@ -1188,6 +1188,7 @@ Matrix Matrix::diagonalize(const Matrix& m) {
 }
 
 Matrix Matrix::pForDiag(const Matrix& m) {
+	if (!m.diagonalizable())throw invalid_argument("The matrix cannot be diagonalized.");
 	Matrix D = diagonalize(m), I = identity(D.rows);
 	vector<double>evalue;
 	for (int i = 0; i < D.rows; i++) {
