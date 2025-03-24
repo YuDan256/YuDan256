@@ -1853,6 +1853,10 @@ void Matrix::newMatrix() {
 			cout << "Tanh - tanh(M) or th(M)" << endl;
 			cout << "Square root - sqrt(M)" << endl;
 			cout << "Natural logarithm - ln(M) or log(M)" << endl;
+			cout << "Exponential function - exp(M)" << endl;
+			cout << "Integrate by rows - integR(M)" << endl;
+			cout << "Integrate by columns - integC(M)" << endl;
+			cout << "Integrate by diagonals - integD(M)" << endl;
 			cout << "Swap Rows - swapR(M,N,N)" << endl;
 			cout << "Swap Columns - swapC(M,N,N)" << endl;
 			cout << "Mutiply Rows - multiR(M,N,R)" << endl;
