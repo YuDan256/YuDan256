@@ -835,6 +835,7 @@ Matrix Matrix::GaussianElimination(const Matrix& m) {
 	double mainElement;
 	for (int i = 0; i < m.cols; i++) {
 		// 部分选主元
+		if (currentRow >= m.rows)break;
 		int maxRow = currentRow;
 		for (int j = currentRow + 1; j < m.rows; j++) {
 			if (fabs(temp.data[j][i]) > fabs(temp.data[maxRow][i])) {
