@@ -20,7 +20,6 @@ public:
 	static double parsePowern(const string& expr, size_t& currentPos, const map<string, double>& variables);
 	static void input(map<string, double>& variables);
 	static void newNormal();
-	static void doNormal();
 	static void storen(const map<string, double>& numbers);
 	static map<string, double>loadn();
 	static void deleten(map<string, double>& variables);

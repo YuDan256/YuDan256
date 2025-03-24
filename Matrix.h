@@ -80,10 +80,6 @@ public:
 	static Matrix identity(const int& n);
 	double norm()const;
 
-	//旧版操作系统
-	static Matrix input();
-	static void doMatrix();
-
 	//新版操作系统
 	static void newInput(map<string, Matrix>& matrices);
 	static Matrix parseFunctionm(const string& expr, map<string, Matrix>& matrices);

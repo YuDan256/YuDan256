@@ -23,9 +23,6 @@ public:
 	void doTable(const double& x0, const double& path, const int& n)const;
 	double sum(const double& i, const double& j) const;
 
-	//旧版操作系统
-	static void doFunction();
-
 	//新版操作系统
 	static void newInput(map<string, Function>& functions);
 	static void newFunction();

@@ -54,11 +54,6 @@ public:
 	static Base enterBase2(const ull& base, const string& num);
 	static Base enterBase3(const ull& base, const string& num);
 
-	//旧版操作系统
-	static void doBase();
-	static void doBase1(Base& b1, Base& b2);
-	static void doBase2(const ull& base, Base& b1, Base& b2);
-
 	//新版操作系统
 	static void newInput(map<string, Base>& baseNumbers);
 	static void newBase();

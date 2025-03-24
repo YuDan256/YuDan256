@@ -57,11 +57,6 @@ public:
 	static double R2(const Statistics& s1, const Statistics& s2);
 	static void linearRegression(const Statistics& s1, const Statistics& s2);
 
-	//旧版统计操作
-	static void doStatistics();
-	static void doSingle();
-	static void doBivariate();
-
 	//新版统计操作
 	static void newInput(map<string, Statistics>& datasets);
 	static void newStatistics();

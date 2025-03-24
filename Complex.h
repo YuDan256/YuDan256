@@ -76,10 +76,6 @@ public:
 	static Complex deg(const Complex& rad);
 	static Complex rad(const Complex& deg);
 
-	//旧版操作系统
-	static Complex input();
-	static void doComplex();
-
 	//新版操作系统
 	static void newInput(map<string, Complex>& numbers);
 	static Complex parseFunctionc(const string& expr, const map<string, Complex>& numbers);

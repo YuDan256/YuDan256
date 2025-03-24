@@ -56,10 +56,6 @@ public:
 	bool vertical(const Vector& other)const;
 	bool parallel(const Vector& other)const;
 
-	//旧版操作系统
-	static Vector input();
-	static void doVector();
-
 	//新版操作系统
 	static void newInput(map<string, Vector>& vectors);
 	static Vector parseFunctionv(const string& expr, const map<string, Vector>& vectors);
