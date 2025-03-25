@@ -53,8 +53,9 @@ void Base::print()const {
 			for (int i = 0; i < len - 1; i++) {
 				cout << print[len - i - 1] << " ";
 			}
+			cout << print[0];
 		}
-		cout << print[0] << "]_" << base << endl;
+		cout << "]_" << base << endl;
 		delete[] print;
 	}
 	else cout << data << endl;
