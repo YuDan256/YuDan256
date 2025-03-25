@@ -107,7 +107,6 @@ Complex Complex::operator^(const Complex& other) const {
 	if (getModulus() < 1e-10 && (fabs(other.image) > 1e-10 || other.real <= 1e-10)) {
 		throw runtime_error("When the base is 0, the exponent can only be a positive real number.");
 	}
-	if (fabs(image) < 1e-15 && fabs(other.image) < 1e-15)return pow(real, other.real);
 	else if (getModulus() == 0)return 0;
 	double a = argument(), r = modulus;
 	Complex index(log(r), a);
@@ -230,7 +229,6 @@ Complex Complex::sqrtc(const Complex& z) {
 
 Complex Complex::lnc(const Complex& z) {
 	if (z.modulus < 1e-15)throw runtime_error("The argument of a logarithm cannot be zero.");
-	if (fabs(z.image) < 1e-15)return Complex(log(z.real));
 	return Complex(log(z.modulus)) + Complex(0, z.argument());
 }
 
