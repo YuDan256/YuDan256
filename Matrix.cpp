@@ -12,12 +12,12 @@ map<string, Matrix(*)(const Matrix&)> Matrix::functionm = {
 	{"sin",sinm},{"cos",cosm},{"tan",tanm},{"ln",lnm},{"log",lnm},{"sqrt",sqrtm},{"sum",sum},{"pro",product},
 	{"deg",deg},{"rad",rad},{"row",row},{"col",col},{"ones",ones},{"zero",zero},{"exp",expm},{"P",pForDiag},
 	{"N",norm},{"sinh",sinh},{"cosh",cosh},{"tanh",tanh},{"sh",sinh},{"ch",cosh},{"th",tanh},{"magic",magic},
-	{"random",random}
+	{"random",random},{"randint",randint}
 };
 
 map<string, Matrix(*)(const Matrix&, const Matrix&)>Matrix::functionm2 = {
 	{"integR",integR},{"integC",integC},{"ones",ones},{"zero",zero},{"getR",getRow},{"getC",getCol},{"delR",deleteRow},{"delC",deleteCol},
-	{"LD",Ldivide},{"integD",integD},{"random",random}
+	{"LD",Ldivide},{"integD",integD},{"random",random},{"randint",randint}
 };
 
 map<string, Matrix(*)(const Matrix&, const Matrix&, const Matrix&)>Matrix::functionm3 = {
@@ -26,7 +26,7 @@ map<string, Matrix(*)(const Matrix&, const Matrix&, const Matrix&)>Matrix::funct
 };
 
 map<string, Matrix(*)(const Matrix&, const Matrix&, const Matrix&, const Matrix&)>Matrix::functionm4 = {
-	{"addR",addRows},{"addC",addCols},{"set",set}
+	{"addR",addRows},{"addC",addCols},{"set",set},{"random",random},{ "randint",randint }
 };
 
 void Matrix::set(const int& row, const int& col, const double& value) {
@@ -287,6 +287,10 @@ Matrix Matrix::random(const Matrix& m) {
 	return random(m, m);
 }
 
+Matrix Matrix::randint(const Matrix& m) {
+	return randint(m, m);
+}
+
 Matrix Matrix::sum(const Matrix& m) {
 	double result = 0.0;
 	for (int i = 0; i < m.rows; i++) {
@@ -432,6 +436,7 @@ Matrix Matrix::Ldivide(const Matrix& m1, const Matrix& m2) {
 Matrix Matrix::ones(const Matrix& r, const Matrix& c) {
 	if (!r.isInteger() || !c.isInteger())throw invalid_argument("The numbers of rows and columns must be integers.");
 	int _r = static_cast<int>(r.get(0, 0)), _c = static_cast<int>(c.get(0, 0));
+	if (_r < 1 || _c < 1)throw invalid_argument("The numbers of rows and columns must be positive integers.");
 	Matrix result(_r, _c);
 	for (int i = 0; i < _r; i++) {
 		for (int j = 0; j < _c; j++) {
@@ -444,20 +449,16 @@ Matrix Matrix::ones(const Matrix& r, const Matrix& c) {
 Matrix Matrix::zero(const Matrix& r, const Matrix& c) {
 	if (!r.isInteger() || !c.isInteger())throw invalid_argument("The numbers of rows and columns must be integers.");
 	int _r = static_cast<int>(r.get(0, 0)), _c = static_cast<int>(c.get(0, 0));
+	if (_r < 1 || _c < 1)throw invalid_argument("The numbers of rows and columns must be positive integers.");
 	return Matrix(_r, _c);
 }
 
 Matrix Matrix::random(const Matrix& r, const Matrix& c) {
-	if (!r.isInteger() || !c.isInteger())throw invalid_argument("The numbers of rows and columns must be integers.");
-	int _r = static_cast<int>(r.get(0, 0)), _c = static_cast<int>(c.get(0, 0));
-	srand(static_cast<unsigned int>(time(0)));
-	Matrix result(_r, _c);
-	for (int i = 0; i < _r; i++) {
-		for (int j = 0; j < _c; j++) {
-			result.set(i, j, 10 * (double)rand() / RAND_MAX);
-		}
-	}
-	return result;
+	return random(r, c, 0, 1);
+}
+
+Matrix Matrix::randint(const Matrix& r, const Matrix& c) {
+	return randint(r, c, 0, 10);
 }
 
 Matrix Matrix::getRow(const Matrix& m, const Matrix& row) {
@@ -622,7 +623,7 @@ Matrix Matrix::adjugate(const Matrix& m) {
 	return result;
 }
 
-Matrix Matrix::inverse(const Matrix& m) {
+Matrix Matrix::inverse1(const Matrix& m) {
 	if (m.rows != m.cols) {
 		throw invalid_argument("Inverse is only defined for square matrices.");
 	}
@@ -645,7 +646,7 @@ Matrix Matrix::inverse(const Matrix& m) {
 	return inverseMatrix;
 }
 
-Matrix Matrix::inverse1(const Matrix& m) {
+Matrix Matrix::inverse(const Matrix& m) {
 	Matrix result(m.rows, m.cols);
 	if (m.rows != m.cols)throw invalid_argument("Inverse is only defined for square matrices.");
 	if (fabs(m.determinant()) < 1e-10)throw runtime_error("Matrix is singular and cannot be inverted.");
@@ -818,6 +819,40 @@ Matrix Matrix::set(const Matrix& m, const Matrix& row, const Matrix& col, const 
 	double n = num.get(0, 0);
 	Matrix result = m;
 	result.set(r, c, n);
+	return result;
+}
+
+Matrix Matrix::random(const Matrix& r, const Matrix& c, const Matrix& min, const Matrix& max) {
+	if (!r.isInteger() || !c.isInteger())throw invalid_argument("The numbers of rows and columns must be integers.");
+	if (!min.isNumber() || !max.isNumber())throw invalid_argument("The minimum and maximum values must be real numbers.");
+	int _r = static_cast<int>(r.get(0, 0)), _c = static_cast<int>(c.get(0, 0));
+	double _min = min.get(0, 0), _max = max.get(0, 0);
+	if (_r < 1 || _c < 1)throw invalid_argument("The numbers of rows and columns must be positive integers.");
+	if (_min > _max)throw invalid_argument("The minimum value must be less than or equal to the maximum value.");
+	Matrix result(_r, _c);
+	srand(static_cast<unsigned int>(time(0)));
+	for (int i = 0; i < _r; i++) {
+		for (int j = 0; j < _c; j++) {
+			result.set(i, j, _min + (double)rand() / RAND_MAX * (_max - _min));
+		}
+	}
+	return result;
+}
+
+Matrix Matrix::randint(const Matrix& r, const Matrix& c, const Matrix& min, const Matrix& max) {
+	if (!r.isInteger() || !c.isInteger())throw invalid_argument("The numbers of rows and columns must be integers.");
+	if (!min.isInteger() || !max.isInteger())throw invalid_argument("The minimum and maximum values must be integers.");
+	int _r = static_cast<int>(r.get(0, 0)), _c = static_cast<int>(c.get(0, 0));
+	int _min = static_cast<int>(min.get(0, 0)), _max = static_cast<int>(max.get(0, 0));
+	if (_r < 1 || _c < 1)throw invalid_argument("The numbers of rows and columns must be positive integers.");
+	if (_min > _max)throw invalid_argument("The minimum value must be less than or equal to the maximum value.");
+	Matrix result(_r, _c);
+	srand(static_cast<unsigned int>(time(0)));
+	for (int i = 0; i < _r; i++) {
+		for (int j = 0; j < _c; j++) {
+			result.set(i, j, _min + rand() % (_max - _min + 1));
+		}
+	}
 	return result;
 }
 
@@ -1629,8 +1664,8 @@ void Matrix::newMatrix() {
 			cout << "Determinant - D(M) or det(M)" << endl;
 			cout << "Rank - R(M)" << endl;
 			cout << "Transpose - T(M)" << endl;
-			cout << "Inverse with adjugate matrix - I(M)" << endl;
-			cout << "Inverse with Gaussian Elimination - inv(M)" << endl;
+			cout << "Inverse with Gaussian Elimination - I(M)" << endl;
+			cout << "Inverse with adjugate matrix - inv(M)" << endl;
 			cout << "Adjugate matrix - A(M) or adj(M)" << endl;
 			cout << "Reduced row echelon form - G(M)" << endl;
 			cout << "Orthogonalization - O(M)" << endl;

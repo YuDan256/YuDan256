@@ -1,6 +1,6 @@
 ﻿//Calculator Program
 //Developed by Yu Liangyang, Tsinghua University
-//Recently updated on March 24th, 2025.
+//Recently updated on March 25th, 2025.
 
 #include "Complex.h"
 #include "Matrix.h"
@@ -20,7 +20,7 @@ void initialize();
 int main() {
 	initialize();
 	char choice = 0;
-	cout << "Junk Calculator [1.8.1] By YuDan" << endl << endl
+	cout << "Junk Calculator [1.8.2] By YuDan" << endl << endl
 		<< "Welcome to My Calculator!" << endl
 		<< "This calculator has an extremely user-unfriendly operating system, please bear with it." << endl;
 	newCalculation();

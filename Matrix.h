@@ -122,6 +122,7 @@ public:
 	static Matrix ones(const Matrix& m);
 	static Matrix zero(const Matrix& m);
 	static Matrix random(const Matrix& m);
+	static Matrix randint(const Matrix& m);
 	static Matrix magic(const Matrix& m);
 	static Matrix sum(const Matrix& m);
 	static Matrix product(const Matrix& m);
@@ -138,6 +139,7 @@ public:
 	static Matrix ones(const Matrix& r, const Matrix& c);
 	static Matrix zero(const Matrix& r, const Matrix& c);
 	static Matrix random(const Matrix& r, const Matrix& c);
+	static Matrix randint(const Matrix& r, const Matrix& c);
 	static Matrix getRow(const Matrix& m, const Matrix& row);
 	static Matrix getCol(const Matrix& m, const Matrix& col);
 	static Matrix deleteRow(const Matrix& m, const Matrix& row);
@@ -157,6 +159,8 @@ public:
 	static Matrix addRows(const Matrix& m, const Matrix& row1, const Matrix& row2, const Matrix& scalar);
 	static Matrix addCols(const Matrix& m, const Matrix& col1, const Matrix& col2, const Matrix& scalar);
 	static Matrix set(const Matrix& m, const Matrix& row, const Matrix& col, const Matrix& num);
+	static Matrix random(const Matrix& r, const Matrix& c, const Matrix& min, const Matrix& max);
+	static Matrix randint(const Matrix& r, const Matrix& c, const Matrix& min, const Matrix& max);
 
 	//线性方程组求解
 	static void doLinearEquations();
