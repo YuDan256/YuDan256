@@ -25,36 +25,39 @@ ull Base::length()const {
 }
 
 void Base::print()const {
-	cout << "[";
-	ull len = length();
-	ull* print = new ull[len + 1];
-	for (int i = 0; i < len + 1; i++) {
-		print[i] = 0;
-	}
-	ull temp = data;
-	for (int i = 0; temp > 0; i++) {
-		print[i] = temp % base;
-		temp /= base;
-	}
-	if (base <= 10) {
-		for (int i = 0; i < len; i++) {
-			cout << print[len - i - 1];
+	if (base != 10) {
+		cout << "[";
+		ull len = length();
+		ull* print = new ull[len + 1];
+		for (int i = 0; i < len + 1; i++) {
+			print[i] = 0;
 		}
-	}
-	else if (base <= 36) {
-		for (int i = 0; i < len; i++) {
-			if (print[len - i - 1] >= 10)
-				cout << static_cast<char>(static_cast<ull>('A') - 10 + print[len - i - 1]);
-			else cout << print[len - i - 1];
+		ull temp = data;
+		for (int i = 0; temp > 0; i++) {
+			print[i] = temp % base;
+			temp /= base;
 		}
-	}
-	else {
-		for (int i = 0; i < len; i++) {
-			cout << print[len - i - 1] << " ";
+		if (base <= 10) {
+			for (int i = 0; i < len; i++) {
+				cout << print[len - i - 1];
+			}
 		}
+		else if (base <= 36) {
+			for (int i = 0; i < len; i++) {
+				if (print[len - i - 1] >= 10)
+					cout << static_cast<char>(static_cast<ull>('A') - 10 + print[len - i - 1]);
+				else cout << print[len - i - 1];
+			}
+		}
+		else {
+			for (int i = 0; i < len; i++) {
+				cout << print[len - i - 1] << " ";
+			}
+		}
+		cout << "]_" << base << endl;
+		delete[] print;
 	}
-	cout << "]_" << base << endl;
-	delete[] print;
+	else cout << data << endl;
 }
 
 //for bases from 2 to 10
@@ -536,7 +539,7 @@ Base Base::parsePowerb(const string& expr, size_t& currentPos, const map<string,
 				}
 				else throw invalid_argument("Missing closing parenthesis.");
 			}
-			else if (identifier == "num") {
+			else if (identifier == "num" || identifier == "data") {
 				Base b1 = parseExpressionb(expr, currentPos, baseNumbers);
 				if (expr[currentPos] == ')') {
 					currentPos++;
