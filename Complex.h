@@ -83,7 +83,7 @@ public:
 	static Complex parseTermc(const string& expr, size_t& currentPos, const map<string, Complex>& numbers);
 	static Complex parsePowerc(const string& expr, size_t& currentPos, const map<string, Complex>& numbers);
 	static void newComplex();
-	static void storec(const map<string,Complex>& complexes);
+	static void storec(const map<string, Complex>& complexes);
 	static map<string, Complex> loadc();
 	static void deletec(map<string, Complex>& variables);
 	static void showc(const map<string, Complex>& variables);

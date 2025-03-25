@@ -27,7 +27,7 @@ public:
 	static void newInput(map<string, Function>& functions);
 	static void newFunction();
 	static void parseFunctionf(const string& expr, const map<string, Function>& functions);
-	static void storef(const map<string,Function>& functions);
+	static void storef(const map<string, Function>& functions);
 	static map<string, Function> loadf();
 	static void deletef(map<string, Function>& variables);
 	static void showf(const map<string, Function>& variables);

@@ -226,7 +226,7 @@ void Function::parseFunctionf(const string& expr, const map<string, Function>& f
 		if (expr[currentPos] == ',') {
 			currentPos++;
 			num1 = Normal::parseExpressionn(expr, currentPos, variables);
-			if (expr[currentPos] == ')'&&currentPos+1==expr.length()) {
+			if (expr[currentPos] == ')' && currentPos + 1 == expr.length()) {
 				if (identifier == "D")cout << f.differentiation(num1) << endl;
 				else if (identifier == "S")cout << f.solveEquation(num1) << endl;
 				else if (identifier == "V")cout << f.value(num1) << endl;

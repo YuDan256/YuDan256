@@ -177,7 +177,7 @@ Base Base::operator/(const Base& b)const {
 	return result;
 }
 
-Base Base::operator%(const Base& b) const{
+Base Base::operator%(const Base& b) const {
 	if (b.data == 0)throw runtime_error("The divisor cannot be 0.");
 	if (base == 10) {
 		return Base(b.base, data % b.data);
