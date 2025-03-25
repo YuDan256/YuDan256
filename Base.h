@@ -32,6 +32,7 @@ public:
 	Base operator-(const Base& b)const;
 	Base operator*(const Base& b)const;
 	Base operator/(const Base& b)const;
+	Base operator%(const Base& b)const;
 	bool operator>(const Base& b)const;
 	bool operator<(const Base& b)const;
 	bool operator==(const Base& b)const;

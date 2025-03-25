@@ -3,7 +3,7 @@
 using namespace std;
 
 map<char, int>Base::bop = {
-	{'&',0},{'|',0},{'^',0},{'+',1},{'-',1},{'*',2},{'/',2}
+	{'&',0},{'|',0},{'^',0},{'+',1},{'-',1},{'*',2},{'/',2},{'%',2}
 };
 
 Base::Base(const ull& _base, const ull& _data) {
@@ -174,6 +174,19 @@ Base Base::operator/(const Base& b)const {
 	}
 	else if (base != b.base)throw invalid_argument("The bases do not match for division.");
 	Base result(base, data / b.data);
+	return result;
+}
+
+Base Base::operator%(const Base& b) const{
+	if (b.data == 0)throw runtime_error("The divisor cannot be 0.");
+	if (base == 10) {
+		return Base(b.base, data % b.data);
+	}
+	else if (b.base == 10) {
+		return Base(base, data % b.data);
+	}
+	else if (base != b.base)throw invalid_argument("The bases do not match for division.");
+	Base result(base, data % b.data);
 	return result;
 }
 
@@ -489,6 +502,10 @@ Base Base::parseTermb(const string& expr, size_t& currentPos, const map<string, 
 				case '/':
 					if (rhs == 0) throw runtime_error("Division by zero error.");
 					result = result / rhs;
+					break;
+				case '%':
+					if (rhs == 0) throw runtime_error("Division by zero error.");
+					result = result % rhs;
 					break;
 				default:
 					throw runtime_error("Unknown operator.");
