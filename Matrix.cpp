@@ -11,12 +11,13 @@ map<string, Matrix(*)(const Matrix&)> Matrix::functionm = {
 	{"O",SchmidtOrtho},{"A",adjugate},{"adj",adjugate},{"E",eigenvalue},{"tr",tr},{"diag",diagonalize},
 	{"sin",sinm},{"cos",cosm},{"tan",tanm},{"ln",lnm},{"log",lnm},{"sqrt",sqrtm},{"sum",sum},{"pro",product},
 	{"deg",deg},{"rad",rad},{"row",row},{"col",col},{"ones",ones},{"zero",zero},{"exp",expm},{"P",pForDiag},
-	{"N",norm},{"sinh",sinh},{"cosh",cosh},{"tanh",tanh},{"sh",sinh},{"ch",cosh},{"th",tanh},{"magic",magic}
+	{"N",norm},{"sinh",sinh},{"cosh",cosh},{"tanh",tanh},{"sh",sinh},{"ch",cosh},{"th",tanh},{"magic",magic},
+	{"random",random}
 };
 
 map<string, Matrix(*)(const Matrix&, const Matrix&)>Matrix::functionm2 = {
 	{"integR",integR},{"integC",integC},{"ones",ones},{"zero",zero},{"getR",getRow},{"getC",getCol},{"delR",deleteRow},{"delC",deleteCol},
-	{"LD",Ldivide},{"integD",integD}
+	{"LD",Ldivide},{"integD",integD},{"random",random}
 };
 
 map<string, Matrix(*)(const Matrix&, const Matrix&, const Matrix&)>Matrix::functionm3 = {
@@ -282,6 +283,10 @@ Matrix Matrix::zero(const Matrix& m) {
 	return zero(m, m);
 }
 
+Matrix Matrix::random(const Matrix& m) {
+	return random(m, m);
+}
+
 Matrix Matrix::sum(const Matrix& m) {
 	double result = 0.0;
 	for (int i = 0; i < m.rows; i++) {
@@ -440,6 +445,19 @@ Matrix Matrix::zero(const Matrix& r, const Matrix& c) {
 	if (!r.isInteger() || !c.isInteger())throw invalid_argument("The numbers of rows and columns must be integers.");
 	int _r = static_cast<int>(r.get(0, 0)), _c = static_cast<int>(c.get(0, 0));
 	return Matrix(_r, _c);
+}
+
+Matrix Matrix::random(const Matrix& r, const Matrix& c) {
+	if (!r.isInteger() || !c.isInteger())throw invalid_argument("The numbers of rows and columns must be integers.");
+	int _r = static_cast<int>(r.get(0, 0)), _c = static_cast<int>(c.get(0, 0));
+	srand(static_cast<unsigned int>(time(0)));
+	Matrix result(_r, _c);
+	for (int i = 0; i < _r; i++) {
+		for (int j = 0; j < _c; j++) {
+			result.set(i, j, 10 * (double)rand() / RAND_MAX);
+		}
+	}
+	return result;
 }
 
 Matrix Matrix::getRow(const Matrix& m, const Matrix& row) {

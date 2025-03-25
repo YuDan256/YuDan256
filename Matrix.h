@@ -8,6 +8,8 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
+#include <cstdlib>
+#include <ctime>
 
 using namespace std;
 
@@ -119,6 +121,7 @@ public:
 	static Matrix identity(const Matrix& m);
 	static Matrix ones(const Matrix& m);
 	static Matrix zero(const Matrix& m);
+	static Matrix random(const Matrix& m);
 	static Matrix magic(const Matrix& m);
 	static Matrix sum(const Matrix& m);
 	static Matrix product(const Matrix& m);
@@ -134,6 +137,7 @@ public:
 	static Matrix Ldivide(const Matrix& m1, const Matrix& m2);
 	static Matrix ones(const Matrix& r, const Matrix& c);
 	static Matrix zero(const Matrix& r, const Matrix& c);
+	static Matrix random(const Matrix& r, const Matrix& c);
 	static Matrix getRow(const Matrix& m, const Matrix& row);
 	static Matrix getCol(const Matrix& m, const Matrix& col);
 	static Matrix deleteRow(const Matrix& m, const Matrix& row);
