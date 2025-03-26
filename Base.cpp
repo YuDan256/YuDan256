@@ -651,7 +651,7 @@ Base Base::parsePowerb(const string& expr, size_t& currentPos, const map<string,
 				}
 				else throw invalid_argument("Missing closing parenthesis.");
 			}
-			else if (identifier == "digit" || identifier == "length") {
+			else if (identifier == "digit" || identifier == "length" ||identifier == "len") {
 				Base b1 = parseExpressionb(expr, currentPos, baseNumbers);
 				if (expr[currentPos] == ')') {
 					currentPos++;
