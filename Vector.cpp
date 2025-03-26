@@ -8,7 +8,7 @@ const double Vector::PI = 3.14159265358979323846264;
 map<char, int>Vector::vop = { {'+', 1}, {'-', 1}, {'*', 2}, {'/', 2} ,{'^',3} };
 map<string, Vector(*)(const Vector&)>Vector::functionv1 = {
 	{"R",R},{"sin",sinv},{"cos",cosv},{"tan",tanv},{"ln",lnv},{"log",lnv},{"sqrt",sqrtv},{"deg",deg},{"rad",rad},
-	{"exp",expv}
+	{"exp",expv},{"abs",R}
 };
 map<string, Vector(*)(const Vector&, const Vector&)>Vector::functionv2 = {
 	{"dot",dotProduct},{"SP",SP},{"PV",PV},{"ang",ang}

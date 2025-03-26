@@ -12,7 +12,7 @@ map<string, Matrix(*)(const Matrix&)> Matrix::functionm = {
 	{"sin",sinm},{"cos",cosm},{"tan",tanm},{"ln",lnm},{"log",lnm},{"sqrt",sqrtm},{"sum",sum},{"pro",product},
 	{"deg",deg},{"rad",rad},{"row",row},{"col",col},{"ones",ones},{"zero",zero},{"exp",expm},{"P",pForDiag},
 	{"N",norm},{"sinh",sinh},{"cosh",cosh},{"tanh",tanh},{"sh",sinh},{"ch",cosh},{"th",tanh},{"magic",magic},
-	{"random",random},{"randint",randint}
+	{"random",random},{"randint",randint},{"abs",norm}
 };
 
 map<string, Matrix(*)(const Matrix&, const Matrix&)>Matrix::functionm2 = {

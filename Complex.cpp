@@ -11,7 +11,7 @@ map<string, Complex(*)(const Complex&)> Complex::functionc = {
 	{"real",Re},{"imag",Im},{ "R",R },{"sin",sinc},{"cos",cosc},{"tan",tanc},{"sinh",sinhc},
 	{"cosh",coshc},{"tanh",tanhc},{"sh",sinhc},{"ch",coshc},{"th",tanhc},{"deg",deg},{"rad",rad},
 	{"asin",asinc},{"acos",acosc},{"atan",atanc},{"arcsin",asinc},{"arccos",acosc},{"arctan",atanc},
-	{"exp",expc}
+	{"exp",expc},{"abs",R}
 };
 
 void Complex::print()const {
