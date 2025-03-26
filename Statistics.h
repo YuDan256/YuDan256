@@ -21,6 +21,12 @@ public:
 	Statistics() :data(vector<double>(2, 0.0)) {}
 	Statistics(const Statistics& s) :data(s.data) {}
 
+	Statistics& operator=(const Statistics& s);
+	Statistics operator+(const Statistics& s)const;
+	Statistics& operator+=(const Statistics& s);
+	double& operator[](const int& pos) { return data[pos]; }
+	const double operator[](const int& pos)const { return data[pos]; }
+
 	//数据组操作
 	void set(const int& pos, const double& value);
 	void swap(const int& p1, const int& p2);

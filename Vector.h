@@ -46,6 +46,17 @@ public:
 	bool operator==(const Vector& other)const;
 	friend ostream& operator<<(ostream& out, const Vector& v);
 
+	double& operator[](const int& place) { return data[place]; }
+	const double operator[](const int& place)const { return data[place]; }
+	Vector& operator=(const Vector& other);
+	Vector& operator+=(const Vector& other);
+	Vector& operator-=(const Vector& other);
+	Vector& operator*=(const double& k);
+	Vector& operator*=(const Vector& other);
+	Vector& operator/=(const double& k);
+	Vector& operator/=(const Vector& other);
+	Vector& operator^=(const Vector& other);
+
 	//ÏòÁ¿ÔËËã
 	double modulus()const;
 	double dot(const Vector& other)const;

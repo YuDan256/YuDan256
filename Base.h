@@ -45,6 +45,16 @@ public:
 	Base operator~() const;
 	friend ostream& operator<<(ostream& out, const Base& b);
 
+	Base& operator=(const Base& b);
+	Base& operator+=(const Base& b);
+	Base& operator-=(const Base& b);
+	Base& operator*=(const Base& b);
+	Base& operator/=(const Base& b);
+	Base& operator%=(const Base& b);
+	Base& operator&=(const Base& bin);
+	Base& operator|=(const Base& bin);
+	Base& operator^=(const Base& bin);
+
 	//º¯Êý
 	static Base powb(const Base& b1, const Base& b2);
 	static void compareb(const Base& b1, const Base& b2);

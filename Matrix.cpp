@@ -157,6 +157,17 @@ Matrix Matrix::operator^(const Matrix& n) const {
 	}
 }
 
+Matrix Matrix::operator/(const double& scalar) const {
+	if (fabs(scalar) < 1e-10)throw runtime_error("The divisor cannot be zero.");
+	Matrix result(rows, cols);
+	for (int i = 0; i < rows; ++i) {
+		for (int j = 0; j < cols; ++j) {
+			result.set(i, j, data[i][j] / scalar);
+		}
+	}
+	return result;
+}
+
 Matrix Matrix::operator/(const Matrix& other) const {
 	if (other.rows != other.cols)throw invalid_argument("The divisor matrix must be square.");
 	if (fabs(other.determinant()) < 1e-10) {
@@ -173,7 +184,7 @@ Matrix Matrix::operator^(const int& n) const {
 	Matrix result = identity(rows);
 	if (n > 0) {
 		for (int i = 0; i < n; i++) {
-			result = result * (*this);
+			result *= (*this);
 		}
 		return result;
 	}
@@ -181,7 +192,7 @@ Matrix Matrix::operator^(const int& n) const {
 		if (fabs(determinant()) < 1e-10)throw runtime_error("When the exponent is non-positive, the matrix must be invertible.");
 		Matrix temp = inverse(*this);
 		for (int i = 0; i < -n; i++) {
-			result = result * temp;
+			result *= temp;
 		}
 		return result;
 	}
@@ -191,14 +202,24 @@ bool Matrix::operator==(const Matrix& other)const {
 	return data == other.data;
 }
 
-vector<double>& Matrix::operator[](const int& row){
+vector<double>& Matrix::operator[](const int& row) {
 	if (row < 0 || row >= rows)throw invalid_argument("Index out of bounds.");
 	return data[row];
 }
 
-const vector<double>& Matrix::operator[](const int& row) const{
+const vector<double>& Matrix::operator[](const int& row) const {
 	if (row < 0 || row >= rows)throw invalid_argument("Index out of bounds.");
 	return data[row];
+}
+
+double& Matrix::operator()(const int& row, const int& col) {
+	if (row < 0 || row >= rows || col < 0 || col >= cols)throw invalid_argument("Index out of bounds.");
+	return data[row][col];
+}
+
+const double& Matrix::operator()(const int& row, const int& col) const {
+	if (row < 0 || row >= rows || col < 0 || col >= cols)throw invalid_argument("Index out of bounds.");
+	return data[row][col];
 }
 
 Matrix& Matrix::operator=(const Matrix& other) {
@@ -207,6 +228,133 @@ Matrix& Matrix::operator=(const Matrix& other) {
 	this->cols = other.cols;
 	this->data = other.data;
 	return *this;
+}
+
+Matrix& Matrix::operator+=(const Matrix& other) {
+	if (rows != other.rows || cols != other.cols) {
+		throw invalid_argument("Matrices dimensions must match for addition.");
+	}
+	for (int i = 0; i < rows; ++i) {
+		for (int j = 0; j < cols; ++j) {
+			data[i][j] += other.get(i, j);
+		}
+	}
+	return *this;
+}
+
+Matrix& Matrix::operator-=(const Matrix& other) {
+	if (rows != other.rows || cols != other.cols) {
+		throw invalid_argument("Matrices dimensions must match for substraction.");
+	}
+	for (int i = 0; i < rows; ++i) {
+		for (int j = 0; j < cols; ++j) {
+			data[i][j] -= other.get(i, j);
+		}
+	}
+	return *this;
+}
+
+Matrix& Matrix::operator*=(const Matrix& other) {
+	if (rows == 1 && cols == 1) {
+		*this = data[0][0] * other;
+		return *this;
+	}
+	if (other.rows == 1 && other.cols == 1) {
+		*this = other.data[0][0] * (*this);
+		return *this;
+	}
+	if (cols != other.rows) {
+		throw invalid_argument("Number of columns in the first matrix must be equal to the number of rows in the second matrix for multiplication.");
+	}
+	Matrix result(rows, other.cols);
+	for (int i = 0; i < rows; ++i) {
+		for (int j = 0; j < other.cols; ++j) {
+			double sum = 0.0;
+			for (int k = 0; k < cols; ++k) {
+				sum += data[i][k] * other.get(k, j);
+			}
+			result.set(i, j, sum);
+		}
+	}
+	*this = result;
+	return *this;
+}
+
+Matrix& Matrix::operator*=(const double& scalar) {
+	for (int i = 0; i < rows; ++i) {
+		for (int j = 0; j < cols; ++j) {
+			data[i][j] *= scalar;
+		}
+	}
+	return *this;
+}
+
+Matrix& Matrix::operator/=(const Matrix& other) {
+	if (other.rows != other.cols)throw invalid_argument("The divisor matrix must be square.");
+	if (fabs(other.determinant()) < 1e-10) {
+		if (other.rows > 1)throw runtime_error("The divisor matrix must be invertible.");
+		else throw runtime_error("The divisor cannot be zero.");
+	}
+	if ((other.rows == 1 && other.cols == 1) || (rows == 1 && cols == 1)) {
+		*this = (*this) * inverse(other);
+		return *this;
+	}
+	if (cols != other.rows)throw invalid_argument("Number of columns in the first matrix must be equal to the number of rows in the second matrix for division.");
+	*this = (*this) * inverse(other);
+	return *this;
+}
+
+Matrix& Matrix::operator/=(const double& scalar) {
+	if (fabs(scalar) < 1e-10)throw runtime_error("The divisor cannot be zero.");
+	for (int i = 0; i < rows; ++i) {
+		for (int j = 0; j < cols; ++j) {
+			data[i][j] /= scalar;
+		}
+	}
+	return *this;
+}
+
+Matrix& Matrix::operator^=(const int& n) {
+	if (rows != cols)throw invalid_argument("Matrix power operations are only defined for square matrices.");
+	Matrix result = identity(rows);
+	if (n > 0) {
+		for (int i = 0; i < n; i++) {
+			result *= (*this);
+		}
+		*this = result;
+		return *this;
+	}
+	else {
+		if (fabs(determinant()) < 1e-10)throw runtime_error("When the exponent is non-positive, the matrix must be invertible.");
+		Matrix temp = inverse(*this);
+		for (int i = 0; i < -n; i++) {
+			result *= temp;
+		}
+		*this = result;
+		return *this;
+	}
+}
+
+Matrix& Matrix::operator^=(const Matrix& n) {
+	if (rows != cols || n.rows != n.cols)throw invalid_argument("Matrix power operations are only defined for square matrices.");
+	if (rows == 1 && n.rows == 1) {
+		if (get(0, 0) < 1e-10)throw runtime_error("When the exponent is a matrix, the base must be positive.");
+		*this = expm(n * log(get(0, 0)));
+		return *this;
+	}
+	else if (rows == 1) {
+		if (get(0, 0) < 1e-10)throw runtime_error("When the exponent is a matrix, the base must be positive.");
+		*this = expm(n * log(get(0, 0)));
+		return *this;
+	}
+	else if (n.isInteger()) {
+		*this ^= static_cast<int>(n.get(0, 0));
+		return *this;
+	}
+	else {
+		*this = expm(n * lnm(*this));
+		return *this;
+	}
 }
 
 void Matrix::print() const {
@@ -421,8 +569,8 @@ Matrix Matrix::expm(const Matrix& m) {
 		Matrix temp = identity(m.rows);
 		int i = 1;
 		while (true) {
-			temp = temp * m / i;
-			result = result + temp;
+			temp *= (m / i);
+			result += temp;
 			if (temp.norm() < 1e-20)break;
 			i++;
 			if (i == 1e6)throw invalid_argument("The matrix does not converge.");
@@ -1019,7 +1167,7 @@ Matrix Matrix::sinm(const Matrix& m) {
 		Matrix result(m.rows, m.cols);
 		int i = 1;
 		while (true) {
-			result = result + temp;
+			result += temp;
 			temp = -temp * m * m / (2 * i * (2 * i + 1));
 			if (temp.norm() < 1e-20)break;
 			i++;
@@ -1039,7 +1187,7 @@ Matrix Matrix::cosm(const Matrix& m) {
 		Matrix result = identity(m.rows);
 		int i = 2;
 		while (true) {
-			result = result + temp;
+			result += temp;
 			temp = -temp * m * m / (2 * i * (2 * i - 1));
 			if (temp.norm() < 1e-20)break;
 			i++;
@@ -1087,7 +1235,7 @@ Matrix Matrix::lnm(const Matrix& m) {
 			int i = 1;
 			while (true) {
 				if (((temp ^ i) / i).norm() < 1e-20)break;
-				result = result + pow(-1, i + 1) * (temp ^ i) / i;
+				result += (pow(-1, i + 1) * (temp ^ i) / i);
 				i++;
 			}
 			return result;
@@ -1453,8 +1601,8 @@ Matrix Matrix::parseExpressionm(const string& expr, size_t& currentPos, const ma
 			++currentPos;
 			Matrix rhs = parseTermm(expr, currentPos, matrices);
 			switch (op) {
-			case '+': result = result + rhs; break;
-			case '-': result = result - rhs; break;
+			case '+': result += rhs; break;
+			case '-': result -= rhs; break;
 			default: throw runtime_error("Unknown operator.");
 			}
 		}
@@ -1475,11 +1623,11 @@ Matrix Matrix::parseTermm(const string& expr, size_t& currentPos, const map<stri
 				Matrix rhs = parseLDivisionm(expr, currentPos, matrices);
 				switch (op) {
 				case '*':
-					result = result * rhs;
+					result *= rhs;
 					break;
 				case '/':
 					if (rhs == Matrix(0.0)) throw runtime_error("Division by zero error.");
-					result = result / rhs;
+					result /= rhs;
 					break;
 				default:
 					throw runtime_error("Unknown operator.");
@@ -1613,7 +1761,7 @@ Matrix Matrix::parsePowerm(const string& expr, size_t& currentPos, const map<str
 	while (currentPos < expr.length() && expr[currentPos] == '^') {
 		++currentPos;
 		Matrix rhs = parsePowerm(expr, currentPos, matrices);
-		result = result ^ rhs;
+		result ^= rhs;
 	}
 	return result;
 }

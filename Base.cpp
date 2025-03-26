@@ -247,6 +247,92 @@ Base Base::operator~() const {
 	return Base(2, result);
 }
 
+Base& Base::operator=(const Base& b) {
+	base = b.base;
+	data = b.data;
+	return *this;
+}
+
+Base& Base::operator+=(const Base& b) {
+	if (base == 10) {
+		data += b.data;
+	}
+	else if (b.base == 10) {
+		data += b.data;
+	}
+	else if (base != b.base)throw invalid_argument("The bases do not match for addition.");
+	else data += b.data;
+	return *this;
+}
+
+Base& Base::operator-=(const Base& b) {
+	if (base == 10) {
+		data -= b.data;
+	}
+	else if (b.base == 10) {
+		data -= b.data;
+	}
+	else if (base != b.base)throw invalid_argument("The bases do not match for subtraction.");
+	else data -= b.data;
+	return *this;
+}
+
+Base& Base::operator*=(const Base& b) {
+	if (base == 10) {
+		data *= b.data;
+	}
+	else if (b.base == 10) {
+		data *= b.data;
+	}
+	else if (base != b.base)throw invalid_argument("The bases do not match for multiplication.");
+	else data *= b.data;
+	return *this;
+}
+
+Base& Base::operator/=(const Base& b) {
+	if (b.data == 0)throw runtime_error("The divisor cannot be 0.");
+	if (base == 10) {
+		data /= b.data;
+	}
+	else if (b.base == 10) {
+		data /= b.data;
+	}
+	else if (base != b.base)throw invalid_argument("The bases do not match for division.");
+	else data /= b.data;
+	return *this;
+}
+
+Base& Base::operator%=(const Base& b) {
+	if (b.data == 0)throw runtime_error("The divisor cannot be 0.");
+	if (base == 10) {
+		data %= b.data;
+	}
+	else if (b.base == 10) {
+		data %= b.data;
+	}
+	else if (base != b.base)throw invalid_argument("The bases do not match for division.");
+	else data %= b.data;
+	return *this;
+}
+
+Base& Base::operator&=(const Base& bin) {
+	if (base != 2 || bin.base != 2)throw invalid_argument("Bitwise AND operation is only defined for binary.");
+	data &= bin.data;
+	return *this;
+}
+
+Base& Base::operator|=(const Base& bin) {
+	if (base != 2 || bin.base != 2)throw invalid_argument("Bitwise OR operation is only defined for binary.");
+	data |= bin.data;
+	return *this;
+}
+
+Base& Base::operator^=(const Base& bin) {
+	if (base != 2 || bin.base != 2)throw invalid_argument("Bitwise XOR operation is only defined for binary.");
+	data ^= bin.data;
+	return *this;
+}
+
 Base Base::powb(const Base& b1, const Base& b2) {
 	if (b1.base != b2.base && b2.base != 10 && b1.base != 10)throw invalid_argument("The bases do not match for power.");
 	ull result = static_cast<ull>(pow(b1.data, b2.data));

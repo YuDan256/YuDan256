@@ -162,6 +162,81 @@ bool Vector::operator==(const Vector& other)const {
 	return data == other.data;
 }
 
+Vector& Vector::operator=(const Vector& other) {
+	if (this == &other)return *this;
+	n = other.n;
+	data = other.data;
+	return *this;
+}
+
+Vector& Vector::operator+=(const Vector& other) {
+	if (n != other.n) throw invalid_argument("Vectors dimensions must match for addition.");
+	for (int i = 0; i < n; i++) {
+		data[i] += other.data[i];
+	}
+	return *this;
+}
+
+Vector& Vector::operator-=(const Vector& other) {
+	if (n != other.n) throw invalid_argument("Vectors dimensions must match for subtraction.");
+	for (int i = 0; i < n; i++) {
+		data[i] -= other.data[i];
+	}
+	return *this;
+}
+
+Vector& Vector::operator*=(const double& k) {
+	for (int i = 0; i < n; i++) {
+		data[i] *= k;
+	}
+	return *this;
+}
+
+Vector& Vector::operator*=(const Vector& other) {
+	if (n == 1)return *this = *this * other;
+	else if (other.n == 1)return *this = other * *this;
+	if (n != 3 || other.n != 3) {
+		throw invalid_argument("Only three-dimensional vectors have cross/mixed product.");
+	}
+	Vector result(3);
+	result.set(0, data[1] * other.data[2] - data[2] * other.data[1]);
+	result.set(1, data[2] * other.data[0] - data[0] * other.data[2]);
+	result.set(2, data[0] * other.data[1] - data[1] * other.data[0]);
+	*this = result;
+	return *this;
+}
+
+Vector& Vector::operator/=(const double& k) {
+	if (fabs(k) < 1e-10)throw runtime_error("The divisor cannot be zero.");
+	for (int i = 0; i < n; i++) {
+		data[i] /= k;
+	}
+	return *this;
+}
+
+Vector& Vector::operator/=(const Vector& other) {
+	if (other.n == 1)return *this = *this / other.data[0];
+	if (n != other.n) {
+		throw invalid_argument("Vectors dimensions must match for division.");
+	}
+	if (!parallel(other)) {
+		throw invalid_argument("Vectors must be parallel for division.");
+	}
+	if (fabs(other.modulus()) < 1e-15) {
+		throw runtime_error("The divisor cannot be a zero vector.");
+	}
+	if (dot(other) > 0)*this = Vector(modulus() / other.modulus());
+	else *this = Vector(-modulus() / other.modulus());
+	return *this;
+}
+
+Vector& Vector::operator^=(const Vector& other) {
+	if (n != 1)throw invalid_argument("Vectors cannot be raised to a power.");
+	if (other.n != 1)throw invalid_argument("Vectors cannot be exponentiated.");
+	data[0] = pow(data[0], other.data[0]);
+	return *this;
+}
+
 double Vector::mixedProduct(const Vector& v1, const Vector& v2)const {
 	if (n != 3 || v1.n != 3 || v2.n != 3)throw invalid_argument("Vectors dimensions must match for mixed production.");
 	return dot(v1 * v2);
@@ -303,8 +378,8 @@ Vector Vector::parseExpressionv(const string& expr, size_t& currentPos, const ma
 			++currentPos;
 			Vector rhs = parseTermv(expr, currentPos, vectors);
 			switch (op) {
-			case '+': result = result + rhs; break;
-			case '-': result = result - rhs; break;
+			case '+': result += rhs; break;
+			case '-': result -= rhs; break;
 			default: throw runtime_error("Unknown operator.");
 			}
 		}
@@ -328,11 +403,11 @@ Vector Vector::parseTermv(const string& expr, size_t& currentPos, const map<stri
 				Vector rhs = parsePowerv(expr, currentPos, vectors);
 				switch (op) {
 				case '*':
-					result = result * rhs;
+					result *= rhs;
 					break;
 				case '/':
-					if (rhs == Vector(0.0)) throw runtime_error("Division by zero error.");
-					result = result / rhs;
+					if (rhs.modulus() < 1e-15) throw runtime_error("Division by zero error.");
+					result /= rhs;
 					break;
 				default:
 					throw runtime_error("Unknown operator.");
@@ -456,7 +531,7 @@ Vector Vector::parsePowerv(const string& expr, size_t& currentPos, const map<str
 	while (currentPos < expr.length() && expr[currentPos] == '^') {
 		++currentPos;
 		Vector rhs = parsePowerv(expr, currentPos, vectors);
-		result = result ^ rhs;
+		result ^= rhs;
 	}
 	return result;
 }

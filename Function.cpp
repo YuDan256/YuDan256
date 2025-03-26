@@ -265,6 +265,12 @@ void Function::parseFunctionf(const string& expr, const map<string, Function>& f
 	else throw invalid_argument("The expression cannot be recognized as an operation.");
 }
 
+Function& Function::operator=(const Function& f) {
+	if (this == &f)return *this;
+	expr = f.expr;
+	return *this;
+}
+
 double Function::value(const double& x0)const {
 	int num = 0;
 	double y = 0.0;

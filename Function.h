@@ -15,6 +15,9 @@ public:
 	Function(const string& expr = "0") :expr(expr) {};
 	Function(const Function& f) :expr(f.expr) {};
 
+	Function& operator=(const Function& f);
+
+	string getExpr()const { return expr; }
 	double value(const double& x0)const;
 	double differentiation(const double& x0)const;
 	double integration(const double& a, const double& b)const;

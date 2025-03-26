@@ -140,6 +140,86 @@ bool Complex::operator==(const Complex& other)const {
 	return(real == other.real && image == other.image);
 }
 
+Complex& Complex::operator=(const Complex& other) {
+	real = other.real;
+	image = other.image;
+	modulus = other.modulus;
+	return *this;
+}
+
+Complex& Complex::operator+=(const Complex& other) {
+	real += other.real;
+	image += other.image;
+	modulus = sqrt(real * real + image * image);
+	return *this;
+}
+
+Complex& Complex::operator+=(const double& p) {
+	real += p;
+	modulus = sqrt(real * real + image * image);
+	return *this;
+}
+
+Complex& Complex::operator-=(const Complex& other) {
+	real -= other.real;
+	image -= other.image;
+	modulus = sqrt(real * real + image * image);
+	return *this;
+}
+
+Complex& Complex::operator-=(const double& p) {
+	real -= p;
+	modulus = sqrt(real * real + image * image);
+	return *this;
+}
+
+Complex& Complex::operator*=(const Complex& other) {
+	double r = real * other.real - image * other.image, i = real * other.image + image * other.real;
+	real = r;
+	image = i;
+	modulus = sqrt(real * real + image * image);
+	return *this;
+}
+
+Complex& Complex::operator*=(const double& p) {
+	real *= p;
+	image *= p;
+	modulus = sqrt(real * real + image * image);
+	return *this;
+}
+
+Complex& Complex::operator/=(const Complex& other) {
+	if (other.modulus < 1e-15) {
+		throw runtime_error("The divisor cannot be 0.");
+	}
+	double r = other.modulus;
+	double _real = (real * other.real + image * other.image) / (r * r), _image = (image * other.real - real * other.image) / (r * r);
+	real = _real;
+	image = _image;
+	modulus = sqrt(real * real + image * image);
+	return *this;
+}
+
+Complex& Complex::operator/=(const double& p) {
+	if (p < 1e-15) {
+		throw runtime_error("The divisor cannot be 0.");
+	}
+	real /= p;
+	image /= p;
+	modulus = sqrt(real * real + image * image);
+	return *this;
+}
+
+Complex& Complex::operator^=(const Complex& other) {
+	*this = *this ^ other;
+	return *this;
+}
+
+Complex& Complex::operator^=(const double& p) {
+	*this = *this ^ p;
+	return *this;
+}
+
 Complex Complex::conjugate(const Complex& z) {
 	Complex result(z.real, -z.image);
 	return result;
@@ -177,7 +257,7 @@ Complex Complex::powc(const int& n)const {
 	Complex z(real, image);
 	if (n > 0) {
 		for (int i = 0; i < n; i++) {
-			result = result * z;
+			result *= z;
 		}
 		return result;
 	}
@@ -186,7 +266,7 @@ Complex Complex::powc(const int& n)const {
 			throw runtime_error("When the exponent is non-positive,the base cannot be 0.");
 		}
 		for (int i = 0; i < -n; i++) {
-			result = result / z;
+			result /= z;
 		}
 		return result;
 	}
@@ -382,8 +462,8 @@ Complex Complex::parseExpressionc(const string& expr, size_t& currentPos, const 
 			++currentPos;
 			Complex rhs = parseTermc(expr, currentPos, numbers);
 			switch (op) {
-			case '+': result = result + rhs; break;
-			case '-': result = result - rhs; break;
+			case '+': result += rhs; break;
+			case '-': result -= rhs; break;
 			default: throw runtime_error("Unknown operator.");
 			}
 		}
@@ -404,11 +484,11 @@ Complex Complex::parseTermc(const string& expr, size_t& currentPos, const map<st
 				Complex rhs = parsePowerc(expr, currentPos, numbers);
 				switch (op) {
 				case '*':
-					result = result * rhs;
+					result *= rhs;
 					break;
 				case '/':
 					if (rhs == 0) throw runtime_error("Division by zero error.");
-					result = result / rhs;
+					result /= rhs;
 					break;
 				default:
 					throw runtime_error("Unknown operator.");
@@ -506,7 +586,7 @@ Complex Complex::parsePowerc(const string& expr, size_t& currentPos, const map<s
 	while (currentPos < expr.length() && expr[currentPos] == '^') {
 		++currentPos;
 		Complex rhs = parsePowerc(expr, currentPos, numbers);
-		result = result ^ rhs;
+		result ^= rhs;
 	}
 
 	return result;

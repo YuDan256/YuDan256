@@ -56,6 +56,7 @@ public:
 	Matrix operator*(const Matrix& other) const;
 	Matrix operator*(const double& scalar) const;
 	friend Matrix operator*(const double& scalar, const Matrix& rhs);
+	Matrix operator/(const double& scalar) const;
 	Matrix operator/(const Matrix& other)const;
 	Matrix operator^(const int& n)const;
 	Matrix operator^(const Matrix& n)const;
@@ -63,7 +64,17 @@ public:
 	friend ostream& operator<<(ostream& out, const Matrix& m);
 	vector<double>& operator[](const int& row);
 	const vector<double>& operator[](const int& row)const;
+	double& operator()(const int& row, const int& col);
+	const double& operator()(const int& row, const int& col)const;
 	Matrix& operator=(const Matrix& other);
+	Matrix& operator+=(const Matrix& other);
+	Matrix& operator-=(const Matrix& other);
+	Matrix& operator*=(const Matrix& other);
+	Matrix& operator*=(const double& scalar);
+	Matrix& operator/=(const Matrix& other);
+	Matrix& operator/=(const double& scalar);
+	Matrix& operator^=(const int& n);
+	Matrix& operator^=(const Matrix& n);
 
 	//¸ß¼¶²Ù×÷
 	double determinant() const;

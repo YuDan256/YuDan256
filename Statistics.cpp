@@ -11,6 +11,24 @@ map<string, double(*)(const Statistics&, const Statistics&)>Statistics::function
 	{"Cov",Cov},{"r",r},{"Rs",R2}
 };
 
+Statistics& Statistics::operator=(const Statistics& s) {
+	data = s.data;
+	return *this;
+}
+
+Statistics& Statistics::operator+=(const Statistics& s) {
+	for (int i = 0; i < n(s); i++) {
+		data.push_back(s.data[i]);
+	}
+	return *this;
+}
+
+Statistics Statistics::operator+(const Statistics& s) const {
+	Statistics temp(*this);
+	temp += s;
+	return temp;
+}
+
 void Statistics::set(const int& pos, const double& value) {
 	data[pos] = value;
 }

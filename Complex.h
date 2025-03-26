@@ -56,6 +56,18 @@ public:
 	bool operator==(const Complex& other)const;
 	friend ostream& operator<<(ostream& out, const Complex& c);
 
+	Complex& operator=(const Complex& other);
+	Complex& operator+=(const Complex& other);
+	Complex& operator+=(const double& p);
+	Complex& operator-=(const Complex& other);
+	Complex& operator-=(const double& p);
+	Complex& operator*=(const Complex& other);
+	Complex& operator*=(const double& p);
+	Complex& operator/=(const Complex& other);
+	Complex& operator/=(const double& p);
+	Complex& operator^=(const Complex& other);
+	Complex& operator^=(const double& p);
+
 	//Ê½ÖÐº¯Êý
 	static Complex conjugate(const Complex& z);
 	static Complex Re(const Complex& z);
