@@ -61,6 +61,9 @@ public:
 	Matrix operator^(const Matrix& n)const;
 	bool operator==(const Matrix& other)const;
 	friend ostream& operator<<(ostream& out, const Matrix& m);
+	vector<double>& operator[](const int& row);
+	const vector<double>& operator[](const int& row)const;
+	Matrix& operator=(const Matrix& other);
 
 	//¸ß¼¶²Ù×÷
 	double determinant() const;

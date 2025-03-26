@@ -191,6 +191,24 @@ bool Matrix::operator==(const Matrix& other)const {
 	return data == other.data;
 }
 
+vector<double>& Matrix::operator[](const int& row){
+	if (row < 0 || row >= rows)throw invalid_argument("Index out of bounds.");
+	return data[row];
+}
+
+const vector<double>& Matrix::operator[](const int& row) const{
+	if (row < 0 || row >= rows)throw invalid_argument("Index out of bounds.");
+	return data[row];
+}
+
+Matrix& Matrix::operator=(const Matrix& other) {
+	if (this == &other) return *this;
+	this->rows = other.rows;
+	this->cols = other.cols;
+	this->data = other.data;
+	return *this;
+}
+
 void Matrix::print() const {
 	for (int i = 0; i < rows; ++i) {
 		for (int j = 0; j < cols; ++j) {
