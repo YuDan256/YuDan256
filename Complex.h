@@ -75,6 +75,7 @@ public:
 	static Complex R(const Complex& z);
 	static Complex arg(const Complex& z);
 	static Complex sqrtc(const Complex& z);
+	static Complex expc(const Complex& z);
 	static Complex lnc(const Complex& z);
 	static Complex sinc(const Complex& z);
 	static Complex cosc(const Complex& z);

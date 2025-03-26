@@ -7,7 +7,8 @@ const double Vector::PI = 3.14159265358979323846264;
 
 map<char, int>Vector::vop = { {'+', 1}, {'-', 1}, {'*', 2}, {'/', 2} ,{'^',3} };
 map<string, Vector(*)(const Vector&)>Vector::functionv1 = {
-	{"R",R},{"sin",sinv},{"cos",cosv},{"tan",tanv},{"ln",lnv},{"log",lnv},{"sqrt",sqrtv},{"deg",deg},{"rad",rad }
+	{"R",R},{"sin",sinv},{"cos",cosv},{"tan",tanv},{"ln",lnv},{"log",lnv},{"sqrt",sqrtv},{"deg",deg},{"rad",rad},
+	{"exp",expv}
 };
 map<string, Vector(*)(const Vector&, const Vector&)>Vector::functionv2 = {
 	{"dot",dotProduct},{"SP",SP},{"PV",PV},{"ang",ang}
@@ -606,6 +607,7 @@ void Vector::newVector() {
 			cout << "Square root - sqrt(R)" << endl;
 			cout << "Degree - deg(R)" << endl;
 			cout << "Radian - rad(R)" << endl;
+			cout << "Exponential - exp(R)" << endl;
 			cout << "Natural logarithm - ln(R) or log(R)" << endl << endl;
 			continue;
 		}
@@ -699,4 +701,9 @@ Vector Vector::rad(const Vector& deg) {
 Vector Vector::sqrtv(const Vector& v) {
 	if (v.n != 1)throw runtime_error("Invalid operation for vectors.");
 	return Vector(sqrt(v.data[0]));
+}
+
+Vector Vector::expv(const Vector& v) {
+	if (v.n != 1)throw runtime_error("Invalid operation for vectors.");
+	return Vector(exp(v[0]));
 }

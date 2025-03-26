@@ -85,6 +85,7 @@ public:
 	static Vector cosv(const Vector& v);
 	static Vector tanv(const Vector& v);
 	static Vector sqrtv(const Vector& v);
+	static Vector expv(const Vector& v);
 	static Vector lnv(const Vector& v);
 	static Vector dotProduct(const Vector& v1, const Vector& v2);
 	static Vector ang(const Vector& v1, const Vector& v2);

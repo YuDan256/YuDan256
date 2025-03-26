@@ -1,10 +1,12 @@
 #include"Normal.h"
+#include <cmath>
 
 using namespace std;
 
 map<char, int> Normal::nop = { {'+', 1}, {'-', 1}, {'*', 2}, {'/', 2}, {'^', 3} };
+
 map<string, double(*)(double)> Normal::functionn = {
-	{"sin", sin}, {"cos", cos}, {"tan", tan}, {"log", log}, {"ln", log},{"sqrt", sqrt},
+	{"sin", sin}, {"cos", cos}, {"tan", tan}, {"log", log}, {"ln", log},{"sqrt", sqrt},{"exp", exp},
 	{"arcsin", asin},{"arccos", acos},{"arctan", atan},{"asin",asin},{"acos",acos},{"atan",atan},
 	{"sh",sinh},{"ch",cosh},{"th",tanh},{"sinh",sinh},{"cosh",cosh},{"tanh",tanh},{"deg",deg},{"rad",rad}
 };

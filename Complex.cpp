@@ -10,7 +10,8 @@ map<string, Complex(*)(const Complex&)> Complex::functionc = {
 	{"conj",conjugate},{"sqrt",sqrtc},{"log",lnc},{"ln",lnc},{"arg",arg},{"Re",Re},{"Im",Im},
 	{"real",Re},{"imag",Im},{ "R",R },{"sin",sinc},{"cos",cosc},{"tan",tanc},{"sinh",sinhc},
 	{"cosh",coshc},{"tanh",tanhc},{"sh",sinhc},{"ch",coshc},{"th",tanhc},{"deg",deg},{"rad",rad},
-	{"asin",asinc},{"acos",acosc},{"atan",atanc},{"arcsin",asinc},{"arccos",acosc},{"arctan",atanc}
+	{"asin",asinc},{"acos",acosc},{"atan",atanc},{"arcsin",asinc},{"arccos",acosc},{"arctan",atanc},
+	{"exp",expc}
 };
 
 void Complex::print()const {
@@ -104,23 +105,19 @@ Complex operator/(const double& p, const Complex& other) {
 }
 
 Complex Complex::operator^(const Complex& other) const {
-	if (getModulus() < 1e-10 && (fabs(other.image) > 1e-10 || other.real <= 1e-10)) {
+	if (getModulus() < 1e-15 && (fabs(other.image) > 1e-10 || other.real <= 1e-10)) {
 		throw runtime_error("When the base is 0, the exponent can only be a positive real number.");
 	}
-	else if (getModulus() == 0)return 0;
-	double a = argument(), r = modulus;
-	Complex index(log(r), a);
-	index = index * other;
-	r = pow(E, index.real);
-	Complex result(r * cos(index.image), r * sin(index.image));
-	return result;
+	if (fabs(other.image) < 1e-15)return (*this) ^ other.real;
+	else if (getModulus() < 1e-15)return 0;
+	return expc(other * lnc(*this));
 }
 
 Complex Complex::operator^(const double& p) const {
-	if (modulus == 0 && p <= 0) {
+	if (modulus < 1e-15 && p <= 0) {
 		throw runtime_error("When the base is 0, the exponent must be positive.");
 	}
-	else if (modulus == 0)return 0;
+	else if (modulus < 1e-15)return 0;
 	double a = p * argument(), r = pow(modulus, p);
 	Complex result(r * cos(a), r * sin(a));
 	return result;
@@ -307,6 +304,12 @@ Complex Complex::sqrtc(const Complex& z) {
 	return z.firstRoot(2);
 }
 
+Complex Complex::expc(const Complex& z) {
+	if (z.modulus < 1e-15)return 1;
+	Complex i(0, 1);
+	return exp(z.real) * (cos(z.image) + i * sin(z.image));
+}
+
 Complex Complex::lnc(const Complex& z) {
 	if (z.modulus < 1e-15)throw runtime_error("The argument of a logarithm cannot be zero.");
 	return Complex(log(z.modulus)) + Complex(0, z.argument());
@@ -315,13 +318,13 @@ Complex Complex::lnc(const Complex& z) {
 Complex Complex::sinc(const Complex& z) {
 	if (fabs(z.image) < 1e-15)return sin(z.real);
 	Complex i(0, 1);
-	return ((E ^ (i * z)) - (E ^ (-i * z))) / (2 * i);
+	return (expc(i * z) - expc(-i * z)) / (2 * i);
 }
 
 Complex Complex::cosc(const Complex& z) {
 	if (fabs(z.image) < 1e-15)return cos(z.real);
 	Complex i(0, 1);
-	return ((E ^ (i * z)) + (E ^ (-i * z))) / 2;
+	return (expc(i * z) + expc(-i * z)) / 2;
 }
 
 Complex Complex::tanc(const Complex& z) {
@@ -330,11 +333,11 @@ Complex Complex::tanc(const Complex& z) {
 }
 
 Complex Complex::sinhc(const Complex& z) {
-	return ((E ^ z) - (E ^ (-z))) / 2;
+	return (expc(z) - expc(-z)) / 2;
 }
 
 Complex Complex::coshc(const Complex& z) {
-	return ((E ^ z) + (E ^ (-z))) / 2;
+	return (expc(z) + expc(-z)) / 2;
 }
 
 Complex Complex::tanhc(const Complex& z) {
@@ -660,6 +663,7 @@ void Complex::newComplex() {
 			cout << "Sine - sin(C)" << endl;
 			cout << "Cosine - cos(C)" << endl;
 			cout << "Tangent - tan(C)" << endl;
+			cout << "Exponential - exp(C)" << endl;
 			cout << "Natural logarithm - ln(C) or log(C)" << endl;
 			cout << "Arcsin - arcsin(C) or asin(C)" << endl;
 			cout << "Arccos - arccos(C) or acos(C)" << endl;
