@@ -376,9 +376,12 @@ void Base::newInput(map<string, Base>& baseNumbers) {
 		cin >> _base;
 		for (char i : _base) {
 			if (!isdigit(i)) {
-				throw invalid_argument("Invalid base.");
+				cout << "Invalid base." << endl;
+				invalidInput = true;
+				break;
 			}
 		}
+		if (invalidInput)continue;
 		base = stoull(_base);
 		if (base < 2) {
 			cout << "The base cannot less than 2." << endl;
@@ -621,9 +624,9 @@ Base Base::parsePowerb(const string& expr, size_t& currentPos, const map<string,
 			throw runtime_error("Missing closing parenthesis.");
 		}
 	}
-	else if (isdigit(expr[currentPos]) || expr[currentPos] == '.') {
+	else if (isdigit(expr[currentPos])) {
 		string number;
-		while (currentPos < expr.length() && (isdigit(expr[currentPos]) || expr[currentPos] == '.')) {
+		while (currentPos < expr.length() && (isdigit(expr[currentPos]))) {
 			number += expr[currentPos++];
 		}
 		result = stoull(number);
@@ -651,7 +654,7 @@ Base Base::parsePowerb(const string& expr, size_t& currentPos, const map<string,
 				}
 				else throw invalid_argument("Missing closing parenthesis.");
 			}
-			else if (identifier == "digit" || identifier == "length" ||identifier == "len") {
+			else if (identifier == "digit" || identifier == "length" || identifier == "len") {
 				Base b1 = parseExpressionb(expr, currentPos, baseNumbers);
 				if (expr[currentPos] == ')') {
 					currentPos++;

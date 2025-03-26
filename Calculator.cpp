@@ -101,7 +101,7 @@ void newInstructions() {
 	cout << "1. The calculator can parse the expressions you input after you choose a mode." << endl;
 	cout << "2. You can enter the commands when asked to enter an expression." << endl;
 	cout << "3. Function's scope is indicated after the function name." << endl
-		<< "   R - real number, C - complex number, V - vector, M - matrix, F - function" << endl
+		<< "   R - real number, C - complex number, V - vector, M - matrix, F - function, Z - integer" << endl
 		<< "   N - natural number, N+ - positive integer, B - base number, S - dataset." << endl;
 	cout << "4. Have a good time!" << endl << endl;
 }

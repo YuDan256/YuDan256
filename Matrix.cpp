@@ -1504,19 +1504,20 @@ void Matrix::newInput(map<string, Matrix>& matrices) {
 		std::cin >> _rows >> _cols;
 		for (char i : _rows) {
 			if (!isdigit(i)) {
-				cout << "Invalid input." << endl;
 				invalidInput = true;
 				break;
 			}
 		}
 		for (char i : _cols) {
 			if (!isdigit(i)) {
-				cout << "Invalid input." << endl;
 				invalidInput = true;
 				break;
 			}
 		}
-		if (invalidInput)continue;
+		if (invalidInput) {
+			cout << "Invalid input.";
+			continue;
+		}
 		rows = stoi(_rows);
 		cols = stoi(_cols);
 		if (rows <= 0 || cols <= 0) {
