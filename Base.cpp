@@ -346,6 +346,16 @@ void Base::compareb(const Base& b1, const Base& b2) {
 	else cout << "The two numbers are equal." << endl;
 }
 
+void Base::factorization(const Base& b) {
+	ull num = b.data;
+	for (ull i = 2; i <= num; i++) {
+		while (num % i == 0) {
+			Base(b.base, i).print();
+			num /= i;
+		}
+	}
+}
+
 Base Base::enterBase(const ull& base, const string& num) {
 	if (base < 2)throw	runtime_error("The base cannot less than 2.");
 	else if (base < 11)return enterBase1(base, num);
@@ -513,10 +523,18 @@ Base Base::parseFunctionb(const string& expr, const map<string, Base>& baseNumbe
 	if (expr[currentPos] == '(') {
 		currentPos++;
 		Base b1 = parseExpressionb(expr, currentPos, baseNumbers);
+		if (expr[currentPos] == ')') {
+			currentPos++;
+			if (identifier == "fact") {
+				factorization(b1);
+				throw true;
+			}
+		}
 		if (expr[currentPos] == ',') {
 			currentPos++;
 			Base b2 = parseExpressionb(expr, currentPos, baseNumbers);
-			if (expr[currentPos] == ')' && currentPos + 1 == expr.length()) {
+			if (expr[currentPos] == ')') {
+				currentPos++;
 				if (identifier == "compare") {
 					compareb(b1, b2);
 					throw true;

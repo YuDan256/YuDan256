@@ -58,6 +58,7 @@ public:
 	//函数
 	static Base powb(const Base& b1, const Base& b2);
 	static void compareb(const Base& b1, const Base& b2);
+	static void factorization(const Base& b);
 
 	//输入进制数
 	static Base enterBase(const ull& base, const string& num);
