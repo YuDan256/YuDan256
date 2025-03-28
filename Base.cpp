@@ -348,13 +348,19 @@ void Base::compareb(const Base& b1, const Base& b2) {
 
 void Base::factorization(const Base& b) {
 	ull num = b.data;
+	map<Base, int>frequency;
 	for (ull i = 2; i <= static_cast<int>(floor(sqrt(num))); i++) {
 		while (num % i == 0) {
-			Base(b.base, i).print();
+			frequency[Base(b.base, i)]++;
 			num /= i;
 		}
 	}
-	if (num != 1)Base(b.base, num).print();
+	if (num != 1)frequency[Base(b.base, num)]++;
+	for (auto it = frequency.begin(); it != frequency.end(); it++) {
+		cout << "factor:\t";
+		it->first.print();
+		cout << "count:\t" << it->second << endl;
+	}
 }
 
 Base Base::enterBase(const ull& base, const string& num) {
