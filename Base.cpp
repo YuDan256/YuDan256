@@ -348,12 +348,13 @@ void Base::compareb(const Base& b1, const Base& b2) {
 
 void Base::factorization(const Base& b) {
 	ull num = b.data;
-	for (ull i = 2; i <= num; i++) {
+	for (ull i = 2; i <= static_cast<int>(floor(sqrt(num))); i++) {
 		while (num % i == 0) {
 			Base(b.base, i).print();
 			num /= i;
 		}
 	}
+	if (num != 1)Base(b.base, num).print();
 }
 
 Base Base::enterBase(const ull& base, const string& num) {
