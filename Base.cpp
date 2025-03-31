@@ -360,7 +360,7 @@ void Base::factorization(const Base& b) {
 	for (auto it = frequency.begin(); it != frequency.end(); it++) {
 		cout << "factor:\t";
 		it->first.print();
-		cout << "count:\t" << it->second << endl;
+		cout << "power:\t" << it->second << endl;
 	}
 }
 
