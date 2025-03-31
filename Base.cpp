@@ -348,6 +348,7 @@ void Base::compareb(const Base& b1, const Base& b2) {
 
 void Base::factorization(const Base& b) {
 	ull num = b.data;
+	if (num < 2)throw invalid_argument("The number must be greater than 2.");
 	map<Base, int>frequency;
 	for (ull i = 2; i <= static_cast<int>(floor(sqrt(num))); i++) {
 		while (num % i == 0) {
