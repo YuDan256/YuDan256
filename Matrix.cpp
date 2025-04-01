@@ -1649,7 +1649,7 @@ Matrix Matrix::parseLDivisionm(const string& expr, size_t& currentPos, const map
 		if (mop.find(op) != mop.end()) {
 			if (mop[op] == 3) { // 只处理乘法和除法
 				++currentPos;
-				Matrix rhs = parsePowerm(expr, currentPos, matrices);
+				Matrix rhs = parseLDivisionm(expr, currentPos, matrices);
 				switch (op) {
 				case '\\': result = Ldivide(result, rhs); break;
 				default: throw runtime_error("Unknown operator.");
