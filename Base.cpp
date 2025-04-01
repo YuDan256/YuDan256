@@ -333,6 +333,16 @@ Base& Base::operator^=(const Base& bin) {
 	return *this;
 }
 
+Base& Base::operator++() {
+    ++this->data;
+    return *this;
+}
+
+Base& Base::operator--(){
+	--this->data;
+	return *this;
+}
+
 Base Base::powb(const Base& b1, const Base& b2) {
 	if (b1.base != b2.base && b2.base != 10 && b1.base != 10)throw invalid_argument("The bases do not match for power.");
 	ull result = static_cast<ull>(pow(b1.data, b2.data));

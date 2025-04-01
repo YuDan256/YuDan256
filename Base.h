@@ -43,6 +43,7 @@ public:
 	Base operator|(const Base& bin)const;
 	Base operator^(const Base& bin)const;
 	Base operator~() const;
+	
 	friend ostream& operator<<(ostream& out, const Base& b);
 
 	Base& operator=(const Base& b);
@@ -54,6 +55,8 @@ public:
 	Base& operator&=(const Base& bin);
 	Base& operator|=(const Base& bin);
 	Base& operator^=(const Base& bin);
+	Base& operator++();
+	Base& operator--();
 
 	//º¯Êý
 	static Base powb(const Base& b1, const Base& b2);
