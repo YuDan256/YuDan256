@@ -334,11 +334,11 @@ Base& Base::operator^=(const Base& bin) {
 }
 
 Base& Base::operator++() {
-    ++this->data;
-    return *this;
+	++this->data;
+	return *this;
 }
 
-Base& Base::operator--(){
+Base& Base::operator--() {
 	--this->data;
 	return *this;
 }
@@ -487,12 +487,14 @@ void Base::newBase() {
 		}
 		if (expression == "function_list") {
 			cout << "The following function can only be used individually." << endl;
-			cout << "Compare - compare(B,B)" << endl;
+			cout << "Print - print(B)" << endl;
+			cout << "Compare - compare(B,B)" << endl << endl;
 			cout << "The following function can be used in an arthmetic expression." << endl;
 			cout << "Change base - change(B,N+)" << endl;
 			cout << "Power - pow(B,B)" << endl;
 			cout << "Check base - base(B)" << endl;
-			cout << "Check number in 10-base system - num(B)" << endl;
+			cout << "Check number in 10-base system - num(B) or data(B)" << endl;
+			cout << "Check digits - digit(B) or length(B)" << endl << endl;
 			continue;
 		}
 		if (expression == "save") {
@@ -541,17 +543,21 @@ Base Base::parseFunctionb(const string& expr, const map<string, Base>& baseNumbe
 	if (expr[currentPos] == '(') {
 		currentPos++;
 		Base b1 = parseExpressionb(expr, currentPos, baseNumbers);
-		if (expr[currentPos] == ')') {
+		if (expr[currentPos] == ')' && currentPos + 1 == expr.length()) {
 			currentPos++;
 			if (identifier == "fact") {
 				factorization(b1);
+				throw true;
+			}
+			else if (identifier == "print") {
+				b1.print();
 				throw true;
 			}
 		}
 		if (expr[currentPos] == ',') {
 			currentPos++;
 			Base b2 = parseExpressionb(expr, currentPos, baseNumbers);
-			if (expr[currentPos] == ')') {
+			if (expr[currentPos] == ')' && currentPos + 1 == expr.length()) {
 				currentPos++;
 				if (identifier == "compare") {
 					compareb(b1, b2);

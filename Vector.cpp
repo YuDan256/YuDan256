@@ -340,7 +340,7 @@ void Vector::newInput(map<string, Vector>& vectors) {
 
 Vector Vector::parseFunctionv(const string& expr, const map<string, Vector>& vectors) {
 	size_t currentPos = 0;
-	string identifier, vector;
+	string identifier;
 	Vector v1, v2;
 	while (currentPos < expr.length() && (isalpha(expr[currentPos]) || expr[currentPos] == '_')) {
 		identifier += expr[currentPos++];
@@ -349,10 +349,10 @@ Vector Vector::parseFunctionv(const string& expr, const map<string, Vector>& vec
 		++currentPos;
 		v1 = parseExpressionv(expr, currentPos, vectors);
 		if (expr[currentPos] == ',') {
-			vector = "";
 			++currentPos;
 			v2 = parseExpressionv(expr, currentPos, vectors);
 			if (expr[currentPos] == ')' && currentPos + 1 == expr.length()) {
+				++currentPos;
 				if (identifier == "para") {
 					cout << (v1.parallel(v2) ? "The two vectors are parallel." : "The two vectors are not parallel.") << endl;
 					throw true;
@@ -361,6 +361,13 @@ Vector Vector::parseFunctionv(const string& expr, const map<string, Vector>& vec
 					cout << (v1.vertical(v2) ? "The two vectors are vertical." : "The two vectors are not vertical.") << endl;
 					throw true;
 				}
+			}
+		}
+		else if (expr[currentPos] == ')' && currentPos + 1 == expr.length()) {
+			++currentPos;
+			if (identifier == "print") {
+				v1.print();
+				throw true;
 			}
 		}
 	}
@@ -592,8 +599,9 @@ void Vector::newVector() {
 		if (expression == "function_list") {
 			cout << endl;
 			cout << "The following functions can only be used individually with defined vectors:" << endl;
+			cout << "Print - print(V)" << endl;
 			cout << "Parallel determination - para(V,V)" << endl;
-			cout << "Perpendicular determination - vert(V,V)" << endl;
+			cout << "Perpendicular determination - vert(V,V)" << endl << endl;
 			cout << "The following functions can be used with expressions:" << endl;
 			cout << "Modulus - R(V)" << endl;
 			cout << "Angle - ang(V,V)" << endl;

@@ -1575,6 +1575,10 @@ Matrix Matrix::parseFunctionm(const string& expr, map<string, Matrix>& matrices)
 				doSolution(m, p);
 				throw true;
 			}
+			else if (identifier == "print") {
+				m.print();
+				throw true;
+			}
 		}
 		else if (expr[currentPos] == ',') {
 			++currentPos;
@@ -1822,6 +1826,7 @@ void Matrix::newMatrix() {
 		if (expression == "function_list") {
 			cout << endl;
 			cout << "The following functions can only be used individually with defined matrices:" << endl;
+			cout << "Print - print(M)" << endl;
 			cout << "LU decomposition - LU(M)" << endl;
 			cout << "QR decomposition - QR(M)" << endl;
 			cout << "Eigenvector - V(M)" << endl;

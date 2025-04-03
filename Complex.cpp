@@ -448,6 +448,10 @@ Complex Complex::parseFunctionc(const string& expr, const map<string, Complex>& 
 				z.triangle();
 				throw true;
 			}
+			if (identifier == "print") {
+				z.print();
+				throw true;
+			}
 		}
 	}
 	currentPos = 0;
@@ -651,6 +655,7 @@ void Complex::newComplex() {
 		}
 		if (expression == "function_list") {
 			cout << endl << "The following functions can only be used individually:" << endl;
+			cout << "Print - print(C)" << endl;
 			cout << "Root - root(C,N+)" << endl;
 			cout << "Triangle representation - tri(C)" << endl << endl;
 			cout << "The following functions can be used with expressions:" << endl;
