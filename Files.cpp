@@ -209,7 +209,7 @@ map<string, Function>Function::loadf() {
 template<typename T>
 void deleteVariable(map<string, T>& variables, const string& name, const string& fileName) {
 	if (variables.erase(name) == 1) {
-		cout << "The variable " + name + " is successfully delete." << endl;
+		cout << "The variable " + name + " is successfully deleted." << endl;
 		store(variables, fileName);
 	}
 	else cout << "The variable " + name + " is not found." << endl;
