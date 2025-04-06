@@ -473,6 +473,13 @@ void Statistics::parseFunctions(const string& expr, map<string, Statistics>& dat
 								X.print();
 								datasets[argument1] = X;
 							}
+							else if (identifier == "swap") {
+								if (num2 != floor(num2))throw invalid_argument("The second parameter must be an integer.");
+								int _num2 = static_cast<int>(num2);
+								X.swap(num1, _num2);
+								X.print();
+								datasets[argument1] = X;
+							}
 							else throw runtime_error("Invalid function: " + identifier);
 						}
 						else throw runtime_error("Unexpected character: " + string(1, expr[currentPos]));
