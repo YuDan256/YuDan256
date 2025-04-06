@@ -7,12 +7,13 @@ using namespace std;
 map<char, int>Matrix::mop = { {'+', 1}, {'-', 1}, {'*', 2}, {'/', 2},{'\\',3}, { '^',4 } };
 
 map<string, Matrix(*)(const Matrix&)> Matrix::functionm = {
-	{"R",r},{"T",transpose},{"D",det},{"det",det},{"I",inverse},{"inv",inverse1},{ "G",GaussianElimination },{"id",identity},
-	{"O",SchmidtOrtho},{"A",adjugate},{"adj",adjugate},{"E",eigenvalue},{"tr",tr},{"diag",diagonalize},
+	{"R",r},{"rank",r},{ "T",transpose },{"trans",transpose},{ "D",det },{"det",det},{"I",inverse},{"inv",inverse1},
+	{"G",GaussianElimination},{"gauss",GaussianElimination},{"id",identity},{"O",SchmidtOrtho},{"ortho",SchmidtOrtho},
+	{"A",adjugate},{"adj",adjugate},{"E",eigenvalue},{"eig",eigenvalue},{ "tr",tr },{"diag",diagonalize},
 	{"sin",sinm},{"cos",cosm},{"tan",tanm},{"ln",lnm},{"log",lnm},{"sqrt",sqrtm},{"sum",sum},{"pro",product},
 	{"deg",deg},{"rad",rad},{"row",row},{"col",col},{"ones",ones},{"zero",zero},{"exp",expm},{"P",pForDiag},
-	{"N",norm},{"sinh",sinh},{"cosh",cosh},{"tanh",tanh},{"sh",sinh},{"ch",cosh},{"th",tanh},{"magic",magic},
-	{"random",random},{"randint",randint},{"abs",norm}
+	{"N",norm},{"norm",norm},{ "sinh",sinh },{"cosh",cosh},{"tanh",tanh},{"sh",sinh},{"ch",cosh},{"th",tanh},
+	{"magic",magic},{"random",random},{"randint",randint},{"abs",norm}
 };
 
 map<string, Matrix(*)(const Matrix&, const Matrix&)>Matrix::functionm2 = {
@@ -1596,7 +1597,7 @@ Matrix Matrix::parseFunctionm(const string& expr, map<string, Matrix>& matrices)
 				m.QRdecomposition(matrices);
 				throw true;
 			}
-			else if (identifier == "V") {
+			else if (identifier == "V" || identifier == "eigenvector") {
 				m.eigenvector();
 				throw true;
 			}
@@ -1859,21 +1860,21 @@ void Matrix::newMatrix() {
 			cout << "Print - print(M)" << endl;
 			cout << "LU decomposition - LU(M)" << endl;
 			cout << "QR decomposition - QR(M)" << endl;
-			cout << "Eigenvector - V(M)" << endl;
+			cout << "Eigenvector - V(M) or eigenvector(M)" << endl;
 			cout << "Solve linear equations - solve(M,M)" << endl;
 			cout << "Solve homogeneous linear equations - solve(M)" << endl << endl;
 			cout << "The following functions can be used with expressions:" << endl;
 			cout << "Determinant - D(M) or det(M)" << endl;
-			cout << "Rank - R(M)" << endl;
-			cout << "Transpose - T(M)" << endl;
+			cout << "Rank - R(M) or rank(M)" << endl;
+			cout << "Transpose - T(M) or trans(M)" << endl;
 			cout << "Inverse with Gaussian Elimination - I(M)" << endl;
 			cout << "Inverse with adjugate matrix - inv(M)" << endl;
 			cout << "Adjugate matrix - A(M) or adj(M)" << endl;
-			cout << "Reduced row echelon form - G(M)" << endl;
-			cout << "Orthogonalization - O(M)" << endl;
-			cout << "Norm - N(M)" << endl;
+			cout << "Reduced row echelon form - G(M) or gauss(M)" << endl;
+			cout << "Orthogonalization - O(M) or ortho(M)" << endl;
+			cout << "Norm - N(M) or norm(M)" << endl;
 			cout << "Diagonalization - diag(M)" << endl;
-			cout << "Eigenvalue - E(M)" << endl;
+			cout << "Eigenvalue - E(M) or eig(M)" << endl;
 			cout << "Sum of all elements - sum(M)" << endl;
 			cout << "Product of all elements - pro(M)" << endl;
 			cout << "Trace - tr(M)" << endl;
