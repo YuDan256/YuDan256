@@ -58,6 +58,9 @@ Matrix Matrix::get(const Matrix& m, const Matrix& row, const Matrix& col) {
 }
 
 Matrix Matrix::operator+(const Matrix& other) const {
+	if (isNumber() && other.isNumber())return Matrix(data[0][0] + other.data[0][0]);
+	if (rows == 1 && cols == 1 && other.rows == other.cols)return (0, 0) * identity(other.rows) + other;
+	if (other.rows == 1 && other.cols == 1 && rows == cols)return other(0, 0) * identity(rows) + *this;
 	if (rows != other.rows || cols != other.cols) {
 		throw invalid_argument("Matrices dimensions must match for addition.");
 	}
@@ -71,6 +74,9 @@ Matrix Matrix::operator+(const Matrix& other) const {
 }
 
 Matrix Matrix::operator-(const Matrix& other) const {
+	if (isNumber() && other.isNumber())return Matrix(data[0][0] - other.data[0][0]);
+	if (rows == 1 && cols == 1 && other.rows == other.cols)return (0, 0) * identity(other.rows) - other;
+	if (other.rows == 1 && other.cols == 1 && rows == cols)return *this - other(0, 0) * identity(rows);
 	if (rows != other.rows || cols != other.cols) {
 		throw invalid_argument("Matrices dimensions must match for substraction.");
 	}
@@ -231,6 +237,18 @@ Matrix& Matrix::operator=(const Matrix& other) {
 }
 
 Matrix& Matrix::operator+=(const Matrix& other) {
+	if (isNumber() && other.isNumber()) {
+		data[0][0] += other.data[0][0];
+		return *this;
+	}
+	if (rows == 1 && cols == 1 && other.rows == other.cols) {
+		*this = (0, 0) * identity(other.rows) + other;
+		return *this;
+	}
+	if (other.rows == 1 && other.cols == 1 && rows == cols) {
+		*this = other(0, 0) * identity(rows) + *this;
+		return *this;
+	}
 	if (rows != other.rows || cols != other.cols) {
 		throw invalid_argument("Matrices dimensions must match for addition.");
 	}
@@ -243,6 +261,18 @@ Matrix& Matrix::operator+=(const Matrix& other) {
 }
 
 Matrix& Matrix::operator-=(const Matrix& other) {
+	if (isNumber() && other.isNumber()) {
+		data[0][0] -= other.data[0][0];
+		return *this;
+	}
+	if (rows == 1 && cols == 1 && other.rows == other.cols) {
+		*this = (0, 0) * identity(other.rows) - other;
+		return *this;
+	}
+	if (other.rows == 1 && other.cols == 1 && rows == cols) {
+		*this = *this - other(0, 0) * identity(rows);
+		return *this;
+	}
 	if (rows != other.rows || cols != other.cols) {
 		throw invalid_argument("Matrices dimensions must match for substraction.");
 	}
