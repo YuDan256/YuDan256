@@ -1,6 +1,7 @@
 #include "Integer.h"
 
 ostream& operator<<(ostream& out, const Integer& num) {
+	if (!num.sign)out << '-';
 	int n = static_cast<int>(num.data.size());
 	for (int i = n - 1; i > -1; i--) {
 		out << num.data[i];
@@ -8,10 +9,14 @@ ostream& operator<<(ostream& out, const Integer& num) {
 	return out;
 }
 
-istream& operator>>(istream& in, Integer& num){
+istream& operator>>(istream& in, Integer& num) {
 	string expr;
 	in >> expr;
-	for (int i = 0; i < static_cast<int>(expr.length()); i++) {
+	if (expr[0] != '+' && expr[0] != '-' && !isdigit(expr[0])) {
+		cerr << "Invalid input!" << endl;
+		return in;
+	}
+	for (int i = 1; i < static_cast<int>(expr.length()); i++) {
 		if (expr[i] < '0' || expr[i] > '9') {
 			cerr << "Invalid input!" << endl;
 			return in;
@@ -22,29 +27,51 @@ istream& operator>>(istream& in, Integer& num){
 }
 
 Integer::Integer(const char* num) {
+	sign = true;
 	int len = 0;
 	vector<int>result;
+	if (num[0] != '+' && num[0] != '-' && !isdigit(num[0])) {
+		cerr << "Invalid input!" << endl;
+		return;
+	}
 	while (num[len] != '\0')len++;
-	for (int i = len - 1; i > -1; i--) {
+	for (int i = len - 1; i > 0; i--) {
 		if (num[i] < '0' || num[i] > '9') {
 			cerr << "Invalid input!" << endl;
 			return;
 		}
 		result.push_back(num[i] - '0');
+	}
+	if (num[0] == '+')sign = true;
+	else if (num[0] == '-')sign = false;
+	else {
+		sign = true;
+		result.push_back(num[0] - '0');
 	}
 	data = result;
 }
 
 Integer::Integer(const string& num) {
+	sign = true;
 	vector<int>result;
-	for (int i = 0; i < static_cast<int>(num.length()); i++) {
+	if (num[0] != '+' && num[0] != '-' && !isdigit(num[0])) {
+		cerr << "Invalid input!" << endl;
+		return;
+	}
+	for (int i = 1; i < static_cast<int>(num.length()); i++) {
 		if (num[i] < '0' || num[i] > '9') {
 			cerr << "Invalid input!" << endl;
 			return;
 		}
 	}
-	for (int i = static_cast<int>(num.length()) - 1; i > -1; i--) {
+	for (int i = static_cast<int>(num.length()) - 1; i > 0; i--) {
 		result.push_back(num[i] - '0');
+	}
+	if (num[0] == '+')sign = true;
+	else if (num[0] == '-')sign = false;
+	else {
+		sign = true;
+		result.push_back(num[0] - '0');
 	}
 	data = result;
 }
@@ -58,6 +85,7 @@ Integer::Integer(const ull& num) {
 		n /= 10;
 	} while (n > 0);
 	data = result;
+	sign = true;
 }
 
 bool Integer::operator==(const Integer& n) const {
@@ -107,57 +135,65 @@ bool Integer::operator!=(const Integer& n) const {
 }
 
 Integer Integer::operator+(const Integer& n) const {
-	size_t a = data.size(), b = n.data.size();
-	vector<int>n1 = data, n2 = n.data;
-	if (a > b)for (size_t i = b; i < a; i++)n2.push_back(0);
-	else for (size_t i = a; i < b; i++)n1.push_back(0);
-	n1.push_back(0);
-	n2.push_back(0);
+	if (sign && n.sign) {
+		size_t a = data.size(), b = n.data.size();
+		vector<int>n1 = data, n2 = n.data;
+		if (a > b)for (size_t i = b; i < a; i++)n2.push_back(0);
+		else for (size_t i = a; i < b; i++)n1.push_back(0);
+		n1.push_back(0);
+		n2.push_back(0);
 
-	size_t pos = 0, len = n1.size();
-	vector<int>result(len);
-	while (pos < len) {
-		int a = n1[pos] + n2[pos];
-		if (a > 9) {
-			a -= 10;
-			n1[pos + 1]++;
+		size_t pos = 0, len = n1.size();
+		vector<int>result(len);
+		while (pos < len) {
+			int a = n1[pos] + n2[pos];
+			if (a > 9) {
+				a -= 10;
+				n1[pos + 1]++;
+			}
+			result[pos] = a;
+			pos++;
 		}
-		result[pos] = a;
-		pos++;
+		while (true) {
+			if (result.back() == 0 && result.size() > 1)result.pop_back();
+			else break;
+		}
+		return Integer(result, true);
 	}
-	while (true) {
-		if (result.back() == 0 && result.size() > 1)result.pop_back();
-		else break;
-	}
-	return Integer(result);
+	else if (sign == 1 && n.sign == 0) return *this - (-n);
+	else if (sign == 0 && n.sign == 1) return n - (-*this);
+	else return -((-*this) + (-n));
 }
 
 Integer Integer::operator-(const Integer& n) const {
-	if (*this < n) {
-		cerr << "The first number cannot be less than the second!" << endl;
-		return Integer();//´íÎóÌáÊ¾
-	}
+	if (sign && n.sign) {
+		if (*this >= n) {
+			size_t a = data.size(), b = n.data.size();
+			vector<int>n1 = data, n2 = n.data;
+			for (size_t i = b; i < a; i++)n2.push_back(0);
 
-	size_t a = data.size(), b = n.data.size();
-	vector<int>n1 = data, n2 = n.data;
-	for (size_t i = b; i < a; i++)n2.push_back(0);
-
-	size_t pos = 0, len = n1.size();
-	vector<int>result(len);
-	while (pos < len) {
-		char a = n1[pos] - (n2[pos] - 0);
-		if (a < 0) {
-			a += 10;
-			n1[pos + 1]--;
+			size_t pos = 0, len = n1.size();
+			vector<int>result(len);
+			while (pos < len) {
+				char a = n1[pos] - (n2[pos] - 0);
+				if (a < 0) {
+					a += 10;
+					n1[pos + 1]--;
+				}
+				result[pos] = a;
+				pos++;
+			}
+			while (true) {
+				if (result.back() == 0 && result.size() > 1)result.pop_back();
+				else break;
+			}
+			return Integer(result, true);
 		}
-		result[pos] = a;
-		pos++;
+		else return -(n - *this);
 	}
-	while (true) {
-		if (result.back() == 0 && result.size() > 1)result.pop_back();
-		else break;
-	}
-	return Integer(result);
+	else if (sign == 1 && n.sign == 0) return *this + (-n);
+	else if (sign == 0 && n.sign == 1) return -(n + (-*this));
+	else return (-n) - (-*this);
 }
 
 Integer Integer::operator*(const Integer& n) const {
@@ -181,7 +217,8 @@ Integer Integer::operator*(const Integer& n) const {
 		if (result.back() == 0 && result.size() > 1)result.pop_back();
 		else break;
 	}
-	return Integer(result);
+	if (sign == n.sign)return Integer(result, true);
+	else return Integer(result, false);
 }
 
 Integer Integer::operator/(const Integer& n) const {
@@ -215,11 +252,15 @@ Integer Integer::operator/(const Integer& n) const {
 		if (result.back() == 0 && result.size() > 1)result.pop_back();
 		else break;
 	}
-	return Integer(result);
+	if (sign == n.sign)return Integer(result, true);
+	else return Integer(result, false);
 }
 
 Integer Integer::operator%(const Integer& n) const {
-	return (*this) - n * (*this / n);
+	Integer a = fabs(*this), b = fabs(n);
+	Integer result = a - a / b * b;
+	if (sign == n.sign)return result;
+	else return -result;
 }
 
 Integer& Integer::operator+=(const Integer& n) {
@@ -227,7 +268,7 @@ Integer& Integer::operator+=(const Integer& n) {
 	return *this;
 }
 
-Integer& Integer::operator-=(const Integer& n){
+Integer& Integer::operator-=(const Integer& n) {
 	*this = *this - n;
 	return *this;
 }
@@ -242,7 +283,7 @@ Integer& Integer::operator/=(const Integer& n) {
 	return *this;
 }
 
-Integer& Integer::operator%=(const Integer& n){
+Integer& Integer::operator%=(const Integer& n) {
 	*this = *this % n;
 	return *this;
 }
@@ -252,19 +293,33 @@ Integer& Integer::operator++() {
 	return *this;
 }
 
-Integer& Integer::operator--(){
+Integer& Integer::operator--() {
 	*this = *this - 1;
 	return *this;
 }
 
-Integer& Integer::operator++(int){
+Integer Integer::operator++(int) {
 	Integer temp = *this;
 	*this = *this + 1;
 	return temp;
 }
 
-Integer& Integer::operator--(int){
+Integer Integer::operator--(int) {
 	Integer temp = *this;
 	*this = *this - 1;
 	return temp;
+}
+
+Integer Integer::operator-() const {
+	Integer temp = *this;
+	temp.sign = !temp.sign;
+	return temp;
+}
+
+Integer Integer::operator+() const {
+	return *this;
+}
+
+Integer Integer::fabs(const Integer& n) const {
+	return Integer(n.data, true);
 }
