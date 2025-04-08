@@ -110,4 +110,8 @@ void newInstructions() {
 void easterEgg() {
 	cout << "There are no Easter eggs in this calculator." << endl;
 	cout << "(^u^)" << endl << endl;
+	ull a = 1145141919810, b = 1145141919810;
+	Interger A = 1145141919810, B = 1145141919810;
+	cout << a * b << endl;
+	cout << A * B << endl;
 }

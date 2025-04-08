@@ -11,16 +11,26 @@ typedef unsigned long long ull;
 
 
 
-class Accurate {
+class Interger {
 private:
-	vector<char>data;
+	vector<int>data;
 public:
-	Accurate(const vector<char>& data) :data(data) {};
-	Accurate() :data({ '0' }) {};
-	Accurate(const ull& num);
+	Interger(const vector<int>& data) :data(data) {};
+	Interger() :data({ '0' }) {};
+	Interger(const ull& num);
 
-	friend ostream& operator<<(ostream& out, const Accurate& num);
-	Accurate operator+(const Accurate& n)const;
+	friend ostream& operator<<(ostream& out, const Interger& num);
+	bool operator==(const Interger& n)const;
+	bool operator>(const Interger& n)const;
+	bool operator<(const Interger& n)const;
+	bool operator>=(const Interger& n)const;
+	bool operator<=(const Interger& n)const;
+	bool operator!=(const Interger& n)const;
+
+	Interger operator+(const Interger& n)const;
+	Interger operator-(const Interger& n)const;
+	Interger operator*(const Interger& n)const;
+	Interger operator/(const Interger& n)const;
 };
 
 #endif
