@@ -24,7 +24,7 @@ public:
 		vector<int>result;
 		if (num < 0) {
 			sign = false;
-			n = static_cast<ull>(num*(-1));
+			n = static_cast<ull>(num * (-1));
 		}
 		else {
 			sign = true;
@@ -73,10 +73,13 @@ public:
 	Integer operator-()const;
 	Integer operator+()const;
 
-	static Integer fabs(const Integer& n);
 	ull uvalue()const;
 	long long value() const;
+	bool isZero()const;
+
+	static Integer fabs(const Integer& n);
 	static Integer pow(const Integer& n1, const Integer& n2);
+
 };
 
 #endif

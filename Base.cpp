@@ -16,7 +16,7 @@ Base::Base(const Integer& _base, const Integer& _data) {
 
 Integer Base::length()const {
 	if (data == 0)return 1;
-	Integer temp = data, len = 0;
+	Integer temp = Integer::fabs(data), len = 0;
 	while (temp > 0) {
 		temp /= base;
 		len++;
@@ -32,7 +32,8 @@ void Base::print()const {
 		for (ull i = 0; i < len; i++) {   // Use 'ull' for consistency with 'len'
 			print[i] = 0;
 		}
-		Integer temp = data;
+		if (data < 0)cout << '-';
+		Integer temp = Integer::fabs(data);
 		for (ull i = 0; temp > 0 && i < len; i++) { // Ensure 'i' does not exceed 'len'
 			print[i] = temp % base;
 			temp /= base;
@@ -652,103 +653,119 @@ Base Base::parseTermb(const string& expr, size_t& currentPos, const map<string, 
 
 Base Base::parsePowerb(const string& expr, size_t& currentPos, const map<string, Base>& baseNumbers) {
 	Base result;
+	Integer sign = 1;
 	Integer num;
-	if (expr[currentPos] == '~') {
-		++currentPos;
-		result = ~parsePowerb(expr, currentPos, baseNumbers);
-	}
-	else if (expr[currentPos] == '(') {
-		++currentPos;
-		result = parseExpressionb(expr, currentPos, baseNumbers);
-		if (expr[currentPos] == ')') {
+
+	if (currentPos < expr.length()) {
+		if (expr[currentPos] == '+') {
+			sign = 1;
 			++currentPos;
 		}
-		else {
-			throw runtime_error("Missing closing parenthesis.");
+		else if (expr[currentPos] == '-') {
+			sign = -1;
+			++currentPos;
 		}
 	}
-	else if (isdigit(expr[currentPos])) {
-		string number;
-		while (currentPos < expr.length() && (isdigit(expr[currentPos]))) {
-			number += expr[currentPos++];
+
+	if (currentPos < expr.length()) {
+		if (expr[currentPos] == '~') {
+			++currentPos;
+			result = ~parsePowerb(expr, currentPos, baseNumbers) * sign;
 		}
-		result = Integer(number);
-	}
-	else if (isalpha(expr[currentPos])) { // 支持函数和变量
-		string identifier;
-		while (currentPos < expr.length() && (isalpha(expr[currentPos]) || expr[currentPos] == '_')) {
-			identifier += expr[currentPos++];
-		}
-		if (expr[currentPos] == '(') { // 检查是否为函数
-			currentPos++;
-			if (identifier == "base") {
-				Base b1 = parseExpressionb(expr, currentPos, baseNumbers);
-				if (expr[currentPos] == ')') {
-					currentPos++;
-					result = Base(b1.base);
-				}
-				else throw invalid_argument("Missing closing parenthesis.");
-			}
-			else if (identifier == "num" || identifier == "data") {
-				Base b1 = parseExpressionb(expr, currentPos, baseNumbers);
-				if (expr[currentPos] == ')') {
-					currentPos++;
-					result = Base(b1.data);
-				}
-				else throw invalid_argument("Missing closing parenthesis.");
-			}
-			else if (identifier == "digit" || identifier == "length" || identifier == "len") {
-				Base b1 = parseExpressionb(expr, currentPos, baseNumbers);
-				if (expr[currentPos] == ')') {
-					currentPos++;
-					result = Base(b1.length());
-				}
-				else throw invalid_argument("Missing closing parenthesis.");
-			}
-			else if (identifier == "pow") {
-				Base b1 = parseExpressionb(expr, currentPos, baseNumbers);
-				if (expr[currentPos] == ',') {
-					currentPos++;
-					Base b2 = parseExpressionb(expr, currentPos, baseNumbers);
-					if (expr[currentPos] == ')') {
-						currentPos++;
-						result = powb(b1, b2);
-					}
-					else throw invalid_argument("Missing closing parenthesis.");
-				}
-				else throw invalid_argument("Unexpected character: " + string(1, expr[currentPos]));
-			}
-			else if (identifier == "change") {
-				Base b1 = parseExpressionb(expr, currentPos, baseNumbers);
-				if (expr[currentPos] == ',') {
-					string _num;
-					currentPos++;
-					while (currentPos < expr.length() && isdigit(expr[currentPos])) {
-						_num += expr[currentPos++];
-					}
-					num = Integer(_num);
-					if (expr[currentPos] == ')') {
-						currentPos++;
-						result = Base(num, b1.data);
-					}
-					else throw invalid_argument("Missing closing parenthesis.");
-				}
-				else throw invalid_argument("Unexpected character: " + string(1, expr[currentPos]));
-			}
-			else throw invalid_argument("Unknown function: " + identifier);
-		}
-		else { // 否则视为变量
-			auto it = baseNumbers.find(identifier);
-			if (it != baseNumbers.end()) {
-				result = it->second;
+
+		else if (expr[currentPos] == '(') {
+			++currentPos;
+			result = parseExpressionb(expr, currentPos, baseNumbers) * sign;
+			if (expr[currentPos] == ')') {
+				++currentPos;
 			}
 			else {
-				throw runtime_error("Undefined variable: " + identifier);
+				throw runtime_error("Missing closing parenthesis.");
 			}
 		}
-	}
-	else if (!isspace(expr[currentPos])) {
-		throw runtime_error("Unexpected character: " + string(1, expr[currentPos]));
+		else if (isdigit(expr[currentPos])) {
+			string number;
+			while (currentPos < expr.length() && (isdigit(expr[currentPos]))) {
+				number += expr[currentPos++];
+			}
+			result = Integer(number) * sign;
+		}
+		else if (isalpha(expr[currentPos])) { // 支持函数和变量
+			string identifier;
+			while (currentPos < expr.length() && (isalpha(expr[currentPos]) || expr[currentPos] == '_')) {
+				identifier += expr[currentPos++];
+			}
+			if (expr[currentPos] == '(') { // 检查是否为函数
+				currentPos++;
+				if (identifier == "base") {
+					Base b1 = parseExpressionb(expr, currentPos, baseNumbers);
+					if (expr[currentPos] == ')') {
+						currentPos++;
+						result = Base(b1.base) * Base(sign);
+					}
+					else throw invalid_argument("Missing closing parenthesis.");
+				}
+				else if (identifier == "num" || identifier == "data") {
+					Base b1 = parseExpressionb(expr, currentPos, baseNumbers);
+					if (expr[currentPos] == ')') {
+						currentPos++;
+						result = Base(b1.data) * Base(sign);
+					}
+					else throw invalid_argument("Missing closing parenthesis.");
+				}
+				else if (identifier == "digit" || identifier == "length" || identifier == "len") {
+					Base b1 = parseExpressionb(expr, currentPos, baseNumbers);
+					if (expr[currentPos] == ')') {
+						currentPos++;
+						result = Base(b1.length()) * Base(sign);
+					}
+					else throw invalid_argument("Missing closing parenthesis.");
+				}
+				else if (identifier == "pow") {
+					Base b1 = parseExpressionb(expr, currentPos, baseNumbers);
+					if (expr[currentPos] == ',') {
+						currentPos++;
+						Base b2 = parseExpressionb(expr, currentPos, baseNumbers);
+						if (expr[currentPos] == ')') {
+							currentPos++;
+							result = powb(b1, b2) * Base(sign);
+						}
+						else throw invalid_argument("Missing closing parenthesis.");
+					}
+					else throw invalid_argument("Unexpected character: " + string(1, expr[currentPos]));
+				}
+				else if (identifier == "change") {
+					Base b1 = parseExpressionb(expr, currentPos, baseNumbers);
+					if (expr[currentPos] == ',') {
+						string _num;
+						currentPos++;
+						while (currentPos < expr.length() && isdigit(expr[currentPos])) {
+							_num += expr[currentPos++];
+						}
+						num = Integer(_num);
+						if (expr[currentPos] == ')') {
+							currentPos++;
+							result = Base(num, b1.data) * Base(sign);
+						}
+						else throw invalid_argument("Missing closing parenthesis.");
+					}
+					else throw invalid_argument("Unexpected character: " + string(1, expr[currentPos]));
+				}
+				else throw invalid_argument("Unknown function: " + identifier);
+			}
+			else { // 否则视为变量
+				auto it = baseNumbers.find(identifier);
+				if (it != baseNumbers.end()) {
+					result = it->second * Base(sign);
+				}
+				else {
+					throw runtime_error("Undefined variable: " + identifier);
+				}
+			}
+		}
+		else if (!isspace(expr[currentPos])) {
+			throw runtime_error("Unexpected character: " + string(1, expr[currentPos]));
+		}
 	}
 	return result;
 }

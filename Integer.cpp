@@ -77,37 +77,51 @@ Integer::Integer(const string& num) {
 }
 
 bool Integer::operator==(const Integer& n) const {
-	return (data == n.data);
+	return (data == n.data && sign == n.sign);
 }
 
 bool Integer::operator>(const Integer& n) const {
-	size_t a = data.size(), b = n.data.size();
-	vector<int>n1 = data, n2 = n.data;
-	if (a > b)return true;
-	else if (a < b)return false;
-	else {
-		int len = static_cast<int>(a);
-		for (int i = len - 1; i > -1; i--) {
-			if (n1[i] > n2[i])return true;
-			else if (n1[i] < n2[i])return false;
+	if (sign == 1 && n.sign == 1) {
+		size_t a = data.size(), b = n.data.size();
+		vector<int>n1 = data, n2 = n.data;
+		if (a > b)return true;
+		else if (a < b)return false;
+		else {
+			int len = static_cast<int>(a);
+			for (int i = len - 1; i > -1; i--) {
+				if (n1[i] > n2[i])return true;
+				else if (n1[i] < n2[i])return false;
+			}
+			return false;
 		}
-		return false;
 	}
+	else if (sign == 1 && n.sign == 0) {
+		return (isZero() && n.isZero()) == false;
+	}
+	else if (sign == 0 && n.sign == 1)return false;
+	else return (-(*this) < (-n));
 }
 
 bool Integer::operator<(const Integer& n) const {
-	size_t a = data.size(), b = n.data.size();
-	vector<int>n1 = data, n2 = n.data;
-	if (a < b)return true;
-	else if (a > b)return false;
-	else {
-		int len = static_cast<int>(a);
-		for (int i = len - 1; i > -1; i--) {
-			if (n1[i] < n2[i])return true;
-			else if (n1[i] > n2[i])return false;
+	if (sign == 1 && n.sign == 1) {
+		size_t a = data.size(), b = n.data.size();
+		vector<int>n1 = data, n2 = n.data;
+		if (a < b)return true;
+		else if (a > b)return false;
+		else {
+			int len = static_cast<int>(a);
+			for (int i = len - 1; i > -1; i--) {
+				if (n1[i] < n2[i])return true;
+				else if (n1[i] > n2[i])return false;
+			}
+			return false;
 		}
-		return false;
 	}
+	else if (sign == 0 && n.sign == 1) {
+		return (isZero() && n.isZero()) == false;
+	}
+	else if (sign == 1 && n.sign == 0)return false;
+	else return (-(*this) > (-n));
 }
 
 bool Integer::operator>=(const Integer& n) const {
@@ -185,7 +199,7 @@ Integer Integer::operator-(const Integer& n) const {
 }
 
 Integer Integer::operator*(const Integer& n) const {
-	Integer a = *this, b = n;
+	Integer a = fabs(*this), b = fabs(n);
 	size_t a_size = a.data.size();
 	size_t b_size = b.data.size();
 	if (a_size == 0 || b_size == 0 || (a.data[0] == 0 && a_size == 1) || (b.data[0] == 0 && b_size == 1)) {
@@ -207,7 +221,7 @@ Integer Integer::operator*(const Integer& n) const {
 		first_non_zero--;
 	}
 	result.resize(first_non_zero + 1);
-	bool result_sign = a.sign == b.sign;
+	bool result_sign = sign == n.sign;
 	return Integer(result, result_sign);
 }
 
@@ -216,7 +230,7 @@ Integer Integer::operator/(const Integer& n) const {
 		throw invalid_argument("Division by zero error.");
 	}
 
-	Integer n1 = *this;
+	Integer n1 = fabs(*this);
 	vector<int> temp, result;
 	int last = 0, current = 0;
 
@@ -224,7 +238,7 @@ Integer Integer::operator/(const Integer& n) const {
 		int a = 0;
 		last = current;
 		current = 0;
-		Integer n2 = n;
+		Integer n2 = fabs(n);
 		while (n2 * 10 <= n1) {
 			n2 = n2 * 10;
 			current++;
@@ -262,20 +276,20 @@ Integer Integer::operator%(const Integer& n) const {
 	else return -result;
 }
 
-Integer Integer::operator^(const Integer& n) const{
-	return uvalue() ^ n.uvalue();
+Integer Integer::operator^(const Integer& n) const {
+	return value() ^ n.value();
 }
 
-Integer Integer::operator|(const Integer& n) const{
-	return uvalue() | n.uvalue();
+Integer Integer::operator|(const Integer& n) const {
+	return value() | n.value();
 }
 
-Integer Integer::operator&(const Integer& n) const{
-	return uvalue() & n.uvalue();
+Integer Integer::operator&(const Integer& n) const {
+	return value() & n.value();
 }
 
-Integer Integer::operator~() const{
-	return ~uvalue();
+Integer Integer::operator~() const {
+	return ~value();
 }
 
 Integer& Integer::operator+=(const Integer& n) {
@@ -303,18 +317,18 @@ Integer& Integer::operator%=(const Integer& n) {
 	return *this;
 }
 
-Integer& Integer::operator^=(const Integer& n){
+Integer& Integer::operator^=(const Integer& n) {
 	*this = *this ^ n;
 	return *this;
 }
 
 
-Integer& Integer::operator|=(const Integer& n){
+Integer& Integer::operator|=(const Integer& n) {
 	*this = *this | n;
 	return *this;
 }
 
-Integer& Integer::operator&=(const Integer& n){
+Integer& Integer::operator&=(const Integer& n) {
 	*this = *this & n;
 	return *this;
 }
@@ -351,11 +365,11 @@ Integer Integer::operator+() const {
 	return *this;
 }
 
-Integer Integer::fabs(const Integer& n){
+Integer Integer::fabs(const Integer& n) {
 	return Integer(n.data, true);
 }
 
-ull Integer::uvalue()const{
+ull Integer::uvalue()const {
 	if (*this > numeric_limits<ull>::max())throw invalid_argument("The integer is too large.");
 	ull p = 1, result = 0;
 	for (int i : data) {
@@ -376,9 +390,14 @@ long long Integer::value()const {
 	return result;
 }
 
-Integer Integer::pow(const Integer& n1, const Integer& n2){
+bool Integer::isZero() const {
+	if (data.size() > 1)return false;
+	return data[0] == 0;
+}
+
+Integer Integer::pow(const Integer& n1, const Integer& n2) {
 	Integer result = 1;
-	if(n2<=0&&n1==0)throw invalid_argument("When the base is zero, the exponent must be positive.");
+	if (n2 <= 0 && n1 == 0)throw invalid_argument("When the base is zero, the exponent must be positive.");
 	if (n2 < 0)return 0;
 	for (Integer i = 0; i < n2; i++) {
 		result *= n1;
