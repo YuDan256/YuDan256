@@ -11,26 +11,29 @@ typedef unsigned long long ull;
 
 
 
-class Interger {
+class Integer {
 private:
 	vector<int>data;
 public:
-	Interger(const vector<int>& data) :data(data) {};
-	Interger() :data({ '0' }) {};
-	Interger(const ull& num);
+	Integer(const vector<int>& data) :data(data) {};
+	Integer() :data({ '0' }) {};
+	Integer(const char* num);
+	Integer(const string& num);
+	Integer(const ull& num);
 
-	friend ostream& operator<<(ostream& out, const Interger& num);
-	bool operator==(const Interger& n)const;
-	bool operator>(const Interger& n)const;
-	bool operator<(const Interger& n)const;
-	bool operator>=(const Interger& n)const;
-	bool operator<=(const Interger& n)const;
-	bool operator!=(const Interger& n)const;
+	friend ostream& operator<<(ostream& out, const Integer& num);
+	bool operator==(const Integer& n)const;
+	bool operator>(const Integer& n)const;
+	bool operator<(const Integer& n)const;
+	bool operator>=(const Integer& n)const;
+	bool operator<=(const Integer& n)const;
+	bool operator!=(const Integer& n)const;
 
-	Interger operator+(const Interger& n)const;
-	Interger operator-(const Interger& n)const;
-	Interger operator*(const Interger& n)const;
-	Interger operator/(const Interger& n)const;
+	Integer operator+(const Integer& n)const;
+	Integer operator-(const Integer& n)const;
+	Integer operator*(const Integer& n)const;
+	Integer operator/(const Integer& n)const;
+	Integer operator%(const Integer& n)const;
 };
 
 #endif

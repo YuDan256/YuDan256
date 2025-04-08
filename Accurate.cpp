@@ -1,6 +1,6 @@
 #include "Accurate.h"
 
-ostream& operator<<(ostream& out, const Interger& num) {
+ostream& operator<<(ostream& out, const Integer& num) {
 	int n = static_cast<int>(num.data.size());
 	for (int i = n - 1; i > -1; i--) {
 		out << num.data[i];
@@ -8,7 +8,25 @@ ostream& operator<<(ostream& out, const Interger& num) {
 	return out;
 }
 
-Interger::Interger(const ull& num) {
+Integer::Integer(const char* num){
+	int len = 0;
+	vector<int>result;
+	while (num[len] != '\0')len++;
+	for (int i = len - 1; i > -1; i--) {
+		result.push_back(num[i] - '0');
+	}
+	data = result;
+}
+
+Integer::Integer(const string& num){
+	vector<int>result;
+	for (int i = static_cast<int>(num.length()) - 1; i > -1; i--) {
+		result.push_back(num[i] - '0');
+	}
+	data = result;
+}
+
+Integer::Integer(const ull& num) {
 	ull n = num;
 	vector<int>result;
 	do {
@@ -19,11 +37,11 @@ Interger::Interger(const ull& num) {
 	data = result;
 }
 
-bool Interger::operator==(const Interger& n) const {
+bool Integer::operator==(const Integer& n) const {
 	return (data == n.data);
 }
 
-bool Interger::operator>(const Interger& n) const {
+bool Integer::operator>(const Integer& n) const {
 	size_t a = data.size(), b = n.data.size();
 	vector<int>n1 = data, n2 = n.data;
 	if (a > b)return true;
@@ -38,7 +56,7 @@ bool Interger::operator>(const Interger& n) const {
 	}
 }
 
-bool Interger::operator<(const Interger& n) const {
+bool Integer::operator<(const Integer& n) const {
 	size_t a = data.size(), b = n.data.size();
 	vector<int>n1 = data, n2 = n.data;
 	if (a < b)return true;
@@ -53,19 +71,19 @@ bool Interger::operator<(const Interger& n) const {
 	}
 }
 
-bool Interger::operator>=(const Interger& n) const {
+bool Integer::operator>=(const Integer& n) const {
 	return !(*this < n);
 }
 
-bool Interger::operator<=(const Interger& n) const {
+bool Integer::operator<=(const Integer& n) const {
 	return !(*this > n);
 }
 
-bool Interger::operator!=(const Interger& n) const {
+bool Integer::operator!=(const Integer& n) const {
 	return data != n.data;
 }
 
-Interger Interger::operator+(const Interger& n) const {
+Integer Integer::operator+(const Integer& n) const {
 	size_t a = data.size(), b = n.data.size();
 	vector<int>n1 = data, n2 = n.data;
 	if (a > b)for (size_t i = b; i < a; i++)n2.push_back(0);
@@ -88,13 +106,13 @@ Interger Interger::operator+(const Interger& n) const {
 		if (result.back() == 0 && result.size() > 1)result.pop_back();
 		else break;
 	}
-	return Interger(result);
+	return Integer(result);
 }
 
-Interger Interger::operator-(const Interger& n) const {
+Integer Integer::operator-(const Integer& n) const {
 	if (*this < n) {
 		cerr << "The first number cannot be less than the second!" << endl;
-		return Interger();//错误提示
+		return Integer();//错误提示
 	}
 
 	size_t a = data.size(), b = n.data.size();
@@ -116,15 +134,15 @@ Interger Interger::operator-(const Interger& n) const {
 		if (result.back() == 0 && result.size() > 1)result.pop_back();
 		else break;
 	}
-	return Interger(result);
+	return Integer(result);
 }
 
-Interger Interger::operator*(const Interger& n) const {
+Integer Integer::operator*(const Integer& n) const {
 	size_t a = data.size(), b = n.data.size();
 	vector<int>result(a + b, 0);
 	for (size_t i = 0; i < a; i++) {
 		for (size_t j = 0; j < b; j++) {
-			int c = (data[i]) * (data[j]);
+			int c = (data[i]) * (n.data[j]);
 			result[i + j] += c % 10;
 			result[i + j + 1] += c / 10;
 		}
@@ -140,13 +158,43 @@ Interger Interger::operator*(const Interger& n) const {
 		if (result.back() == 0 && result.size() > 1)result.pop_back();
 		else break;
 	}
-	return Interger(result);
+	return Integer(result);
 }
 
-Interger Interger::operator/(const Interger& n) const {
-	Interger n1 = *this;
-	vector<int>result;
-	do {
-	} while (n1 >= n);
-	return Interger(result);
+Integer Integer::operator/(const Integer& n) const {
+	Integer n1 = *this;
+	vector<int>temp, result;
+	int last, current = 0;//处理中间空零
+	while (true) {
+		int a = 0;
+		last = current;
+		current = 0;
+		Integer n2 = n;
+		while (n2 * 10 <= n1) {
+			n2 = n2 * 10;
+			current++;
+		}
+		while (n1 >= n2) {
+			n1 = n1 - n2;
+			a++;
+		}
+		for (int i = 0; i < last - current - 1; i++)temp.push_back(0);
+		temp.push_back(a);
+		if (n1 < n) {
+			for (int i = 0; i < current; i++)temp.push_back(0);
+			break;
+		}
+	}
+	for (int i = static_cast<int>(temp.size()) - 1; i > -1; i--) {
+		result.push_back(temp[i]);
+	}
+	while (true) {
+		if (result.back() == 0 && result.size() > 1)result.pop_back();
+		else break;
+	}
+	return Integer(result);
+}
+
+Integer Integer::operator%(const Integer& n) const{
+	return Integer();
 }
