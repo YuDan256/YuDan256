@@ -34,6 +34,10 @@ Integer::Integer(const char* num) {
 		cerr << "Invalid input!" << endl;
 		return;
 	}
+	if ((num[0] == '+' || num[0] == '-') && num[1] == '\0') {
+		cerr << "Invalid input!" << endl;
+		return;
+	}
 	while (num[len] != '\0')len++;
 	for (int i = len - 1; i > 0; i--) {
 		if (num[i] < '0' || num[i] > '9') {
@@ -54,38 +58,22 @@ Integer::Integer(const char* num) {
 Integer::Integer(const string& num) {
 	sign = true;
 	vector<int>result;
-	if (num[0] != '+' && num[0] != '-' && !isdigit(num[0])) {
-		cerr << "Invalid input!" << endl;
-		return;
+	string n = num;
+	if (num[0] == '+')erase(n, 0);
+	else if (num[0] == '-') {
+		sign = false;
+		erase(n, 0);
 	}
-	for (int i = 1; i < static_cast<int>(num.length()); i++) {
+	for (int i = 0; i < static_cast<int>(num.length()); i++) {
 		if (num[i] < '0' || num[i] > '9') {
 			cerr << "Invalid input!" << endl;
 			return;
 		}
 	}
-	for (int i = static_cast<int>(num.length()) - 1; i > 0; i--) {
+	for (int i = static_cast<int>(num.length()) - 1; i > -1; i--) {
 		result.push_back(num[i] - '0');
 	}
-	if (num[0] == '+')sign = true;
-	else if (num[0] == '-')sign = false;
-	else {
-		sign = true;
-		result.push_back(num[0] - '0');
-	}
 	data = result;
-}
-
-Integer::Integer(const ull& num) {
-	ull n = num;
-	vector<int>result;
-	do {
-		int a = n % 10;
-		result.push_back(a);
-		n /= 10;
-	} while (n > 0);
-	data = result;
-	sign = true;
 }
 
 bool Integer::operator==(const Integer& n) const {
