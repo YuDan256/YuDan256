@@ -8,7 +8,7 @@ ostream& operator<<(ostream& out, const Integer& num) {
 	return out;
 }
 
-Integer::Integer(const char* num){
+Integer::Integer(const char* num) {
 	int len = 0;
 	vector<int>result;
 	while (num[len] != '\0')len++;
@@ -18,7 +18,7 @@ Integer::Integer(const char* num){
 	data = result;
 }
 
-Integer::Integer(const string& num){
+Integer::Integer(const string& num) {
 	vector<int>result;
 	for (int i = static_cast<int>(num.length()) - 1; i > -1; i--) {
 		result.push_back(num[i] - '0');
@@ -195,6 +195,6 @@ Integer Integer::operator/(const Integer& n) const {
 	return Integer(result);
 }
 
-Integer Integer::operator%(const Integer& n) const{
-	return Integer();
+Integer Integer::operator%(const Integer& n) const {
+	return (*this) - n * (*this / n);
 }
