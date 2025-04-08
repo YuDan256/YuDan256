@@ -36,7 +36,7 @@
     <ClInclude Include="Normal.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Accurate.h">
+    <ClInclude Include="Integer.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -74,7 +74,7 @@
     <ClCompile Include="Linear.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Accurate.cpp">
+    <ClCompile Include="Integer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

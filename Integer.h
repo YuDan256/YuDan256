@@ -1,5 +1,5 @@
-#ifndef ACCURATE_H
-#define ACCURATE_H
+#ifndef INTEGER_H
+#define INTEGER_H
 
 #include <vector>
 #include <string>
@@ -22,6 +22,8 @@ public:
 	Integer(const ull& num);
 
 	friend ostream& operator<<(ostream& out, const Integer& num);
+	friend istream& operator>>(istream& in, Integer& num);
+
 	bool operator==(const Integer& n)const;
 	bool operator>(const Integer& n)const;
 	bool operator<(const Integer& n)const;
@@ -34,6 +36,12 @@ public:
 	Integer operator*(const Integer& n)const;
 	Integer operator/(const Integer& n)const;
 	Integer operator%(const Integer& n)const;
+
+	Integer& operator+=(const Integer& n);
+	Integer& operator-=(const Integer& n);
+	Integer& operator*=(const Integer& n);
+	Integer& operator/=(const Integer& n);
+	Integer& operator%=(const Integer& n);
 };
 
 #endif

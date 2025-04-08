@@ -9,7 +9,7 @@
 #include "Statistics.h"
 #include "Function.h"
 #include "Normal.h"
-#include "Accurate.h"
+#include "Integer.h"
 
 using namespace std;
 

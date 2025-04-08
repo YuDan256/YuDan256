@@ -1,4 +1,4 @@
-#include "Accurate.h"
+#include "Integer.h"
 
 ostream& operator<<(ostream& out, const Integer& num) {
 	int n = static_cast<int>(num.data.size());
@@ -6,6 +6,13 @@ ostream& operator<<(ostream& out, const Integer& num) {
 		out << num.data[i];
 	}
 	return out;
+}
+
+istream& operator>>(istream& in, Integer& num){
+	string expr;
+	in >> expr;
+	num = Integer(expr);
+	return in;
 }
 
 Integer::Integer(const char* num) {
@@ -197,4 +204,29 @@ Integer Integer::operator/(const Integer& n) const {
 
 Integer Integer::operator%(const Integer& n) const {
 	return (*this) - n * (*this / n);
+}
+
+Integer& Integer::operator+=(const Integer& n) {
+	*this = *this + n;
+	return *this;
+}
+
+Integer& Integer::operator-=(const Integer& n){
+	*this = *this - n;
+	return *this;
+}
+
+Integer& Integer::operator*=(const Integer& n) {
+	*this = *this * n;
+	return *this;
+}
+
+Integer& Integer::operator/=(const Integer& n) {
+	*this = *this / n;
+	return *this;
+}
+
+Integer& Integer::operator%=(const Integer& n){
+	*this = *this % n;
+	return *this;
 }
