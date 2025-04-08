@@ -185,34 +185,41 @@ Integer Integer::operator-(const Integer& n) const {
 }
 
 Integer Integer::operator*(const Integer& n) const {
-	size_t a = data.size(), b = n.data.size();
-	vector<int>result(a + b, 0);
-	for (size_t i = 0; i < a; i++) {
-		for (size_t j = 0; j < b; j++) {
-			int c = (data[i]) * (n.data[j]);
-			result[i + j] += c % 10;
-			result[i + j + 1] += c / 10;
+	Integer a = *this, b = n;
+	size_t a_size = a.data.size();
+	size_t b_size = b.data.size();
+	if (a_size == 0 || b_size == 0 || (a.data[0] == 0 && a_size == 1) || (b.data[0] == 0 && b_size == 1)) {
+		return Integer(vector<int>{0}, true);
+	}
+	vector<int> result(a_size + b_size, 0);
+	for (size_t i = 0; i < a_size; i++) {
+		for (size_t j = 0; j < b_size; j++) {
+			result[i + j] += a.data[i] * b.data[j];
 		}
 	}
-	for (size_t i = 0; i < a + b - 1; i++) {
-		if (result[i] > 9) {
-			int j = result[i];
-			result[i] = j % 10;
-			result[i + 1] += j / 10;
-		}
+	for (size_t i = 0; i < a_size + b_size - 1; i++) {
+		int carry = result[i] / 10;
+		result[i] %= 10;
+		result[i + 1] += carry;
 	}
-	while (true) {
-		if (result.back() == 0 && result.size() > 1)result.pop_back();
-		else break;
+	size_t first_non_zero = result.size() - 1;
+	while (first_non_zero > 0 && result[first_non_zero] == 0) {
+		first_non_zero--;
 	}
-	if (sign == n.sign)return Integer(result, true);
-	else return Integer(result, false);
+	result.resize(first_non_zero + 1);
+	bool result_sign = a.sign == b.sign;
+	return Integer(result, result_sign);
 }
 
 Integer Integer::operator/(const Integer& n) const {
+	if (n.uvalue() == 0) {
+		throw invalid_argument("Division by zero error.");
+	}
+
 	Integer n1 = *this;
-	vector<int>temp, result;
-	int last, current = 0;//处理中间空零
+	vector<int> temp, result;
+	int last = 0, current = 0;
+
 	while (true) {
 		int a = 0;
 		last = current;
@@ -226,29 +233,49 @@ Integer Integer::operator/(const Integer& n) const {
 			n1 = n1 - n2;
 			a++;
 		}
-		for (int i = 0; i < last - current - 1; i++)temp.push_back(0);
+		for (int i = 0; i < last - current - 1; i++) {
+			temp.push_back(0);
+		}
 		temp.push_back(a);
 		if (n1 < n) {
-			for (int i = 0; i < current; i++)temp.push_back(0);
+			for (int i = 0; i < current; i++) {
+				temp.push_back(0);
+			}
 			break;
 		}
 	}
-	for (int i = static_cast<int>(temp.size()) - 1; i > -1; i--) {
+	for (int i = static_cast<int>(temp.size()) - 1; i >= 0; i--) {
 		result.push_back(temp[i]);
 	}
-	while (true) {
-		if (result.back() == 0 && result.size() > 1)result.pop_back();
-		else break;
+	while (result.size() > 1 && result.back() == 0) {
+		result.pop_back();
 	}
-	if (sign == n.sign)return Integer(result, true);
-	else return Integer(result, false);
+	bool result_sign = sign == n.sign;
+	return Integer(result, result_sign);
 }
 
 Integer Integer::operator%(const Integer& n) const {
+	if (n.uvalue() == 0)throw invalid_argument("Division by zero error.");
 	Integer a = fabs(*this), b = fabs(n);
 	Integer result = a - a / b * b;
 	if (sign == n.sign)return result;
 	else return -result;
+}
+
+Integer Integer::operator^(const Integer& n) const{
+	return uvalue() ^ n.uvalue();
+}
+
+Integer Integer::operator|(const Integer& n) const{
+	return uvalue() | n.uvalue();
+}
+
+Integer Integer::operator&(const Integer& n) const{
+	return uvalue() & n.uvalue();
+}
+
+Integer Integer::operator~() const{
+	return ~uvalue();
 }
 
 Integer& Integer::operator+=(const Integer& n) {
@@ -273,6 +300,22 @@ Integer& Integer::operator/=(const Integer& n) {
 
 Integer& Integer::operator%=(const Integer& n) {
 	*this = *this % n;
+	return *this;
+}
+
+Integer& Integer::operator^=(const Integer& n){
+	*this = *this ^ n;
+	return *this;
+}
+
+
+Integer& Integer::operator|=(const Integer& n){
+	*this = *this | n;
+	return *this;
+}
+
+Integer& Integer::operator&=(const Integer& n){
+	*this = *this & n;
 	return *this;
 }
 
@@ -310,4 +353,35 @@ Integer Integer::operator+() const {
 
 Integer Integer::fabs(const Integer& n){
 	return Integer(n.data, true);
+}
+
+ull Integer::uvalue()const{
+	if (*this > numeric_limits<ull>::max())throw invalid_argument("The integer is too large.");
+	ull p = 1, result = 0;
+	for (int i : data) {
+		result += p * i;
+		p *= 10;
+	}
+	return result;
+}
+
+long long Integer::value()const {
+	if (*this > numeric_limits<long long>::max())throw invalid_argument("The integer is too large.");
+	long long p = 1, result = 0;
+	for (int i : data) {
+		result += p * i;
+		p *= 10;
+	}
+	if (!sign)result *= -1;
+	return result;
+}
+
+Integer Integer::pow(const Integer& n1, const Integer& n2){
+	Integer result = 1;
+	if(n2<=0&&n1==0)throw invalid_argument("When the base is zero, the exponent must be positive.");
+	if (n2 < 0)return 0;
+	for (Integer i = 0; i < n2; i++) {
+		result *= n1;
+	}
+	return result;
 }

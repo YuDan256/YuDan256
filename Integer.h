@@ -24,7 +24,7 @@ public:
 		vector<int>result;
 		if (num < 0) {
 			sign = false;
-			n = static_cast<ull>(-num);
+			n = static_cast<ull>(num*(-1));
 		}
 		else {
 			sign = true;
@@ -52,21 +52,31 @@ public:
 	Integer operator*(const Integer& n) const;
 	Integer operator/(const Integer& n) const;
 	Integer operator%(const Integer& n) const;
+	Integer operator^(const Integer& n)const;
+	Integer operator|(const Integer& n)const;
+	Integer operator&(const Integer& n)const;
+	Integer operator~() const;
 
 	Integer& operator+=(const Integer& n);
 	Integer& operator-=(const Integer& n);
 	Integer& operator*=(const Integer& n);
 	Integer& operator/=(const Integer& n);
 	Integer& operator%=(const Integer& n);
+	Integer& operator^=(const Integer& n);
+	Integer& operator|=(const Integer& n);
+	Integer& operator&=(const Integer& n);
+
 	Integer& operator++();
 	Integer& operator--();
 	Integer operator++(int);
 	Integer operator--(int);
-
 	Integer operator-()const;
 	Integer operator+()const;
 
 	static Integer fabs(const Integer& n);
+	ull uvalue()const;
+	long long value() const;
+	static Integer pow(const Integer& n1, const Integer& n2);
 };
 
 #endif

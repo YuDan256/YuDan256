@@ -6,26 +6,26 @@
 #include <string>
 #include <vector>
 #include <map>
+#include "Integer.h"
 
 using namespace std;
-typedef unsigned long long ull;
 
 class Base {
 private:
-	ull base;
-	ull data;
+	Integer base;
+	Integer data;
 	static map<char, int>bop;
 public:
-	Base(const ull& _base, const ull& _data);
-	Base(const ull& data = 0) :base(10), data(data) {};
+	Base(const Integer& _base, const Integer& _data);
+	Base(const Integer& data = 0) :base(10), data(data) {};
 	Base(const Base& b) :base(b.base), data(b.data) {};
 
-	ull getBase()const { return base; }
-	ull getData()const { return data; }
-	ull length()const;
+	Integer getBase()const { return base; }
+	Integer getData()const { return data; }
+	Integer length()const;
 	void print()const;
-	void setBase(const ull& b) { base = b; }
-	void setData(const ull& d) { data = d; }
+	void setBase(const Integer& b) { base = b; }
+	void setData(const Integer& d) { data = d; }
 
 	//运算符重载
 	Base operator+(const Base& b)const;
@@ -64,10 +64,10 @@ public:
 	static void factorization(const Base& b);
 
 	//输入进制数
-	static Base enterBase(const ull& base, const string& num);
-	static Base enterBase1(const ull& base, const string& num);
-	static Base enterBase2(const ull& base, const string& num);
-	static Base enterBase3(const ull& base, const string& num);
+	static Base enterBase(const Integer& base, const string& num);
+	static Base enterBase1(const Integer& base, const string& num);
+	static Base enterBase2(const Integer& base, const string& num);
+	static Base enterBase3(const Integer& base, const string& num);
 
 	//新版操作系统
 	static void newInput(map<string, Base>& baseNumbers);

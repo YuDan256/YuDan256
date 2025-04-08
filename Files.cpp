@@ -151,8 +151,8 @@ map<string, Base>Base::loadb() {
 	while (getline(fin, base)) {
 		vector<string>tokens = getTokens(base);
 		string name = tokens[0];
-		unsigned long long b = stoull(tokens[1]),
-			data = stoull(tokens[2]);
+		Integer b = Integer(tokens[1]),
+			data = Integer(tokens[2]);
 		bases[name] = Base(b, data);
 	}
 	return bases;

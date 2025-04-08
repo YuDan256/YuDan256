@@ -6,7 +6,7 @@ map<char, int>Base::bop = {
 	{'&',0},{'|',0},{'^',0},{'+',1},{'-',1},{'*',2},{'/',2},{'%',2}
 };
 
-Base::Base(const ull& _base, const ull& _data) {
+Base::Base(const Integer& _base, const Integer& _data) {
 	if (_base < 2) {
 		throw invalid_argument("The base cannot be less than 2.");
 	}
@@ -14,9 +14,9 @@ Base::Base(const ull& _base, const ull& _data) {
 	data = _data;
 }
 
-ull Base::length()const {
+Integer Base::length()const {
 	if (data == 0)return 1;
-	ull temp = data, len = 0;
+	Integer temp = data, len = 0;
 	while (temp > 0) {
 		temp /= base;
 		len++;
@@ -27,75 +27,75 @@ ull Base::length()const {
 void Base::print()const {
 	if (base != 10) {
 		cout << "[";
-		ull len = length();
-		ull* print = new ull[len + 1];
-		for (int i = 0; i < len + 1; i++) {
+		ull len = length().uvalue();
+		Integer* print = new Integer[len]; // Allocate exactly 'len' elements
+		for (ull i = 0; i < len; i++) {   // Use 'ull' for consistency with 'len'
 			print[i] = 0;
 		}
-		ull temp = data;
-		for (int i = 0; temp > 0; i++) {
+		Integer temp = data;
+		for (ull i = 0; temp > 0 && i < len; i++) { // Ensure 'i' does not exceed 'len'
 			print[i] = temp % base;
 			temp /= base;
 		}
 		if (base <= 10) {
-			for (int i = 0; i < len; i++) {
+			for (ull i = 0; i < len; i++) {
 				cout << print[len - i - 1];
 			}
 		}
 		else if (base <= 36) {
-			for (int i = 0; i < len; i++) {
+			for (ull i = 0; i < len; i++) {
 				if (print[len - i - 1] >= 10)
-					cout << static_cast<char>(static_cast<ull>('A') - 10 + print[len - i - 1]);
+					cout << static_cast<char>((Integer(static_cast<ull>('A') - 10) + print[len - i - 1]).uvalue());
 				else cout << print[len - i - 1];
 			}
 		}
 		else {
-			for (int i = 0; i < len - 1; i++) {
+			for (ull i = 0; i < len - 1; i++) {
 				cout << print[len - i - 1] << " ";
 			}
 			cout << print[0];
 		}
 		cout << "]_" << base << endl;
-		delete[] print;
+		delete[] print; // Free allocated memory
 	}
 	else cout << data << endl;
 }
 
 //for bases from 2 to 10
-Base Base::enterBase1(const ull& base, const string& num) {
+Base Base::enterBase1(const Integer& base, const string& num) {
 	ull len = num.length();
-	ull result = 0;
+	Integer result = 0;
 	for (int i = 0; i < len; i++) {
-		if (num[i] >= '0' + base || num[i] < '0')
+		if (num[i] >= '0' + base.uvalue() || num[i] < '0')
 			throw invalid_argument("Entered a character that does not exist in this numeral system.");
 	}
 	for (int i = 0; i < len; i++) {
 		result *= base;
-		result += static_cast<ull>(num[i] - '0');
+		result += static_cast<Integer>(num[i] - '0');
 	}
 	return Base(base, result);
 }
 
 //for bases from 11 to 36
-Base Base::enterBase2(const ull& base, const string& num) {
+Base Base::enterBase2(const Integer& base, const string& num) {
 	ull len = num.length();
-	ull result = 0;
+	Integer result = 0;
 	for (int i = 0; i < len; i++) {
-		if (num[i] >= static_cast<ull>('A') - 10 + base || num[i] < '0' || (num[i] > '9' && num[i] < 'A'))
+		if (num[i] >= static_cast<ull>('A') - 10 + base.uvalue() || num[i] < '0' || (num[i] > '9' && num[i] < 'A'))
 			throw invalid_argument("Entered a character that does not exist in this numeral system.");
 	}
 	for (int i = 0; i < len; i++) {
 		result *= base;
-		if (num[i] < '9' + 1)result += static_cast<ull>(num[i] - '0');
-		else result += static_cast<ull>(num[i] - 'A' + 10);
+		if (num[i] < '9' + 1)result += static_cast<Integer>(num[i] - '0');
+		else result += static_cast<Integer>(num[i] - 'A' + 10);
 	}
 	return Base(base, result);
 }
 
 //for bases greater than 36
-Base Base::enterBase3(const ull& base, const string& num) {
+Base Base::enterBase3(const Integer& base, const string& num) {
 	size_t len = num.length();
-	ull digit = 0, result = 0;
+	Integer digit = 0, result = 0;
 	for (int i = 0; i < len; i++) {
 		int m = i - 1;//避免溢出
 		if ((i == 0 || num[m] == ' ') && num[i] == ' ')continue;
@@ -109,7 +109,7 @@ Base Base::enterBase3(const ull& base, const string& num) {
 		}
 		else if (i == len - 1) {
 			digit *= 10;
-			digit += static_cast<ull>(num[i] - '0');
+			digit += static_cast<Integer>(num[i] - '0');
 			if (digit >= base) {
 				throw invalid_argument("Entered an invalid character in this numeral system.");
 			}
@@ -119,7 +119,7 @@ Base Base::enterBase3(const ull& base, const string& num) {
 		}
 		else {
 			digit *= 10;
-			digit += static_cast<ull>(num[i] - '0');
+			digit += static_cast<Integer>(num[i] - '0');
 			if (digit >= base) {
 				throw invalid_argument("Entered an invalid character in this numeral system.");
 			}
@@ -222,28 +222,28 @@ bool Base::operator<=(const Base& b)const {
 
 Base Base::operator&(const Base& bin)const {
 	if (base != 2 || bin.base != 2)throw invalid_argument("Bitwise AND operation is only defined for binary.");
-	ull a = data, b = bin.data;
-	ull result = a & b;
+	Integer a = data, b = bin.data;
+	Integer result = a & b;
 	return Base(2, result);
 }
 
 Base Base::operator|(const Base& bin)const {
 	if (base != 2 || bin.base != 2)throw invalid_argument("Bitwise OR operation is only defined for binary.");
-	ull a = data, b = bin.data;
-	ull result = a | b;
+	Integer a = data, b = bin.data;
+	Integer result = a | b;
 	return Base(2, result);
 }
 
 Base Base::operator^(const Base& bin) const {
 	if (base != 2 || bin.base != 2)throw invalid_argument("Bitwise XOR operation is only defined for binary.");
-	ull a = data, b = bin.data;
-	ull result = a ^ b;
+	Integer a = data, b = bin.data;
+	Integer result = a ^ b;
 	return Base(2, result);
 }
 
 Base Base::operator~() const {
 	if (base != 2)throw invalid_argument("Bitwise NOT operation is only defined for binary.");
-	ull result = ~data;
+	Integer result = ~data;
 	return Base(2, result);
 }
 
@@ -345,7 +345,7 @@ Base& Base::operator--() {
 
 Base Base::powb(const Base& b1, const Base& b2) {
 	if (b1.base != b2.base && b2.base != 10 && b1.base != 10)throw invalid_argument("The bases do not match for power.");
-	ull result = static_cast<ull>(pow(b1.data, b2.data));
+	Integer result = static_cast<Integer>(Integer::pow(b1.data, b2.data));
 	if (b1.base == 10)return Base(b2.base, result);
 	else return Base(b1.base, result);
 }
@@ -357,14 +357,15 @@ void Base::compareb(const Base& b1, const Base& b2) {
 }
 
 void Base::factorization(const Base& b) {
-	ull num = b.data;
+	Integer num = b.data;
 	if (num < 2)throw invalid_argument("The number must be greater than 2.");
 	map<Base, int>frequency;
-	for (ull i = 2; i <= static_cast<int>(floor(sqrt(num))); i++) {
+	for (Integer i = 2; i <= num; i++) {
 		while (num % i == 0) {
 			frequency[Base(b.base, i)]++;
 			num /= i;
 		}
+		if (i * i > num)break;
 	}
 	if (num != 1)frequency[Base(b.base, num)]++;
 	for (auto it = frequency.begin(); it != frequency.end(); it++) {
@@ -374,7 +375,7 @@ void Base::factorization(const Base& b) {
 	}
 }
 
-Base Base::enterBase(const ull& base, const string& num) {
+Base Base::enterBase(const Integer& base, const string& num) {
 	if (base < 2)throw	runtime_error("The base cannot less than 2.");
 	else if (base < 11)return enterBase1(base, num);
 	else if (base < 37)return enterBase2(base, num);
@@ -385,7 +386,7 @@ void Base::newInput(map<string, Base>& baseNumbers) {
 	cout << "The name of the base numbers can only consist of letters" << endl;
 	cout << "Enter end to finish definition." << endl;
 	string name, expr, _base;
-	ull base;
+	Integer base;
 	Base result;
 	while (1) {
 		bool invalidInput = false;
@@ -410,7 +411,7 @@ void Base::newInput(map<string, Base>& baseNumbers) {
 			}
 		}
 		if (invalidInput)continue;
-		base = stoull(_base);
+		base = Integer(_base);
 		if (base < 2) {
 			cout << "The base cannot less than 2." << endl;
 			continue;
@@ -631,11 +632,11 @@ Base Base::parseTermb(const string& expr, size_t& currentPos, const map<string, 
 					result = result * rhs;
 					break;
 				case '/':
-					if (rhs == 0) throw runtime_error("Division by zero error.");
+					if (rhs.data.uvalue() == 0) throw runtime_error("Division by zero error.");
 					result = result / rhs;
 					break;
 				case '%':
-					if (rhs == 0) throw runtime_error("Division by zero error.");
+					if (rhs.data.uvalue() == 0) throw runtime_error("Division by zero error.");
 					result = result % rhs;
 					break;
 				default:
@@ -651,7 +652,7 @@ Base Base::parseTermb(const string& expr, size_t& currentPos, const map<string, 
 
 Base Base::parsePowerb(const string& expr, size_t& currentPos, const map<string, Base>& baseNumbers) {
 	Base result;
-	ull num;
+	Integer num;
 	if (expr[currentPos] == '~') {
 		++currentPos;
 		result = ~parsePowerb(expr, currentPos, baseNumbers);
@@ -671,7 +672,7 @@ Base Base::parsePowerb(const string& expr, size_t& currentPos, const map<string,
 		while (currentPos < expr.length() && (isdigit(expr[currentPos]))) {
 			number += expr[currentPos++];
 		}
-		result = stoull(number);
+		result = Integer(number);
 	}
 	else if (isalpha(expr[currentPos])) { // 支持函数和变量
 		string identifier;
@@ -725,7 +726,7 @@ Base Base::parsePowerb(const string& expr, size_t& currentPos, const map<string,
 					while (currentPos < expr.length() && isdigit(expr[currentPos])) {
 						_num += expr[currentPos++];
 					}
-					num = stoull(_num);
+					num = Integer(_num);
 					if (expr[currentPos] == ')') {
 						currentPos++;
 						result = Base(num, b1.data);
