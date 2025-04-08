@@ -50,6 +50,7 @@ public:
 	Integer operator+(const Integer& n) const;
 	Integer operator-(const Integer& n) const;
 	Integer operator*(const Integer& n) const;
+	Integer operator/(const int& divisor) const;
 	Integer operator/(const Integer& n) const;
 	Integer operator%(const Integer& n) const;
 	Integer operator^(const Integer& n)const;

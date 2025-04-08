@@ -52,6 +52,9 @@ Integer::Integer(const char* num) {
 		sign = true;
 		result.push_back(num[0] - '0');
 	}
+	while (result.size() > 1 && result.back() == 0) {
+		result.pop_back();
+	}
 	data = result;
 }
 
@@ -72,6 +75,9 @@ Integer::Integer(const string& num) {
 	}
 	for (int i = static_cast<int>(num.length()) - 1; i > -1; i--) {
 		result.push_back(num[i] - '0');
+	}
+	while (result.size() > 1 && result.back() == 0) {
+		result.pop_back();
 	}
 	data = result;
 }
@@ -156,9 +162,8 @@ Integer Integer::operator+(const Integer& n) const {
 			result[pos] = a;
 			pos++;
 		}
-		while (true) {
-			if (result.back() == 0 && result.size() > 1)result.pop_back();
-			else break;
+		while (result.size() > 1 && result.back() == 0) {
+			result.pop_back();
 		}
 		return Integer(result, true);
 	}
@@ -185,9 +190,8 @@ Integer Integer::operator-(const Integer& n) const {
 				result[pos] = a;
 				pos++;
 			}
-			while (true) {
-				if (result.back() == 0 && result.size() > 1)result.pop_back();
-				else break;
+			while (result.size() > 1 && result.back() == 0) {
+				result.pop_back();
 			}
 			return Integer(result, true);
 		}
@@ -225,47 +229,71 @@ Integer Integer::operator*(const Integer& n) const {
 	return Integer(result, result_sign);
 }
 
+Integer Integer::operator/(const int& divisor) const {
+	if (divisor == 0) {
+		throw invalid_argument("Division by zero error.");
+	}
+	bool b = divisor >= 0;
+	int d = static_cast<int>(std::fabs(divisor));
+	vector<int> result;
+	int remainder = 0;
+	for (int i = static_cast<int>(data.size()) - 1; i >= 0; i--) {
+		remainder = remainder * 10 + data[i];
+		result.insert(result.begin(), remainder / d);
+		remainder %= d;
+	}
+
+	while (result.size() > 1 && result.back() == 0) {
+		result.pop_back();
+	}
+
+	return Integer(result, sign == b);
+};
+
 Integer Integer::operator/(const Integer& n) const {
 	if (n.uvalue() == 0) {
 		throw invalid_argument("Division by zero error.");
 	}
 
-	Integer n1 = fabs(*this);
-	vector<int> temp, result;
-	int last = 0, current = 0;
+	Integer dividend = fabs(*this);
+	Integer divisor = fabs(n);
+	vector<int> quotient_data;
+	bool quotient_sign = sign == n.sign;
 
-	while (true) {
-		int a = 0;
-		last = current;
-		current = 0;
-		Integer n2 = fabs(n);
-		while (n2 * 10 <= n1) {
-			n2 = n2 * 10;
-			current++;
-		}
-		while (n1 >= n2) {
-			n1 = n1 - n2;
-			a++;
-		}
-		for (int i = 0; i < last - current - 1; i++) {
-			temp.push_back(0);
-		}
-		temp.push_back(a);
-		if (n1 < n) {
-			for (int i = 0; i < current; i++) {
-				temp.push_back(0);
+	if (dividend < divisor) {
+		return Integer(vector<int>{0}, true);
+	}
+
+	Integer temp;
+	Integer power = 1;
+	Integer remainder = 0;
+
+	for (int i = static_cast<int>(dividend.data.size()) - 1; i >= 0; i--) {
+		remainder = remainder * 10 + Integer(vector<int>{dividend.data[i]}, true);
+		int q = 0;
+
+		Integer low(0), high(remainder);
+		while (low <= high) {
+			Integer mid = (low + high) / 2;
+			Integer product = mid * divisor;
+			if (product <= remainder) {
+				q = mid.data[0];
+				low = mid + 1;
 			}
-			break;
+			else {
+				high = mid - 1;
+			}
 		}
+
+		quotient_data.insert(quotient_data.begin(), q);
+		remainder = remainder - (divisor * q);
 	}
-	for (int i = static_cast<int>(temp.size()) - 1; i >= 0; i--) {
-		result.push_back(temp[i]);
+
+	while (quotient_data.size() > 1 && quotient_data.back() == 0) {
+		quotient_data.pop_back();
 	}
-	while (result.size() > 1 && result.back() == 0) {
-		result.pop_back();
-	}
-	bool result_sign = sign == n.sign;
-	return Integer(result, result_sign);
+
+	return Integer(quotient_data, quotient_sign);
 }
 
 Integer Integer::operator%(const Integer& n) const {
