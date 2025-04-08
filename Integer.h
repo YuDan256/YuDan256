@@ -42,6 +42,10 @@ public:
 	Integer& operator*=(const Integer& n);
 	Integer& operator/=(const Integer& n);
 	Integer& operator%=(const Integer& n);
+	Integer& operator++();
+	Integer& operator--();
+	Integer& operator++(int);
+	Integer& operator--(int);
 };
 
 #endif

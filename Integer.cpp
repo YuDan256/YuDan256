@@ -11,6 +11,12 @@ ostream& operator<<(ostream& out, const Integer& num) {
 istream& operator>>(istream& in, Integer& num){
 	string expr;
 	in >> expr;
+	for (int i = 0; i < static_cast<int>(expr.length()); i++) {
+		if (expr[i] < '0' || expr[i] > '9') {
+			cerr << "Invalid input!" << endl;
+			return in;
+		}
+	}
 	num = Integer(expr);
 	return in;
 }
@@ -20,6 +26,10 @@ Integer::Integer(const char* num) {
 	vector<int>result;
 	while (num[len] != '\0')len++;
 	for (int i = len - 1; i > -1; i--) {
+		if (num[i] < '0' || num[i] > '9') {
+			cerr << "Invalid input!" << endl;
+			return;
+		}
 		result.push_back(num[i] - '0');
 	}
 	data = result;
@@ -27,6 +37,12 @@ Integer::Integer(const char* num) {
 
 Integer::Integer(const string& num) {
 	vector<int>result;
+	for (int i = 0; i < static_cast<int>(num.length()); i++) {
+		if (num[i] < '0' || num[i] > '9') {
+			cerr << "Invalid input!" << endl;
+			return;
+		}
+	}
 	for (int i = static_cast<int>(num.length()) - 1; i > -1; i--) {
 		result.push_back(num[i] - '0');
 	}
@@ -229,4 +245,26 @@ Integer& Integer::operator/=(const Integer& n) {
 Integer& Integer::operator%=(const Integer& n){
 	*this = *this % n;
 	return *this;
+}
+
+Integer& Integer::operator++() {
+	*this = *this + 1;
+	return *this;
+}
+
+Integer& Integer::operator--(){
+	*this = *this - 1;
+	return *this;
+}
+
+Integer& Integer::operator++(int){
+	Integer temp = *this;
+	*this = *this + 1;
+	return temp;
+}
+
+Integer& Integer::operator--(int){
+	Integer temp = *this;
+	*this = *this - 1;
+	return temp;
 }
