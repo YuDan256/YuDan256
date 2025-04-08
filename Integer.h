@@ -66,7 +66,7 @@ public:
 	Integer operator-()const;
 	Integer operator+()const;
 
-	Integer fabs(const Integer& n)const;
+	static Integer fabs(const Integer& n);
 };
 
 #endif

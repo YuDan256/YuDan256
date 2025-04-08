@@ -308,6 +308,6 @@ Integer Integer::operator+() const {
 	return *this;
 }
 
-Integer Integer::fabs(const Integer& n) const {
+Integer Integer::fabs(const Integer& n){
 	return Integer(n.data, true);
 }
