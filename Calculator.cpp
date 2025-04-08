@@ -9,6 +9,7 @@
 #include "Statistics.h"
 #include "Function.h"
 #include "Normal.h"
+#include "Accurate.h"
 
 using namespace std;
 
@@ -108,5 +109,5 @@ void newInstructions() {
 
 void easterEgg() {
 	cout << "There are no Easter eggs in this calculator." << endl;
-	cout << "(^u^)" << endl;
+	cout << "(^u^)" << endl << endl;
 }

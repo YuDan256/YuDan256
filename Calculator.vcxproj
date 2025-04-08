@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Accurate.h" />
     <ClInclude Include="Base.h" />
     <ClInclude Include="Complex.h" />
     <ClInclude Include="Function.h" />
@@ -28,6 +29,7 @@
     <ClInclude Include="Vector.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Accurate.cpp" />
     <ClCompile Include="Base.cpp" />
     <ClCompile Include="Calculator.cpp" />
     <ClCompile Include="Files.cpp" />
