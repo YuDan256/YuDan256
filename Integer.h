@@ -74,6 +74,9 @@ public:
 	Integer operator-()const;
 	Integer operator+()const;
 
+	bool getSign()const;
+	vector<int>getData()const;
+
 	ull uvalue()const;
 	long long value() const;
 	bool isZero()const;

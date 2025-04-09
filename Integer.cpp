@@ -364,6 +364,14 @@ Integer Integer::fabs(const Integer& n) {
 	return Integer(n.data, true);
 }
 
+bool Integer::getSign() const{
+	return sign;
+}
+
+vector<int> Integer::getData() const{
+	return data;
+}
+
 ull Integer::uvalue()const {
 	if (*this > numeric_limits<ull>::max())throw invalid_argument("The integer is too large.");
 	ull p = 1, result = 0;
