@@ -364,11 +364,11 @@ Integer Integer::fabs(const Integer& n) {
 	return Integer(n.data, true);
 }
 
-bool Integer::getSign() const{
+bool Integer::getSign() const {
 	return sign;
 }
 
-vector<int> Integer::getData() const{
+vector<int> Integer::getData() const {
 	return data;
 }
 

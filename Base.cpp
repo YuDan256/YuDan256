@@ -370,6 +370,7 @@ void Base::factorization(const Base& b) {
 		}
 	}
 	for (Integer i = 3; i * i <= num; i += 2) {
+		if (i.getData()[0] == 5 && i.getData().size() != 1)continue;
 		while (num % i == 0) {
 			frequency[Base(b.base, i)]++;
 			num /= i;
