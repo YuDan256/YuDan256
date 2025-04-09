@@ -77,10 +77,12 @@ public:
 	ull uvalue()const;
 	long long value() const;
 	bool isZero()const;
+	Integer division1(const Integer& n)const;
+	Integer division2(const Integer& n)const;
+	Integer division3(const Integer& n)const;
 
 	static Integer fabs(const Integer& n);
 	static Integer pow(const Integer& n1, const Integer& n2);
-
 };
 
 #endif
