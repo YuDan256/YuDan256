@@ -359,20 +359,29 @@ void Base::compareb(const Base& b1, const Base& b2) {
 
 void Base::factorization(const Base& b) {
 	Integer num = b.data;
-	if (num < 2)throw invalid_argument("The number must be greater than 2.");
-	map<Base, int>frequency;
-	for (Integer i = 2; i <= num; i++) {
+	if (num <= 1) {
+		throw invalid_argument("The number must be greater than 1.");
+	}
+	map<Base, int> frequency;
+	if (num % 2 == 0) {
+		while (num % 2 == 0) {
+			frequency[Base(b.base, 2)]++;
+			num /= 2;
+		}
+	}
+	for (Integer i = 3; i * i <= num; i += 2) {
 		while (num % i == 0) {
 			frequency[Base(b.base, i)]++;
 			num /= i;
 		}
-		if (i * i > num)break;
 	}
-	if (num != 1)frequency[Base(b.base, num)]++;
-	for (auto it = frequency.begin(); it != frequency.end(); it++) {
-		cout << "factor:\t";
-		it->first.print();
-		cout << "power:\t" << it->second << endl;
+	if (num > 1) {
+		frequency[Base(b.base, num)]++;
+	}
+	for (const auto& pair : frequency) {
+		cout << "Factor:\t";
+		pair.first.print();
+		cout << "Power:\t" << pair.second << endl;
 	}
 }
 
