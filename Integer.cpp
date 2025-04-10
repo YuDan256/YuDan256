@@ -469,6 +469,90 @@ Integer Integer::division3(const Integer& n) const {
 	return Integer(quotient_data, quotient_sign);
 }
 
+vector<Integer> Integer::read_primes(const string& filename, const Integer& max_size) {
+	vector<Integer> primes;
+	ifstream file(filename);
+	if (!file.is_open()) {
+		throw runtime_error("无法打开文件: " + filename);
+	}
+
+	string line;
+
+	while (getline(file, line)) {
+		if (!line.empty()) {
+			Integer prime(line);
+			if (prime < max_size) {
+				primes.emplace_back(prime);
+			}
+			else break;
+		}
+	}
+
+	file.close();
+	return primes;
+}
+
+Integer Integer::pow(const Integer& n) const {
+	if (isZero()&&n<=0)throw invalid_argument("When the base is zero, the exponent must be positive.");
+	if (n < 0)return 0;
+	Integer result = 1;
+	for (Integer i = 0; i < n; i++) {
+		result *= *this;
+	}
+	return result;
+}
+
+Integer Integer::gcd(const Integer& n) const{
+	Integer b = fabs(*this), c = fabs(n);
+	if (n.isZero()) {
+		return b;
+	}
+	else {
+		Integer a = b % c;
+		return c.gcd(a);
+	}
+}
+
+Integer Integer::lcm(const Integer& n) const{
+	Integer a = fabs(*this), b = fabs(n);
+	return a*b/gcd(a,b);
+}
+
+map<Integer, Integer> Integer::factorization() const{
+	Integer num = *this;
+	if (num <= 1) {
+		throw invalid_argument("The number must be greater than 1.");
+	}
+	map<Integer, Integer>result;
+	while (num % 2 == 0) {
+		result[2]++;
+		num /= 2;
+	}
+	vector<Integer>primes = read_primes("D:\\Prime\\Prime.txt",num.sqrt()+1);
+	for (Integer i : primes) {
+		while (num % i == 0) {
+			result[i]++;
+			num /= i;
+		}
+		if (i * i > num)break;
+	}
+	if (num > 1) {
+		Integer i = 3;
+		if (primes.size()>1)i = primes.back();
+		for (; i * i <= num; i += 2) {
+			if (i.getData()[0] == 5 && i.getData().size() != 1)continue;
+			while (num % i == 0) {
+				result[i]++;
+				num /= i;
+			}
+		}
+	}
+	if (num > 1) {
+		result[num]++;
+	}
+	return result;
+}
+
 Integer Integer::pow(const Integer& n1, const Integer& n2) {
 	Integer result = 1;
 	if (n2 <= 0 && n1 == 0)throw invalid_argument("When the base is zero, the exponent must be positive.");
@@ -476,5 +560,48 @@ Integer Integer::pow(const Integer& n1, const Integer& n2) {
 	for (Integer i = 0; i < n2; i++) {
 		result *= n1;
 	}
+	return result;
+}
+
+Integer Integer::sqrt(const Integer& n){
+	return n.sqrt();
+}
+
+Integer Integer::gcd(const Integer& n1, const Integer& n2){
+	return n1.gcd(n2);
+}
+
+Integer Integer::lcm(const Integer& n1, const Integer& n2){
+	return n1.lcm(n2);
+}
+
+Integer Integer::sqrt() const {
+	if (*this < 0) {
+		throw invalid_argument("Square root of negative number.");
+	}
+	if (*this == 0 || *this == 1) {
+		return *this;
+	}
+
+	Integer low = 1;
+	Integer high = *this;
+	Integer result = 0;
+
+	while (low <= high) {
+		Integer mid = (low + high) / 2;
+		Integer mid_squared = mid * mid;
+
+		if (mid_squared == *this) {
+			return mid;
+		}
+		else if (mid_squared < *this) {
+			result = mid;
+			low = mid + 1;
+		}
+		else {
+			high = mid - 1;
+		}
+	}
+
 	return result;
 }

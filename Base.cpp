@@ -362,22 +362,10 @@ void Base::factorization(const Base& b) {
 	if (num <= 1) {
 		throw invalid_argument("The number must be greater than 1.");
 	}
-	map<Base, int> frequency;
-	if (num % 2 == 0) {
-		while (num % 2 == 0) {
-			frequency[Base(b.base, 2)]++;
-			num /= 2;
-		}
-	}
-	for (Integer i = 3; i * i <= num; i += 2) {
-		if (i.getData()[0] == 5 && i.getData().size() != 1)continue;
-		while (num % i == 0) {
-			frequency[Base(b.base, i)]++;
-			num /= i;
-		}
-	}
-	if (num > 1) {
-		frequency[Base(b.base, num)]++;
+	map<Base, Integer> frequency;
+	map<Integer, Integer>result = num.factorization();
+	for (pair i : result) {
+		frequency[Base(b.base, i.first)] = i.second;
 	}
 	for (const auto& pair : frequency) {
 		cout << "Factor:\t";

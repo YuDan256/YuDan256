@@ -4,6 +4,8 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <fstream>
+#include <map>
 
 using namespace std;
 typedef unsigned long long ull;
@@ -14,7 +16,7 @@ private:
 	bool sign;
 public:
 	Integer(const vector<int>& data, const bool& sign) : data(data), sign(sign) {};
-	Integer() : data({ '0' }), sign(true) {};
+	Integer() : data({0}), sign(true) {};
 	Integer(const char* num);
 	Integer(const string& num);
 
@@ -80,12 +82,21 @@ public:
 	ull uvalue()const;
 	long long value() const;
 	bool isZero()const;
+	Integer sqrt() const;
 	Integer division1(const Integer& n)const;
 	Integer division2(const Integer& n)const;
 	Integer division3(const Integer& n)const;
+	Integer pow(const Integer& n) const;
+	Integer gcd(const Integer& n) const;
+	Integer lcm(const Integer& n)const;
+	map<Integer, Integer>factorization()const;
 
 	static Integer fabs(const Integer& n);
 	static Integer pow(const Integer& n1, const Integer& n2);
+	static Integer sqrt(const Integer& n);
+	static Integer gcd(const Integer& n1, const Integer& n2);
+	static Integer lcm(const Integer& n1, const Integer& n2);
+	static vector<Integer> read_primes(const string& filename, const Integer & max_size);
 };
 
 #endif
