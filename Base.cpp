@@ -631,11 +631,11 @@ Base Base::parseTermb(const string& expr, size_t& currentPos, const map<string, 
 					result = result * rhs;
 					break;
 				case '/':
-					if (rhs.data.uvalue() == 0) throw runtime_error("Division by zero error.");
+					if (rhs.data.isZero()) throw runtime_error("Division by zero error.");
 					result = result / rhs;
 					break;
 				case '%':
-					if (rhs.data.uvalue() == 0) throw runtime_error("Division by zero error.");
+					if (rhs.data.isZero()) throw runtime_error("Division by zero error.");
 					result = result % rhs;
 					break;
 				default:

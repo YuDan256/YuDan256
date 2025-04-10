@@ -254,11 +254,8 @@ Integer Integer::operator/(const Integer& n) const {
 	if (n.isZero()) {
 		throw invalid_argument("Division by zero error.");
 	}
-	if (n <= numeric_limits<ull>::max() - 1) {
-		if (*this <= numeric_limits<ull>::max() - 1)return division1(n);
-		else return division2(n);
-	}
-	else return division3(n);
+	if (n <= numeric_limits<ull>::max() - 1 && *this <= numeric_limits<ull>::max() - 1) return division1(n);
+	else return division2(n);
 }
 
 Integer Integer::operator%(const Integer& n) const {
@@ -401,30 +398,11 @@ bool Integer::isZero() const {
 Integer Integer::division1(const Integer& n) const {
 	bool result_sign = sign == n.sign;
 	ull n1 = uvalue(), n2 = n.uvalue();
-	return Integer(n1 / n2) * (result_sign ? Integer(1) : Integer(-1));
+	return Integer(Integer(n1 / n2).data, result_sign);
 }
 
 Integer Integer::division2(const Integer& n) const {
-	bool result_sign = sign == n.sign;
-	size_t pos = 0, size = data.size();
-	ull num = n.uvalue(), a, b = 0, p;
-	Integer result = 0;
-	while (pos < size) {
-		vector<int>temp;
-		for (int i = 0; i < 8 && pos < size; i++, pos++) {
-			temp.insert(temp.begin(), data[size - pos - 1]);
-		}
-		p = static_cast<ull>(std::pow(10, (pos - 1) % 8 + 1));
-		result *= p;
-		a = Integer(temp, true).uvalue() + b * p;
-		b = a % num;
-		result += a / num;
-	}
-	return result * (result_sign ? Integer(1) : Integer(-1));
-}
-
-Integer Integer::division3(const Integer& n) const {
-	if (n.uvalue() == 0) {
+	if (n.isZero()) {
 		throw invalid_argument("Division by zero error.");
 	}
 
@@ -493,7 +471,7 @@ vector<Integer> Integer::read_primes(const string& filename, const Integer& max_
 }
 
 Integer Integer::pow(const Integer& n) const {
-	if (isZero()&&n<=0)throw invalid_argument("When the base is zero, the exponent must be positive.");
+	if (isZero() && n <= 0)throw invalid_argument("When the base is zero, the exponent must be positive.");
 	if (n < 0)return 0;
 	Integer result = 1;
 	for (Integer i = 0; i < n; i++) {
@@ -502,50 +480,82 @@ Integer Integer::pow(const Integer& n) const {
 	return result;
 }
 
-Integer Integer::gcd(const Integer& n) const{
-	Integer b = fabs(*this), c = fabs(n);
-	if (n.isZero()) {
-		return b;
+Integer Integer::gcd(const Integer& n) const {
+	Integer a = fabs(*this);
+	Integer b = fabs(n);
+
+	if (b.isZero()) {
+		return a;
 	}
-	else {
-		Integer a = b % c;
-		return c.gcd(a);
+
+	while (true) {
+		Integer remainder = a % b;
+		if (remainder.isZero()) {
+			return b;
+		}
+		a = b;
+		b = remainder;
 	}
 }
 
-Integer Integer::lcm(const Integer& n) const{
+Integer Integer::lcm(const Integer& n) const {
 	Integer a = fabs(*this), b = fabs(n);
-	return a*b/gcd(a,b);
+	return a * b / gcd(a, b);
 }
 
-map<Integer, Integer> Integer::factorization() const{
+map<Integer, Integer> Integer::factorization() const {
 	Integer num = *this;
 	if (num <= 1) {
 		throw invalid_argument("The number must be greater than 1.");
 	}
-	map<Integer, Integer>result;
+
+	map<Integer, Integer> result;
+
 	while (num % 2 == 0) {
 		result[2]++;
 		num /= 2;
 	}
-	vector<Integer>primes = read_primes("D:\\Prime\\Prime.txt",num.sqrt()+1);
-	for (Integer i : primes) {
+
+	ifstream file("D:\\Prime\\Prime.txt");
+	if (!file.is_open()) {
+		throw runtime_error("Failed to open file: D:\\Prime\\Prime.txt");
+	}
+
+	string line;
+	Integer current_prime;
+
+	while (getline(file, line)) {
+		if (line.empty()) continue;
+
+		current_prime = Integer(line);
+		if (current_prime * current_prime > num) {
+			break;
+		}
+
+		while (num % current_prime == 0) {
+			result[current_prime]++;
+			num /= current_prime;
+		}
+	}
+
+	file.close();
+	Integer i = 3;
+	if (!current_prime.isZero()) {
+		i = current_prime + 2;
+	}
+
+	while (i * i <= num) {
+		if (i.getData()[0] == 5 && i.getData().size() != 1) {
+			i += 2;
+			continue;
+		}
+
 		while (num % i == 0) {
 			result[i]++;
 			num /= i;
 		}
-		if (i * i > num)break;
-	}
-	if (num > 1) {
-		Integer i = 3;
-		if (primes.size()>1)i = primes.back();
-		for (; i * i <= num; i += 2) {
-			if (i.getData()[0] == 5 && i.getData().size() != 1)continue;
-			while (num % i == 0) {
-				result[i]++;
-				num /= i;
-			}
-		}
+
+		i += 2;
 	}
 	if (num > 1) {
 		result[num]++;
@@ -563,15 +573,15 @@ Integer Integer::pow(const Integer& n1, const Integer& n2) {
 	return result;
 }
 
-Integer Integer::sqrt(const Integer& n){
+Integer Integer::sqrt(const Integer& n) {
 	return n.sqrt();
 }
 
-Integer Integer::gcd(const Integer& n1, const Integer& n2){
+Integer Integer::gcd(const Integer& n1, const Integer& n2) {
 	return n1.gcd(n2);
 }
 
-Integer Integer::lcm(const Integer& n1, const Integer& n2){
+Integer Integer::lcm(const Integer& n1, const Integer& n2) {
 	return n1.lcm(n2);
 }
 

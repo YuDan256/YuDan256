@@ -6,6 +6,9 @@
 #include <iostream>
 #include <fstream>
 #include <map>
+#include <random>
+#include <algorithm>
+#include <queue>
 
 using namespace std;
 typedef unsigned long long ull;
@@ -85,11 +88,11 @@ public:
 	Integer sqrt() const;
 	Integer division1(const Integer& n)const;
 	Integer division2(const Integer& n)const;
-	Integer division3(const Integer& n)const;
 	Integer pow(const Integer& n) const;
 	Integer gcd(const Integer& n) const;
 	Integer lcm(const Integer& n)const;
 	map<Integer, Integer>factorization()const;
+
 
 	static Integer fabs(const Integer& n);
 	static Integer pow(const Integer& n1, const Integer& n2);
