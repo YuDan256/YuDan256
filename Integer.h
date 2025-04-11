@@ -99,7 +99,8 @@ public:
 	static Integer sqrt(const Integer& n);
 	static Integer gcd(const Integer& n1, const Integer& n2);
 	static Integer lcm(const Integer& n1, const Integer& n2);
-	static vector<Integer> read_primes(const string& filename, const Integer & max_size);
+	static vector<Integer> read_primes(const string& filename, const Integer& max_size);
+
 };
 
 #endif
