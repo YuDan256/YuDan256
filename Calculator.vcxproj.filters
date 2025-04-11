@@ -62,9 +62,6 @@
     <ClCompile Include="Polynomial.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Vector.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Statistics.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -75,6 +72,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Integer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -103,6 +103,9 @@
       <Filter>资源文件</Filter>
     </Text>
     <Text Include="D:\Calculator\Function.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="D:\Calculator\Integer.txt">
       <Filter>资源文件</Filter>
     </Text>
   </ItemGroup>

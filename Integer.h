@@ -17,6 +17,7 @@ class Integer {
 private:
 	vector<int> data;
 	bool sign;
+	static map<char, int>iop;
 public:
 	Integer(const vector<int>& data, const bool& sign) : data(data), sign(sign) {};
 	Integer() : data({0}), sign(true) {};
@@ -81,6 +82,7 @@ public:
 
 	bool getSign()const;
 	vector<int>getData()const;
+	void print()const;
 
 	ull uvalue()const;
 	long long value() const;
@@ -93,13 +95,17 @@ public:
 	Integer lcm(const Integer& n)const;
 	map<Integer, Integer>factorization()const;
 
-
 	static Integer fabs(const Integer& n);
 	static Integer pow(const Integer& n1, const Integer& n2);
 	static Integer sqrt(const Integer& n);
 	static Integer gcd(const Integer& n1, const Integer& n2);
 	static Integer lcm(const Integer& n1, const Integer& n2);
 	static vector<Integer> read_primes(const string& filename, const Integer& max_size);
+
+	static void storei(const map<string, Integer>& numbers);
+	static map<string, Integer> loadi();
+	static void deletei(map<string, Integer>& variables);
+	static void showi(const map<string, Integer>& variables);
 
 };
 

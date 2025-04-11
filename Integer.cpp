@@ -369,6 +369,10 @@ vector<int> Integer::getData() const {
 	return data;
 }
 
+void Integer::print() const{
+	cout << *this << endl;
+}
+
 ull Integer::uvalue()const {
 	if (*this > numeric_limits<ull>::max())throw invalid_argument("The integer is too large.");
 	ull p = 1, result = 0;

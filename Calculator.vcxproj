@@ -51,6 +51,7 @@
     <Text Include="D:\Calculator\Base.txt" />
     <Text Include="D:\Calculator\Complex.txt" />
     <Text Include="D:\Calculator\Function.txt" />
+    <Text Include="D:\Calculator\Integer.txt" />
     <Text Include="D:\Calculator\Matrix.txt" />
     <Text Include="D:\Calculator\Normal.txt" />
     <Text Include="D:\Calculator\Statistics.txt" />

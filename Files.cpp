@@ -1,12 +1,13 @@
-#include<fstream>
-#include<filesystem>
-#include"Complex.h"
-#include"Base.h"
-#include"Matrix.h"
-#include"Vector.h"
-#include"Statistics.h"
-#include"Normal.h"
+#include <fstream>
+#include <filesystem>
+#include "Complex.h"
+#include "Base.h"
+#include "Matrix.h"
+#include "Vector.h"
+#include "Statistics.h"
+#include "Normal.h"
 #include "Function.h"
+#include "Integer.h"
 
 using namespace std;
 
@@ -70,6 +71,9 @@ void Function::storef(const map<string, Function>& functions) {
 	store(functions, "Function.txt");
 }
 
+void Integer::storei(const map<string, Integer>& numbers) {
+	store(numbers, "Integer.txt");
+}
 //分解字符串
 static vector<string>getTokens(const string& _line) {
 	vector<string>tokens;
@@ -205,6 +209,19 @@ map<string, Function>Function::loadf() {
 	return functions;
 }
 
+map<string, Integer>Integer::loadi() {
+	string filename = R"(D:\Calculator\Integer.txt)";
+	ifstream fin(filename);
+	if (!fin.is_open())throw invalid_argument("The file " + filename + " cannot be opened.");
+	map<string, Integer>numbers;
+	string number;
+	while (getline(fin, number)) {
+		vector<string>tokens = getTokens(number);
+		string name = tokens[0], expr = tokens[1];
+		numbers[name] = Integer(expr);
+	}
+	return numbers;
+}
 //删除变量
 template<typename T>
 void deleteVariable(map<string, T>& variables, const string& name, const string& fileName) {
@@ -292,6 +309,17 @@ void Function::deletef(map<string, Function>& variables) {
 	}
 }
 
+void Integer::deletei(map<string, Integer>& variables) {
+	string name;
+	cout << "Enter end to finish delete." << endl;
+	while (1) {
+		cout << "Enter the name of the variable you want to delete:" << endl;
+		cin >> name;
+		if (name == "end")break;
+		else deleteVariable(variables, name, "Function.txt");
+	}
+}
+
 //展示变量
 template<typename T>
 void show(const map<string, T>& variables) {
@@ -330,5 +358,9 @@ void Normal::shown(const map<string, double>& variables) {
 }
 
 void Function::showf(const map<string, Function>& variables) {
+	show(variables);
+}
+
+void Integer::showi(const map<string, Integer>& variables) {
 	show(variables);
 }
