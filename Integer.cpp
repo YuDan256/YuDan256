@@ -2,7 +2,7 @@
 
 using namespace std;
 
-map<char, int> Integer::iop = { {'+',1},{'-',1},{'*',2},{'/',2},{'^',3} };
+map<char, int> Integer::iop = { {'+',1},{'-',1},{'*',2},{'/',2},{'%',2},{ '^',3 } };
 map<string, Integer(*)(const Integer&)>Integer::functioni1 = {
 	{"abs",fabs},{"sqrt",sqrt}
 };
@@ -412,7 +412,7 @@ bool Integer::isZero() const {
 Integer Integer::division1(const Integer& n) const {
 	bool result_sign = sign == n.sign;
 	ull n1 = uvalue(), n2 = n.uvalue();
-	return Integer(Integer(n1 / n2).data, result_sign);
+	return Integer(n1 / n2) * (result_sign ? 1 : -1);
 }
 
 Integer Integer::division2(const Integer& n) const {
@@ -458,7 +458,7 @@ Integer Integer::division2(const Integer& n) const {
 		quotient_data.pop_back();
 	}
 
-	return Integer(quotient_data, quotient_sign);
+	return Integer(quotient_data, true) * (quotient_sign ? 1 : -1);
 }
 
 vector<Integer> Integer::read_primes(const string& filename, const Integer& max_size) {
@@ -577,7 +577,7 @@ map<Integer, Integer> Integer::factorization() const {
 	return result;
 }
 
-void Integer::factor() const{
+void Integer::factor() const {
 	map<Integer, Integer>factors = factorization();
 	cout << "Factor\tPower" << endl;
 	for (auto& pair : factors) {
@@ -708,8 +708,12 @@ Integer Integer::parseExpressioni(const string& expr, size_t& currentPos, const 
 			++currentPos;
 			Integer rhs = parseTermi(expr, currentPos, numbers);
 			switch (op) {
-			case '+': result += rhs; break;
-			case '-': result -= rhs; break;
+			case '+':
+				result += rhs;
+				break;
+			case '-':
+				result -= rhs;
+				break;
 			default: throw runtime_error("Unknown operator.");
 			}
 		}
@@ -735,6 +739,10 @@ Integer Integer::parseTermi(const string& expr, size_t& currentPos, const map<st
 				case '/':
 					if (rhs == 0) throw runtime_error("Division by zero error.");
 					result /= rhs;
+					break;
+				case '%':
+					if (rhs == 0) throw runtime_error("Division by zero error.");
+					result %= rhs;
 					break;
 				default:
 					throw runtime_error("Unknown operator.");
