@@ -17,7 +17,11 @@ class Integer {
 private:
 	vector<int> data;
 	bool sign;
+
 	static map<char, int>iop;
+	static map<std::string, Integer(*)(const Integer&)>functioni1;
+	static map<std::string, Integer(*)(const Integer&, const Integer&)>functioni2;
+
 public:
 	Integer(const vector<int>& data, const bool& sign) : data(data), sign(sign) {};
 	Integer() : data({0}), sign(true) {};
@@ -94,6 +98,7 @@ public:
 	Integer gcd(const Integer& n) const;
 	Integer lcm(const Integer& n)const;
 	map<Integer, Integer>factorization()const;
+	void factor()const;
 
 	static Integer fabs(const Integer& n);
 	static Integer pow(const Integer& n1, const Integer& n2);
@@ -106,7 +111,14 @@ public:
 	static map<string, Integer> loadi();
 	static void deletei(map<string, Integer>& variables);
 	static void showi(const map<string, Integer>& variables);
+	static void input(map<string, Integer>& variables);
+	static void newInteger();
 
+	static Integer parseFunctioni(const string& expr, const map<string, Integer>& numbers);
+	static Integer parseExpressioni(const string& expr, size_t& currentPos, const map<string, Integer>& numbers);
+	static Integer parseTermi(const string& expr, size_t& currentPos, const map<string, Integer>& numbers);
+	static Integer parsePoweri(const string& expr, size_t& currentPos, const map<string, Integer>& numbers);
+	
 };
 
 #endif

@@ -44,6 +44,7 @@ void newCalculation() {
 			<< "B - base" << endl
 			<< "F - function" << endl
 			<< "S - statistics" << endl
+			<< "Z - integer" << endl
 			<< "Q - quit" << endl;
 		std::cin >> mode;
 
@@ -79,6 +80,9 @@ void newCalculation() {
 			break;
 		case'S':
 			Statistics::newStatistics();
+			break;
+		case'Z':
+			Integer::newInteger();
 			break;
 		case'Q':
 			quit = 1;
