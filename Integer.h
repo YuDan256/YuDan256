@@ -60,6 +60,7 @@ public:
 	Integer operator+(const Integer& n) const;
 	Integer operator-(const Integer& n) const;
 	Integer operator*(const Integer& n) const;
+	
 	Integer operator/(const int& divisor) const;
 	Integer operator/(const Integer& n) const;
 	Integer operator%(const Integer& n) const;
@@ -99,13 +100,14 @@ public:
 	Integer lcm(const Integer& n)const;
 	map<Integer, Integer>factorization()const;
 	void factor()const;
+	static vector<Integer> read_primes(const string& filename, const Integer& max_size);
 
 	static Integer fabs(const Integer& n);
 	static Integer pow(const Integer& n1, const Integer& n2);
 	static Integer sqrt(const Integer& n);
 	static Integer gcd(const Integer& n1, const Integer& n2);
 	static Integer lcm(const Integer& n1, const Integer& n2);
-	static vector<Integer> read_primes(const string& filename, const Integer& max_size);
+	static Integer sgn(const Integer& n);
 
 	static void storei(const map<string, Integer>& numbers);
 	static map<string, Integer> loadi();

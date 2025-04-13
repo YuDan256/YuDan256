@@ -216,6 +216,7 @@ Integer Integer::operator-(const Integer& n) const {
 
 Integer Integer::operator*(const Integer& n) const {
 	Integer a = fabs(*this), b = fabs(n);
+	bool result_sign = sign == n.sign;
 	size_t a_size = a.data.size();
 	size_t b_size = b.data.size();
 	if (a_size == 0 || b_size == 0 || (a.data[0] == 0 && a_size == 1) || (b.data[0] == 0 && b_size == 1)) {
@@ -237,7 +238,7 @@ Integer Integer::operator*(const Integer& n) const {
 		first_non_zero--;
 	}
 	result.resize(first_non_zero + 1);
-	bool result_sign = sign == n.sign;
+	
 	return Integer(result, result_sign);
 }
 
@@ -609,6 +610,12 @@ Integer Integer::lcm(const Integer& n1, const Integer& n2) {
 	return n1.lcm(n2);
 }
 
+Integer Integer::sgn(const Integer& n){
+	if (n.isZero())return 0;
+	else if (n > 0)return 1;
+	else return -1;
+}
+
 Integer Integer::sqrt() const {
 	if (*this < 0) {
 		throw invalid_argument("Square root of negative number.");
@@ -739,11 +746,11 @@ Integer Integer::parseTermi(const string& expr, size_t& currentPos, const map<st
 					result *= rhs;
 					break;
 				case '/':
-					if (rhs == 0) throw runtime_error("Division by zero error.");
+					if (rhs.isZero()) throw runtime_error("Division by zero error.");
 					result /= rhs;
 					break;
 				case '%':
-					if (rhs == 0) throw runtime_error("Division by zero error.");
+					if (rhs.isZero()) throw runtime_error("Division by zero error.");
 					result %= rhs;
 					break;
 				default:
