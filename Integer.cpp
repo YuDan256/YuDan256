@@ -38,6 +38,7 @@ istream& operator>>(istream& in, Integer& num) {
 
 Integer::Integer(const char* num) {
 	sign = true;
+	data = { 0 };
 	int len = 0;
 	vector<int>result;
 	if (num[0] != '+' && num[0] != '-' && !isdigit(num[0])) {
@@ -70,12 +71,13 @@ Integer::Integer(const char* num) {
 
 Integer::Integer(const string& num) {
 	sign = true;
+	data = { 0 };
 	vector<int>result;
 	string n = num;
-	if (num[0] == '+')erase(n, 0);
+	if (num[0] == '+')erase(n, '+');
 	else if (num[0] == '-') {
 		sign = false;
-		erase(n, 0);
+		erase(n, '-');
 	}
 	for (int i = 0; i < static_cast<int>(num.length()); i++) {
 		if (num[i] < '0' || num[i] > '9') {
@@ -666,7 +668,7 @@ void Integer::input(map<string, Integer>& variables) {
 			continue;
 		}
 		variables[name] = a;
-		cout << "The Complex Number " + name + " is successfully created." << endl;
+		cout << "The Integer Number " + name + " is successfully created." << endl;
 		storei(variables);
 	}
 }
