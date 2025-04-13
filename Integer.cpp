@@ -4,7 +4,7 @@ using namespace std;
 
 map<char, int> Integer::iop = { {'+',1},{'-',1},{'*',2},{'/',2},{'%',2},{ '^',3 } };
 map<string, Integer(*)(const Integer&)>Integer::functioni1 = {
-	{"abs",fabs},{"sqrt",sqrt}
+	{"abs",fabs},{"sqrt",sqrt},{"sgn",sgn},
 };
 map<string, Integer(*)(const Integer&, const Integer&)>Integer::functioni2 = {
 	{"gcd",gcd},{"lcm",lcm},{"pow",pow}
