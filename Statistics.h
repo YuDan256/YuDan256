@@ -37,6 +37,7 @@ public:
 	Statistics sort() const;
 	void insert(const int& pos, const double& value);
 	void erase(const int& pos);
+	void add();
 
 	//单变量统计
 	static int n(const Statistics& s);

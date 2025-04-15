@@ -148,6 +148,26 @@ void Statistics::erase(const int& pos) {
 	data.erase(it);
 }
 
+void Statistics::add(){
+	string expr;
+	double _x;
+	map<string, double>variables;
+	variables["PI"] = 3.14159265358979323846264;
+	variables["E"] = 2.7182818284590452353602874;
+
+	cout << "Enter \"end\" to finish addition." << endl;
+	while (1) {
+		cin >> expr;
+		if (expr == "end" && data.size() > 1)break;
+		try { _x = Normal::parsen(expr, variables); }
+		catch (const exception& e) {
+			cerr << "Error: " << e.what() << endl;
+			continue;
+		}
+		data.push_back(_x);
+	}
+}
+
 double Statistics::percentile(const Statistics& s, const int& p) {
 	if (p <= 0 || p >= 100)throw invalid_argument("The p for pth percentile is out of range.");
 	vector<double>temp = s.sort().data;
@@ -413,6 +433,12 @@ void Statistics::parseFunctions(const string& expr, map<string, Statistics>& dat
 				}
 				else if (identifier == "reg") {
 					linearRegression(X);
+				}
+				else if (identifier == "add") {
+					X.add();
+					datasets[argument1] = X;
+					X.print();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
 				}
 				else throw runtime_error("Invalid function: " + identifier);
 			}
