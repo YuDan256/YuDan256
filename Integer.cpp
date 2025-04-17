@@ -238,7 +238,7 @@ Integer Integer::operator*(const Integer& n) const {
 		first_non_zero--;
 	}
 	result.resize(first_non_zero + 1);
-	
+
 	return Integer(result, result_sign);
 }
 
@@ -610,7 +610,7 @@ Integer Integer::lcm(const Integer& n1, const Integer& n2) {
 	return n1.lcm(n2);
 }
 
-Integer Integer::sgn(const Integer& n){
+Integer Integer::sgn(const Integer& n) {
 	if (n.isZero())return 0;
 	else if (n > 0)return 1;
 	else return -1;
@@ -909,7 +909,15 @@ void Integer::newInteger() {
 		}
 		if (expression == "function_list") {
 			cout << endl << "The following functions can only be used individually:" << endl;
+			cout << "Print - print(Z)" << endl;
+			cout << "Factorization - fact(Z)" << endl;
 			cout << "The following functions can be used with expressions:" << endl;
+			cout << "Absolute value - abs(Z)" << endl;
+			cout << "Square root - sqrt(Z)" << endl;
+			cout << "Sign - sgn(Z)" << endl;
+			cout << "Power - pow(Z,Z)" << endl;
+			cout << "GCD - gcd(Z,Z)" << endl;
+			cout << "LCM - lcm(Z,Z)" << endl;
 			cout << endl;
 			continue;
 		}

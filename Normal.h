@@ -27,6 +27,7 @@ public:
 
 	static double deg(double rad);
 	static double rad(double deg);
+	static double sgn(double x);
 };
 
 #endif

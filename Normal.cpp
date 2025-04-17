@@ -9,7 +9,7 @@ map<string, double(*)(double)> Normal::functionn = {
 	{"sin", sin}, {"cos", cos}, {"tan", tan}, {"log", log}, {"ln", log},{"sqrt", sqrt},{"exp", exp},
 	{"arcsin", asin},{"arccos", acos},{"arctan", atan},{"asin",asin},{"acos",acos},{"atan",atan},
 	{"sh",sinh},{"ch",cosh},{"th",tanh},{"sinh",sinh},{"cosh",cosh},{"tanh",tanh},{"deg",deg},{"rad",rad},
-	{"abs",fabs}
+	{"abs",fabs},{"sgn",sgn}
 };
 
 double Normal::deg(double rad) {
@@ -18,6 +18,12 @@ double Normal::deg(double rad) {
 
 double Normal::rad(double deg) {
 	return deg / 180 * 3.141592653589793238462643383279502;
+}
+
+double Normal::sgn(double x){
+	if (x > 0)return 1;
+	else if (x < 0)return -1;
+	else return 0;
 }
 
 double Normal::parsen(const string& expr, const map<string, double>& variables) {
@@ -249,8 +255,11 @@ void Normal::newNormal() {
 			cout << "Arcsin - arcsin(R)/asin(R)" << endl;
 			cout << "Arccos - arccos(R)/acos(R)" << endl;
 			cout << "Arctan - arctan(R)/atan(R)" << endl;
+			cout << "Exponential - exp(R)" << endl;
 			cout << "Degree - deg(R)" << endl;
 			cout << "Radian - rad(R)" << endl;
+			cout << "Absolute value - abs(R)" << endl;
+			cout << "Sign - sgn(R)" << endl;
 			cout << "Sinh - sinh(R)/sh(R)" << endl;
 			cout << "Cosh - cosh(R)/ch(R)" << endl;
 			cout << "Tanh - tanh(R)/th(R)" << endl << endl;
