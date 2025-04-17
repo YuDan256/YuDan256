@@ -5,7 +5,7 @@
 using namespace std;
 
 void Matrix::doLinearEquations() {
-	cout << "Welcome to the Linear Equations Calculator!" << endl;
+	cout << "Welcome to the Linear Equations Calculator!" << endl << endl;
 	char operation;
 	string eNum, varNum, _value;
 	int equationNum, variableNum;

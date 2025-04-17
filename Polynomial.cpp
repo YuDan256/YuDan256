@@ -9,8 +9,8 @@ void Complex::doPolynomial() {
 	map<string, Complex>p = {
 		{"PI",Complex(PI)},{"E",Complex(E)},{"i",Complex(0.0,1.0)}
 	};
-	cout << "Welcome to the Polynomial Equation Calculator!" << endl
-		<< "This calculator will solve polynomial equations for you in the complex number domain." << endl;
+	cout << "Welcome to the Polynomial Equation Calculator!" << endl << endl;
+	cout << "This calculator will solve polynomial equations for you in the complex number domain." << endl;
 	while (1) {
 		cout << "Enter the degree of the polynomial (1~4):";
 		cin >> _degree;

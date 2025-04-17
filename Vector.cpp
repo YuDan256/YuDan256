@@ -548,7 +548,7 @@ void Vector::newVector() {
 	map<string, Vector>vectors;
 	char choice;
 
-	cout << "Welcome to the Vector Calculator!" << endl;
+	cout << "Welcome to the Vector Calculator!" << endl << endl;
 	cout << "Do you want to use the variables you defined before?(Y/N)" << endl
 		<< "If no,the variable list will be cleared." << endl;
 	do {

@@ -108,7 +108,7 @@ void Function::newFunction() {
 	char choice;
 	map<string, Function>functions;
 
-	cout << "Welcome to the Function Calculator!" << endl;
+	cout << "Welcome to the Function Calculator!" << endl << endl;
 	cout << "This mode only supports operations on predefined functions." << endl;
 	cout << "Do you want to use the functions you defined before?(Y/N)" << endl
 		<< "If no,the function list will be cleared." << endl;

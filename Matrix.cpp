@@ -1806,7 +1806,7 @@ void Matrix::newMatrix() {
 	map<string, Matrix>matrices;
 	char choice;
 
-	cout << "Welcome to the Matrix Calculator!" << endl;
+	cout << "Welcome to the Matrix Calculator!" << endl << endl;
 	cout << "Do you want to use the variables you defined before?(Y/N)" << endl
 		<< "If no,the variable list will be cleared." << endl;
 	do {

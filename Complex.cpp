@@ -603,7 +603,7 @@ void Complex::newComplex() {
 	map<string, Complex>numbers;
 	char choice;
 
-	cout << "Welcome to the Complex Number Calculator!" << endl;
+	cout << "Welcome to the Complex Number Calculator!" << endl << endl;
 	cout << "Do you want to use the variables you defined before?(Y/N)" << endl
 		<< "If no,the variable list will be cleared." << endl;
 

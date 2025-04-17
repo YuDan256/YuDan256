@@ -148,7 +148,7 @@ void Statistics::erase(const int& pos) {
 	data.erase(it);
 }
 
-void Statistics::add(){
+void Statistics::add() {
 	string expr;
 	double _x;
 	map<string, double>variables;
@@ -305,7 +305,7 @@ void Statistics::newStatistics() {
 	map<string, Statistics>datasets;
 	char choice;
 
-	cout << "Welcome to the Statistics Calculator!" << endl;
+	cout << "Welcome to the Statistics Calculator!" << endl << endl;
 	cout << "You can only utilize functions with defined datasets in this mode." << endl;
 	cout << "Do you want to use the variables you defined before?(Y/N)" << endl
 		<< "If no,the variable list will be cleared." << endl;

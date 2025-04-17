@@ -24,7 +24,7 @@ private:
 
 public:
 	Integer(const vector<int>& data, const bool& sign) : data(data), sign(sign) {};
-	Integer() : data({0}), sign(true) {};
+	Integer() : data({ 0 }), sign(true) {};
 	Integer(const char* num);
 	Integer(const string& num);
 
@@ -60,7 +60,7 @@ public:
 	Integer operator+(const Integer& n) const;
 	Integer operator-(const Integer& n) const;
 	Integer operator*(const Integer& n) const;
-	
+
 	Integer operator/(const int& divisor) const;
 	Integer operator/(const Integer& n) const;
 	Integer operator%(const Integer& n) const;
@@ -120,7 +120,7 @@ public:
 	static Integer parseExpressioni(const string& expr, size_t& currentPos, const map<string, Integer>& numbers);
 	static Integer parseTermi(const string& expr, size_t& currentPos, const map<string, Integer>& numbers);
 	static Integer parsePoweri(const string& expr, size_t& currentPos, const map<string, Integer>& numbers);
-	
+
 };
 
 #endif

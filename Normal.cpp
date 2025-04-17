@@ -20,7 +20,7 @@ double Normal::rad(double deg) {
 	return deg / 180 * 3.141592653589793238462643383279502;
 }
 
-double Normal::sgn(double x){
+double Normal::sgn(double x) {
 	if (x > 0)return 1;
 	else if (x < 0)return -1;
 	else return 0;
@@ -195,7 +195,7 @@ void Normal::newNormal() {
 	map<string, double> variables;
 	char choice;
 
-	cout << "Welcome to the Normal Calculator!" << endl;
+	cout << "Welcome to the Normal Calculator!" << endl << endl;
 	cout << "Do you want to use the variables you defined before?(Y/N)" << endl
 		<< "If no,the variable list will be cleared." << endl;
 	do {

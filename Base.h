@@ -43,7 +43,7 @@ public:
 	Base operator|(const Base& bin)const;
 	Base operator^(const Base& bin)const;
 	Base operator~() const;
-	
+
 	friend ostream& operator<<(ostream& out, const Base& b);
 
 	Base& operator=(const Base& b);
