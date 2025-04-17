@@ -42,18 +42,15 @@ Integer::Integer(const char* num) {
 	int len = 0;
 	vector<int>result;
 	if (num[0] != '+' && num[0] != '-' && !isdigit(num[0])) {
-		cerr << "Invalid input!" << endl;
-		return;
+		throw invalid_argument("Invalid input!");
 	}
 	if ((num[0] == '+' || num[0] == '-') && num[1] == '\0') {
-		cerr << "Invalid input!" << endl;
-		return;
+		throw invalid_argument("Invalid input!");
 	}
 	while (num[len] != '\0')len++;
 	for (int i = len - 1; i > 0; i--) {
 		if (num[i] < '0' || num[i] > '9') {
-			cerr << "Invalid input!" << endl;
-			return;
+			throw invalid_argument("Invalid input!");
 		}
 		result.push_back(num[i] - '0');
 	}
@@ -79,14 +76,13 @@ Integer::Integer(const string& num) {
 		sign = false;
 		erase(n, '-');
 	}
-	for (int i = 0; i < static_cast<int>(num.length()); i++) {
-		if (num[i] < '0' || num[i] > '9') {
-			cerr << "Invalid input!" << endl;
-			return;
+	for (int i = 0; i < static_cast<int>(n.length()); i++) {
+		if (n[i] < '0' || n[i] > '9') {
+			throw invalid_argument("Invalid input!");
 		}
 	}
-	for (int i = static_cast<int>(num.length()) - 1; i > -1; i--) {
-		result.push_back(num[i] - '0');
+	for (int i = static_cast<int>(n.length()) - 1; i > -1; i--) {
+		result.push_back(n[i] - '0');
 	}
 	while (result.size() > 1 && result.back() == 0) {
 		result.pop_back();
