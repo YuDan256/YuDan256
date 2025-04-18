@@ -113,5 +113,5 @@ void newInstructions() {
 
 void easterEgg() {
 	cout << "There are no Easter eggs in this calculator." << endl;
-	cout << "(^u^)" << endl << endl;
+	cout << "(^u^)" << endl;
 }
