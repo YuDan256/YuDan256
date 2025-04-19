@@ -78,6 +78,7 @@ public:
 	static map<string, Vector> loadv();
 	static void deletev(map<string, Vector>& variables);
 	static void showv(const map<string, Vector>& variables);
+	static void processv(const string& expression, map<string, Vector>& variables);
 
 	//Ê½ÄÚº¯Êý
 	static Vector R(const Vector& v);

@@ -4,7 +4,7 @@ using namespace std;
 
 map<char, int> Integer::iop = { {'+',1},{'-',1},{'*',2},{'/',2},{'%',2},{ '^',3 } };
 map<string, Integer(*)(const Integer&)>Integer::functioni1 = {
-	{"abs",fabs},{"sqrt",sqrt},{"sgn",sgn},
+	{"abs",fabs},{"sqrt",sqrt},{"sgn",sgn},{"length",length},{"len",length},{"digit",length},{"prime",prime}
 };
 map<string, Integer(*)(const Integer&, const Integer&)>Integer::functioni2 = {
 	{"gcd",gcd},{"lcm",lcm},{"pow",pow},{"random",randint},{"randint",randint}
@@ -293,6 +293,26 @@ Integer Integer::operator~() const {
 	return ~value();
 }
 
+Integer Integer::operator<<(const Integer& n) const{
+	if (n.isZero())return *this;
+	if (n < 0)return *this >> (-n);
+	Integer result = *this;
+	for (Integer i = 0; i < n; i++) {
+		result = result * 2;
+	}
+	return result;
+}
+
+Integer Integer::operator>>(const Integer& n) const{
+	if (n.isZero())return *this;
+	if (n < 0)return *this << (-n);
+	Integer result = *this;
+	for (Integer i = 0; i < n; i++) {
+		result = result / 2;
+	}
+	return result;
+}
+
 Integer& Integer::operator+=(const Integer& n) {
 	*this = *this + n;
 	return *this;
@@ -392,6 +412,10 @@ ull Integer::uvalue()const {
 	return result;
 }
 
+size_t Integer::size() const{
+	return data.size();
+}
+
 long long Integer::value()const {
 	if (*this > numeric_limits<long long>::max())throw invalid_argument("The integer is too large.");
 	long long p = 1, result = 0;
@@ -464,7 +488,7 @@ vector<Integer> Integer::read_primes(const string& filename, const Integer& max_
 	vector<Integer> primes;
 	ifstream file(filename);
 	if (!file.is_open()) {
-		throw runtime_error("无法打开文件: " + filename);
+		throw runtime_error("Cannot open the file: " + filename);
 	}
 
 	string line;
@@ -481,6 +505,15 @@ vector<Integer> Integer::read_primes(const string& filename, const Integer& max_
 
 	file.close();
 	return primes;
+}
+
+string Integer::to_string(const Integer& n) {
+	string result;
+	for (size_t i = n.data.size(); i > 0; i--) {
+		result += std::to_string(n.data[i - 1]);
+	}
+	if (!n.sign)result = "-" + result;
+	return result;
 }
 
 Integer Integer::pow(const Integer& n) const {
@@ -615,6 +648,29 @@ Integer Integer::sgn(const Integer& n) {
 Integer Integer::randint(const Integer& n1, const Integer& n2) {
 	srand(static_cast<unsigned int>(time(0)));
 	return n1 + Integer(rand()) % (n2 - n1 + 1);
+}
+
+Integer Integer::length(const Integer& n) {
+	return n.data.size();
+}
+
+Integer Integer::prime(const Integer& n) {
+	string filename = "D:\\Prime\\Prime.txt";
+	ifstream file(filename);
+	if (!file.is_open()) {
+		throw runtime_error("Failed to open file: " + filename);
+	}
+	string line;
+	Integer current_prime, i = 0;
+	while (getline(file, line)) {
+		if (line.empty()) continue;
+		current_prime = Integer(line);
+		i++;
+		if (i == n)break;
+	}
+	file.close();
+	if (i < n) throw invalid_argument("The prime number is too great.");
+	else return current_prime;
 }
 
 Integer Integer::sqrt() const {
@@ -894,6 +950,10 @@ void Integer::newInteger() {
 	while (1) {
 		cout << "Enter an expression:" << endl;
 		getline(cin, expression);
+		if (expression.find('=') != string::npos) {
+			processi(expression, numbers);
+			continue;
+		}
 		if (expression == "define") {
 			input(numbers);
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -924,7 +984,7 @@ void Integer::newInteger() {
 		}
 		if (expression == "save") {
 			bool invalidSave = false;
-			cout << "Enter the name of complex number where you want to store the result:" << endl;
+			cout << "Enter the name of integer where you want to store the result:" << endl;
 			cin >> name;
 			for (char i : name) {
 				if (!isalpha(i)) {
@@ -937,7 +997,7 @@ void Integer::newInteger() {
 			if (invalidSave)continue;
 			else {
 				numbers[name] = numbers["ANS"];
-				cout << "The result is successfully saved in Complex Number " + name << endl;
+				cout << "The result is successfully saved in Integer " + name << endl;
 				storei(numbers);
 			}
 			continue;

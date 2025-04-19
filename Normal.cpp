@@ -230,6 +230,10 @@ void Normal::newNormal() {
 	while (1) {
 		cout << "Enter an expression: " << endl;
 		getline(cin, expression);
+		if (expression.find('=') != string::npos) {
+			processn(expression, variables);
+			continue;
+		}
 		if (expression == "define") {
 			input(variables);
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');

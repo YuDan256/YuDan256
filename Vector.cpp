@@ -582,6 +582,10 @@ void Vector::newVector() {
 	while (1) {
 		cout << "Enter an expression:" << endl;
 		getline(cin, expression);
+		if (expression.find('=') != string::npos) {
+			processv(expression, vectors);
+			continue;
+		}
 		if (expression == "define") {
 			newInput(vectors);
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');

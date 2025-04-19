@@ -344,6 +344,46 @@ Base& Base::operator--() {
 	return *this;
 }
 
+Base Base::operator++(int) {
+	Base temp = *this;
+	++this->data;
+	return temp;
+}
+
+Base Base::operator--(int) {
+	Base temp = *this;
+	--this->data;
+	return temp;
+}
+
+Base Base::operator-() const {
+	return Base(base, -data);
+}
+
+Base Base::operator+() const {
+	return *this;
+}
+
+Base Base::operator<<(const Base& b) const {
+	if (b.data == 0)return *this;
+	if (b < Base(0))return *this >> (-b);
+	Base result = *this;
+	for (Base i = Base(0); i < b; i++) {
+		result = result * base;
+	}
+	return result;
+}
+
+Base Base::operator>>(const Base& b) const {
+	if (b.data == 0)return *this;
+	if (b < Base(0))return *this << (-b);
+	Base result = *this;
+	for (Base i = Base(0); i < b; i++) {
+		result = result / base;
+	}
+	return result;
+}
+
 Base Base::powb(const Base& b1, const Base& b2) {
 	if (b1.base != b2.base && b2.base != 10 && b1.base != 10)throw invalid_argument("The bases do not match for power.");
 	Integer result = static_cast<Integer>(Integer::pow(b1.data, b2.data));
@@ -471,6 +511,10 @@ void Base::newBase() {
 	while (1) {
 		cout << "Enter an expression:" << endl;
 		getline(cin, expression);
+		if (expression.find('=') != string::npos) {
+			processb(expression, numbers);
+			continue;
+		}
 		if (expression == "define") {
 			newInput(numbers);
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -575,9 +619,19 @@ Base Base::parseFunctionb(const string& expr, const map<string, Base>& baseNumbe
 Base Base::parseExpressionb(const string& expr, size_t& currentPos, const map<string, Base>& baseNumbers) {
 	Base result = parseAdditionb(expr, currentPos, baseNumbers);
 	while (currentPos < expr.length()) {
-		char op = expr[currentPos];
-		if (bop.find(op) != bop.end()) {
+		if (expr.substr(currentPos, 2) == "<<") {
+			currentPos += 2;
+			Base rhs = parseAdditionb(expr, currentPos, baseNumbers);
+			result = result << rhs;
+		}
+		else if (expr.substr(currentPos, 2) == ">>") {
+			currentPos += 2;
+			Base rhs = parseAdditionb(expr, currentPos, baseNumbers);
+			result = result >> rhs;
+		}
+		else if (bop.find(expr[currentPos]) != bop.end()) {
 			++currentPos;
+			char op = expr[currentPos];
 			Base rhs = parseAdditionb(expr, currentPos, baseNumbers);
 			switch (op) {
 			case'&': result = result & rhs; break;
@@ -586,9 +640,7 @@ Base Base::parseExpressionb(const string& expr, size_t& currentPos, const map<st
 			default: throw runtime_error("Unknown operator.");
 			}
 		}
-		else {
-			break;
-		}
+		else break;
 	}
 	return result;
 }

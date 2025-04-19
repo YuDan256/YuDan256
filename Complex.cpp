@@ -639,6 +639,10 @@ void Complex::newComplex() {
 	while (1) {
 		cout << "Enter an expression:" << endl;
 		getline(cin, expression);
+		if (expression.find('=') != string::npos) {
+			processc(expression, numbers);
+			continue;
+		}
 		if (expression == "define") {
 			newInput(numbers);
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');

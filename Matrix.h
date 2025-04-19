@@ -108,6 +108,7 @@ public:
 	static map<string, Matrix> loadm();
 	static void deletem(map<string, Matrix>& variables);
 	static void showm(const map<string, Matrix>& variables);
+	static void processm(const string& expression, map<string, Matrix>& variables);
 
 	//单参数函数
 	static Matrix row(const Matrix& m);

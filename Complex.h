@@ -100,6 +100,7 @@ public:
 	static map<string, Complex> loadc();
 	static void deletec(map<string, Complex>& variables);
 	static void showc(const map<string, Complex>& variables);
+	static void processc(const string& expression, map<string, Complex>& variables);
 
 	//多项式方程
 	static void doPolynomial();

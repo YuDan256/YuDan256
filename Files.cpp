@@ -364,3 +364,114 @@ void Function::showf(const map<string, Function>& variables) {
 void Integer::showi(const map<string, Integer>& variables) {
 	show(variables);
 }
+
+template <typename T, typename Parser, typename Storage>
+void process(const string& expression, map<string, T>& variables, Parser parseFunction, Storage store) {
+	size_t pos = expression.find('=');
+	string name = expression.substr(0, pos);
+	string expr = expression.substr(pos + 1);
+
+	if (name.empty() || expr.empty()) {
+		cerr << "Error: Invalid expression." << endl;
+		return;
+	}
+
+	bool invalidName = false;
+	for (char i : name) {
+		if (!isalpha(i)) {
+			cerr << "Error: Invalid name." << endl;
+			invalidName = true;
+			break;
+		}
+	}
+	if (invalidName) return;
+
+	T result;
+	try {
+		result = parseFunction(expr, variables);
+	}
+	catch (const exception& e) {
+		cout << "Error: " << e.what() << endl;
+		return;
+	}
+	variables[name] = result;
+	store(variables);
+	cout << "The result is successfully saved in Variable " + name << endl;
+	cout << "The result is: " << endl;
+	result.print();
+}
+
+void Integer::processi(const string& expression, map<string, Integer>& variables) {
+	process(
+		expression,
+		variables,
+		[](const string& expr, const map<string, Integer>& vars) {size_t i = 0; return parseExpressioni(expr, i, vars); },
+		[](const map<string, Integer>& vars) {storei(vars); });
+}
+
+void Complex::processc(const string& expression, map<string, Complex>& variables) {
+	process(
+		expression,
+		variables,
+		[](const string& expr, const map<string, Complex>& vars) {size_t i = 0; return parseExpressionc(expr,i, vars); },
+		[](const map<string, Complex>& vars) {storec(vars); });
+}
+
+void Base::processb(const string& expression, map<string, Base>& variables) {
+	process(
+		expression,
+		variables,
+		[](const string& expr, const map<string, Base>& vars) {size_t i = 0; return parseExpressionb(expr,i, vars); },
+		[](const map<string, Base>& vars) {storeb(vars); });
+}
+
+void Matrix::processm(const string& expression, map<string, Matrix>& variables) {
+	process(
+		expression,
+		variables,
+		[](const string& expr, const map<string, Matrix>& vars) {size_t i = 0; return parseExpressionm(expr,i, vars); },
+		[](const map<string, Matrix>& vars) {storem(vars); });
+}
+
+void Vector::processv(const string& expression, map<string, Vector>& variables) {
+	process(
+		expression,
+		variables,
+		[](const string& expr, const map<string, Vector>& vars) {size_t i = 0; return parseExpressionv(expr, i, vars); },
+		[](const map<string, Vector>& vars) {storev(vars); });
+}
+
+void Normal::processn(const string& expression, map<string, double>& variables) {
+	size_t pos = expression.find('=');
+	string name = expression.substr(0, pos);
+	string expr = expression.substr(pos + 1);
+
+	if (name.empty() || expr.empty()) {
+		cerr << "Error: Invalid expression." << endl;
+		return;
+	}
+
+	bool invalidName = false;
+	for (char i : name) {
+		if (!isalpha(i)) {
+			cerr << "Error: Invalid name." << endl;
+			invalidName = true;
+			break;
+		}
+	}
+	if (invalidName) return;
+
+	double result;
+	try {
+		result = parsen(expr, variables);
+	}
+	catch (const exception& e) {
+		cout << "Error: " << e.what() << endl;
+		return;
+	}
+	variables[name] = result;
+	storen(variables);
+	cout << "The result is successfully saved in Variable " + name << endl;
+	cout << "The result is: " << endl;
+	cout << result << endl;
+}

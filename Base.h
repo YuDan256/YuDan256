@@ -57,6 +57,12 @@ public:
 	Base& operator^=(const Base& bin);
 	Base& operator++();
 	Base& operator--();
+	Base operator++(int);
+	Base operator--(int);
+	Base operator-()const;
+	Base operator+()const;
+	Base operator<<(const Base& b) const;
+	Base operator>>(const Base& b) const;
 
 	//º¯Êý
 	static Base powb(const Base& b1, const Base& b2);
@@ -81,6 +87,7 @@ public:
 	static map<string, Base> loadb();
 	static void deleteb(map<string, Base>& variables);
 	static void showb(const map<string, Base>& variables);
+	static void processb(const string& expression, map<string, Base>& variables);
 };
 
 #endif 

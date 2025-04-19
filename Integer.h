@@ -66,6 +66,8 @@ public:
 	Integer operator|(const Integer& n)const;
 	Integer operator&(const Integer& n)const;
 	Integer operator~() const;
+	Integer operator<<(const Integer& n) const;
+	Integer operator>>(const Integer& n) const;
 
 	Integer& operator+=(const Integer& n);
 	Integer& operator-=(const Integer& n);
@@ -88,6 +90,7 @@ public:
 	void print()const;
 
 	ull uvalue()const;
+	size_t size()const;
 	long long value() const;
 	bool isZero()const;
 	Integer sqrt() const;
@@ -99,6 +102,7 @@ public:
 	map<Integer, Integer>factorization()const;
 	void factor()const;
 	static vector<Integer> read_primes(const string& filename, const Integer& max_size);
+	static string to_string(const Integer& n);
 
 	static Integer fabs(const Integer& n);
 	static Integer pow(const Integer& n1, const Integer& n2);
@@ -107,11 +111,14 @@ public:
 	static Integer lcm(const Integer& n1, const Integer& n2);
 	static Integer sgn(const Integer& n);
 	static Integer randint(const Integer& n1, const Integer& n2);
+	static Integer length(const Integer& n);
+	static Integer prime(const Integer& n);
 
 	static void storei(const map<string, Integer>& numbers);
 	static map<string, Integer> loadi();
 	static void deletei(map<string, Integer>& variables);
 	static void showi(const map<string, Integer>& variables);
+	static void processi(const string& expression, map<string, Integer>& variables);
 	static void input(map<string, Integer>& variables);
 	static void newInteger();
 

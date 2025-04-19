@@ -1840,6 +1840,10 @@ void Matrix::newMatrix() {
 	while (1) {
 		cout << "Enter an expression:" << endl;
 		getline(cin, expression);
+		if (expression.find('=') != string::npos) {
+			processm(expression, matrices);
+			continue;
+		}
 		if (expression == "define") {
 			newInput(matrices);
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
