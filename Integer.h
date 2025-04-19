@@ -7,8 +7,6 @@
 #include <fstream>
 #include <map>
 #include <random>
-#include <algorithm>
-#include <queue>
 
 using namespace std;
 typedef unsigned long long ull;
@@ -108,6 +106,7 @@ public:
 	static Integer gcd(const Integer& n1, const Integer& n2);
 	static Integer lcm(const Integer& n1, const Integer& n2);
 	static Integer sgn(const Integer& n);
+	static Integer randint(const Integer& n1, const Integer& n2);
 
 	static void storei(const map<string, Integer>& numbers);
 	static map<string, Integer> loadi();

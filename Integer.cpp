@@ -7,7 +7,7 @@ map<string, Integer(*)(const Integer&)>Integer::functioni1 = {
 	{"abs",fabs},{"sqrt",sqrt},{"sgn",sgn},
 };
 map<string, Integer(*)(const Integer&, const Integer&)>Integer::functioni2 = {
-	{"gcd",gcd},{"lcm",lcm},{"pow",pow}
+	{"gcd",gcd},{"lcm",lcm},{"pow",pow},{"random",randint},{"randint",randint}
 };
 
 ostream& operator<<(ostream& out, const Integer& num) {
@@ -610,6 +610,11 @@ Integer Integer::sgn(const Integer& n) {
 	if (n.isZero())return 0;
 	else if (n > 0)return 1;
 	else return -1;
+}
+
+Integer Integer::randint(const Integer& n1, const Integer& n2) {
+	srand(static_cast<unsigned int>(time(0)));
+	return n1 + Integer(rand()) % (n2 - n1 + 1);
 }
 
 Integer Integer::sqrt() const {
