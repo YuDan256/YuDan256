@@ -9,7 +9,7 @@ map<string, double(*)(double)> Normal::functionn = {
 	{"sin", sin}, {"cos", cos}, {"tan", tan}, {"log", log}, {"ln", log},{"sqrt", sqrt},{"exp", exp},
 	{"arcsin", asin},{"arccos", acos},{"arctan", atan},{"asin",asin},{"acos",acos},{"atan",atan},
 	{"sh",sinh},{"ch",cosh},{"th",tanh},{"sinh",sinh},{"cosh",cosh},{"tanh",tanh},{"deg",deg},{"rad",rad},
-	{"abs",fabs},{"sgn",sgn}
+	{"abs",fabs},{"sgn",sgn},{"floor",floor},{"ceil",ceil},{"round",round},
 };
 
 double Normal::deg(double rad) {
