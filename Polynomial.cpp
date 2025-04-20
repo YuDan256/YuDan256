@@ -12,7 +12,7 @@ void Complex::doPolynomial() {
 	cout << "Welcome to the Polynomial Equation Calculator!" << endl << endl;
 	cout << "This calculator will solve polynomial equations for you in the complex number domain." << endl;
 	while (1) {
-		cout << "Enter the degree of the polynomial (1~4):";
+		cout << "Enter the degree of the polynomial (1~4):" << endl;
 		cin >> _degree;
 		try {
 			degree = stoi(_degree);

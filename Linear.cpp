@@ -14,8 +14,7 @@ void Matrix::doLinearEquations() {
 		{"PI",3.14159265358979323846264},{"E",2.7182818284590452353602874}
 	};
 	while (1) {
-		cout << "Enter the numbers of equations and variables:";
-		cin >> eNum >> varNum;
+		cout << "Enter the numbers of equations and variables:" << endl;
 		try {
 			equationNum = stoi(eNum);
 			variableNum = stoi(varNum);
