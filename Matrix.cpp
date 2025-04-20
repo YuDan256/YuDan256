@@ -1981,14 +1981,15 @@ Matrix Matrix::stom(const string& expr) {
 	if (expr.empty())throw invalid_argument("Empty expression.");
 	if (expr[0] != '[')throw invalid_argument("Missing bracket.");
 	pos++;
-	if (expr[pos] == ']')throw invalid_argument("Empty expression.");
 	while (pos < expr.size()) {
 		if (expr[pos] == ',') {
+			if (token.empty())throw invalid_argument("Missing element.");
 			element = Normal::parsen(token, num);
 			line.push_back(element);
 			token.clear();
 		}
 		else if (expr[pos] == ';') {
+			if (token.empty())throw invalid_argument("Missing element.");
 			element = Normal::parsen(token, num);
 			line.push_back(element);
 			if (!result.empty() && result[result.size() - 1].size() != line.size())
@@ -1999,6 +2000,7 @@ Matrix Matrix::stom(const string& expr) {
 		}
 		else if (expr[pos] == ']') {
 			if (pos + 1 == expr.size()) {
+				if (token.empty())throw invalid_argument("Missing element.");
 				element = Normal::parsen(token, num);
 				line.push_back(element);
 				if (!result.empty() && result[result.size() - 1].size() != line.size())

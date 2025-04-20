@@ -531,6 +531,20 @@ Vector Vector::parsePowerv(const string& expr, size_t& currentPos, const map<str
 				}
 			}
 		}
+		else if (expr[currentPos] == '[') {
+			string express;
+			while (currentPos < expr.size() && expr[currentPos] != ']'){
+				express += expr[currentPos++];
+			}
+			if (currentPos < expr.size() && expr[currentPos] == ']') {
+				++currentPos;
+				express += ']';
+				result = sign * stov(express);
+			}
+			else {
+				throw runtime_error("Missing closing parenthesis.");
+			}
+		}
 		else if (!isspace(expr[currentPos])) {
 			throw runtime_error("Unexpected character: " + string(1, expr[currentPos]));
 		}
@@ -718,4 +732,43 @@ Vector Vector::sqrtv(const Vector& v) {
 Vector Vector::expv(const Vector& v) {
 	if (v.n != 1)throw runtime_error("Invalid operation for vectors.");
 	return Vector(exp(v[0]));
+}
+
+Vector Vector::stov(const string& expr) {
+	vector<double>result;
+	size_t pos = 0;
+	double element = 0;
+	string token;
+	map<string, double> num = {
+		{"PI", 3.14159265358979323846264}, { "E",2.7182818284590452353602874 }
+	};
+	if (expr.empty())throw invalid_argument("Empty expression.");
+	if (expr[0] != '[')throw invalid_argument("Missing bracket.");
+	pos++;
+	while (pos < expr.size()) {
+		if (expr[pos] == ',') {
+			if (token.empty())throw invalid_argument("Missing element.");
+			element = Normal::parsen(token, num);
+			result.push_back(element);
+			token.clear();
+		}
+		else if (expr[pos] == ']') {
+			if (pos + 1 == expr.size()) {
+				if (token.empty())throw invalid_argument("Missing element.");
+				element = Normal::parsen(token, num);
+				result.push_back(element);
+				token.clear();
+				pos++;
+				break;
+			}
+			else throw invalid_argument("Invalid expression.");
+		}
+		else {
+			token += expr[pos];
+		}
+		pos++;
+	}
+	if (expr[pos - 1] != ']')throw invalid_argument("Missing bracket.");
+	int size = static_cast<int>(result.size());
+	return Vector(size, result);
 }
