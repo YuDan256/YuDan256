@@ -15,6 +15,7 @@ void Matrix::doLinearEquations() {
 	};
 	while (1) {
 		cout << "Enter the numbers of equations and variables:" << endl;
+		cin >> eNum >> varNum;
 		try {
 			equationNum = stoi(eNum);
 			variableNum = stoi(varNum);
