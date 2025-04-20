@@ -533,7 +533,7 @@ Vector Vector::parsePowerv(const string& expr, size_t& currentPos, const map<str
 		}
 		else if (expr[currentPos] == '[') {
 			string express;
-			while (currentPos < expr.size() && expr[currentPos] != ']'){
+			while (currentPos < expr.size() && expr[currentPos] != ']') {
 				express += expr[currentPos++];
 			}
 			if (currentPos < expr.size() && expr[currentPos] == ']') {

@@ -293,7 +293,7 @@ Integer Integer::operator~() const {
 	return ~value();
 }
 
-Integer Integer::operator<<(const Integer& n) const{
+Integer Integer::operator<<(const Integer& n) const {
 	if (n.isZero())return *this;
 	if (n < 0)return *this >> (-n);
 	Integer result = *this;
@@ -303,7 +303,7 @@ Integer Integer::operator<<(const Integer& n) const{
 	return result;
 }
 
-Integer Integer::operator>>(const Integer& n) const{
+Integer Integer::operator>>(const Integer& n) const {
 	if (n.isZero())return *this;
 	if (n < 0)return *this << (-n);
 	Integer result = *this;
@@ -412,7 +412,7 @@ ull Integer::uvalue()const {
 	return result;
 }
 
-size_t Integer::size() const{
+size_t Integer::size() const {
 	return data.size();
 }
 
