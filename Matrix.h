@@ -104,6 +104,8 @@ public:
 	static Matrix parseLDivisionm(const string& expr, size_t& currentPos, const map<string, Matrix>& matrices);
 	static Matrix parsePowerm(const string& expr, size_t& currentPos, const map<string, Matrix>& matrices);
 	static void newMatrix();
+	static Matrix stom(const string& expr);
+	static bool isValidName(const string& name);
 	static void storem(const map<string, Matrix>& matrices);
 	static map<string, Matrix> loadm();
 	static void deletem(map<string, Matrix>& variables);

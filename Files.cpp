@@ -387,6 +387,7 @@ void process(const string& expression, map<string, T>& variables, Parser parseFu
 	if (invalidName) return;
 
 	T result;
+	cout << "The result is: " << endl;
 	try {
 		result = parseFunction(expr, variables);
 	}
@@ -394,18 +395,21 @@ void process(const string& expression, map<string, T>& variables, Parser parseFu
 		cout << "Error: " << e.what() << endl;
 		return;
 	}
+	catch (const bool& b) {
+		if (b)cerr << "The result cannot be saved." << endl;
+		return;
+	}
+	result.print();
 	variables[name] = result;
 	store(variables);
 	cout << "The result is successfully saved in Variable " + name << endl;
-	cout << "The result is: " << endl;
-	result.print();
 }
 
 void Integer::processi(const string& expression, map<string, Integer>& variables) {
 	process(
 		expression,
 		variables,
-		[](const string& expr, const map<string, Integer>& vars) {size_t i = 0; return parseExpressioni(expr, i, vars); },
+		[](const string& expr, const map<string, Integer>& vars) {return parseFunctioni(expr, vars); },
 		[](const map<string, Integer>& vars) {storei(vars); });
 }
 
@@ -413,7 +417,7 @@ void Complex::processc(const string& expression, map<string, Complex>& variables
 	process(
 		expression,
 		variables,
-		[](const string& expr, const map<string, Complex>& vars) {size_t i = 0; return parseExpressionc(expr,i, vars); },
+		[](const string& expr, const map<string, Complex>& vars) {return parseFunctionc(expr, vars); },
 		[](const map<string, Complex>& vars) {storec(vars); });
 }
 
@@ -421,7 +425,7 @@ void Base::processb(const string& expression, map<string, Base>& variables) {
 	process(
 		expression,
 		variables,
-		[](const string& expr, const map<string, Base>& vars) {size_t i = 0; return parseExpressionb(expr,i, vars); },
+		[](const string& expr, const map<string, Base>& vars) {return parseFunctionb(expr, vars); },
 		[](const map<string, Base>& vars) {storeb(vars); });
 }
 
@@ -429,7 +433,7 @@ void Matrix::processm(const string& expression, map<string, Matrix>& variables) 
 	process(
 		expression,
 		variables,
-		[](const string& expr, const map<string, Matrix>& vars) {size_t i = 0; return parseExpressionm(expr,i, vars); },
+		[](const string& expr, map<string, Matrix>& vars) {return parseFunctionm(expr, vars); },
 		[](const map<string, Matrix>& vars) {storem(vars); });
 }
 
@@ -437,7 +441,7 @@ void Vector::processv(const string& expression, map<string, Vector>& variables) 
 	process(
 		expression,
 		variables,
-		[](const string& expr, const map<string, Vector>& vars) {size_t i = 0; return parseExpressionv(expr, i, vars); },
+		[](const string& expr, const map<string, Vector>& vars) {return parseFunctionv(expr, vars); },
 		[](const map<string, Vector>& vars) {storev(vars); });
 }
 

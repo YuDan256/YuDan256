@@ -1779,6 +1779,7 @@ Matrix Matrix::parsePowerm(const string& expr, size_t& currentPos, const map<str
 				}
 				else throw runtime_error("Missing closing parenthesis.");
 			}
+
 			else { // ·ñÔòÊÓÎª¾ØÕó
 				auto it = matrices.find(identifier);
 				if (it != matrices.end()) {
@@ -1788,6 +1789,18 @@ Matrix Matrix::parsePowerm(const string& expr, size_t& currentPos, const map<str
 					throw runtime_error("Undefined variable: " + identifier);
 				}
 			}
+		}
+		else if (expr[currentPos] == '[') {
+			string express;
+			while (currentPos < expr.length() && expr[currentPos] != ']') {
+				express += expr[currentPos++];
+			}
+			if (currentPos < expr.length() && expr[currentPos] == ']') {
+				currentPos++;
+				express += ']';
+				result = stom(express) * sign;
+			}
+			else throw runtime_error("Missing closing parenthesis.");
 		}
 		else if (!isspace(expr[currentPos])) {
 			throw runtime_error("Unexpected character: " + string(1, expr[currentPos]));
@@ -1930,15 +1943,8 @@ void Matrix::newMatrix() {
 			bool invalidSave = false;
 			cout << "Enter the name of matrix where you want to store the result:" << endl;
 			cin >> name;
-			for (char i : name) {
-				if (!isalpha(i)) {
-					cout << "Invalid name." << endl;
-					invalidSave = true;
-					break;
-				}
-			}
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
-			if (invalidSave)continue;
+			if (!isValidName(name))continue;
 			else {
 				matrices[name] = matrices["ANS"];
 				cout << "The result is successfully saved in Matrix " + name << endl;
@@ -1961,4 +1967,66 @@ void Matrix::newMatrix() {
 			if (b)cout << "The result cannot be saved." << endl;
 		}
 	}
+}
+
+Matrix Matrix::stom(const string& expr) {
+	vector<vector<double>>result;
+	vector<double>line;
+	double element = 0;
+	size_t pos = 0;
+	string token;
+	map<string, double>num = {
+		{"PI",3.14159265358979323846264},{"E",2.7182818284590452353602874}
+	};
+	if (expr.empty())throw invalid_argument("Empty expression.");
+	if (expr[0] != '[')throw invalid_argument("Missing bracket.");
+	pos++;
+	if (expr[pos] == ']')throw invalid_argument("Empty expression.");
+	while (pos < expr.size()) {
+		if (expr[pos] == ',') {
+			element = Normal::parsen(token, num);
+			line.push_back(element);
+			token.clear();
+		}
+		else if (expr[pos] == ';') {
+			element = Normal::parsen(token, num);
+			line.push_back(element);
+			if (!result.empty() && result[result.size() - 1].size() != line.size())
+				throw invalid_argument("Invalid expression.");
+			result.push_back(line);
+			token.clear();
+			line.clear();
+		}
+		else if (expr[pos] == ']') {
+			if (pos + 1 == expr.size()) {
+				element = Normal::parsen(token, num);
+				line.push_back(element);
+				if (!result.empty() && result[result.size() - 1].size() != line.size())
+					throw invalid_argument("Invalid expression.");
+				result.push_back(line);
+				token.clear();
+				line.clear();
+				pos++;
+				break;
+			}
+			else throw invalid_argument("Invalid expression.");
+		}
+		else {
+			token += expr[pos];
+		}
+		pos++;
+	}
+	if (expr[pos - 1] != ']')throw invalid_argument("Missing bracket.");
+	int rows = static_cast<int>(result.size()), cols = static_cast<int>(result[0].size());
+	return Matrix(rows, cols, result);
+}
+
+bool Matrix::isValidName(const string& name) {
+	for (char i : name) {
+		if (!isalpha(i)) {
+			cerr << "Invalid name." << endl;
+			return false;
+		}
+	}
+	return true;
 }
