@@ -83,6 +83,7 @@ public:
 	static Base parseAdditionb(const string& expr, size_t& currentPos, const map<string, Base>& baseNumbers);
 	static Base parseTermb(const string& expr, size_t& currentPos, const map<string, Base>& baseNumbers);
 	static Base parsePowerb(const string& expr, size_t& currentPos, const map<string, Base>& baseNumbers);
+	static Base stob(const string& expr);
 	static void storeb(const map<string, Base>& baseNumbers);
 	static map<string, Base> loadb();
 	static void deleteb(map<string, Base>& variables);

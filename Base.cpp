@@ -813,6 +813,18 @@ Base Base::parsePowerb(const string& expr, size_t& currentPos, const map<string,
 				}
 			}
 		}
+		else if (expr[currentPos] == '[') {
+			string express;
+			while (currentPos < expr.length() && expr[currentPos] != ']') {
+				express += expr[currentPos++];
+			}
+			if (currentPos < expr.length() && expr[currentPos] == ']') {
+				currentPos++;
+				express += ']';
+				result = stob(express) * sign;
+			}
+			else throw runtime_error("Missing closing parenthesis.");
+		}
 		else if (!isspace(expr[currentPos])) {
 			throw runtime_error("Unexpected character: " + string(1, expr[currentPos]));
 		}
@@ -823,4 +835,15 @@ Base Base::parsePowerb(const string& expr, size_t& currentPos, const map<string,
 ostream& operator<<(ostream& out, const Base& b) {
 	out << b.base << " " << b.data;
 	return out;
+}
+
+Base Base::stob(const string& expr) {
+	if (expr.empty())throw runtime_error("Empty expression.");
+	if (expr[0] != '[')throw runtime_error("Invalid expression.");
+	if (expr[expr.length() - 1] != ']')throw runtime_error("Invalid expression.");
+	string baseStr = expr.substr(1, expr.find(',') - 1);
+	string dataStr = expr.substr(expr.find(',') + 1, expr.length() - 3 - baseStr.length());
+	if (baseStr.empty() || dataStr.empty())throw runtime_error("Invalid expression.");
+	Integer base = Integer(baseStr);
+	return enterBase(base, dataStr);
 }
