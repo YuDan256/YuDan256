@@ -68,7 +68,7 @@ Base Base::enterBase1(const Integer& base, const string& num) {
 	Integer result = 0;
 	for (int i = 0; i < len; i++) {
 		if (num[i] >= '0' + base.uvalue() || num[i] < '0')
-			throw invalid_argument("Entered a character that does not exist in this numeral system.");
+			throw invalid_argument("Invalid character: " + to_string(num[i]));
 	}
 	for (int i = 0; i < len; i++) {
 		result *= base;
@@ -83,7 +83,7 @@ Base Base::enterBase2(const Integer& base, const string& num) {
 	Integer result = 0;
 	for (int i = 0; i < len; i++) {
 		if (num[i] >= static_cast<ull>('A') - 10 + base.uvalue() || num[i] < '0' || (num[i] > '9' && num[i] < 'A'))
-			throw invalid_argument("Entered a character that does not exist in this numeral system.");
+			throw invalid_argument("Invalid character: " + to_string(num[i]));
 	}
 	for (int i = 0; i < len; i++) {
 		result *= base;
@@ -106,13 +106,13 @@ Base Base::enterBase3(const Integer& base, const string& num) {
 			digit = 0;
 		}
 		else if (num[i] < '0' || num[i] > '9') {
-			throw invalid_argument("Entered an invalid character in this numeral system.");
+			throw invalid_argument("Invalid character: " + to_string(num[i]));
 		}
 		else if (i == len - 1) {
 			digit *= 10;
 			digit += static_cast<Integer>(num[i] - '0');
 			if (digit >= base) {
-				throw invalid_argument("Entered an invalid character in this numeral system.");
+				throw invalid_argument("Invalid digit: " + Integer::to_string(digit));
 			}
 			result *= base;
 			result += digit;
@@ -122,7 +122,7 @@ Base Base::enterBase3(const Integer& base, const string& num) {
 			digit *= 10;
 			digit += static_cast<Integer>(num[i] - '0');
 			if (digit >= base) {
-				throw invalid_argument("Entered an invalid character in this numeral system.");
+				throw invalid_argument("Invalid digit: " + Integer::to_string(digit));;
 			}
 		}
 	}
