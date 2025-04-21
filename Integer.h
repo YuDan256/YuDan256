@@ -113,6 +113,9 @@ public:
 	static Integer randint(const Integer& n1, const Integer& n2);
 	static Integer length(const Integer& n);
 	static Integer prime(const Integer& n);
+	static Integer primePi(const Integer& n);
+	static Integer log(const Integer& n1, const Integer& n2);
+	static Integer log(const Integer& n);
 
 	static void storei(const map<string, Integer>& numbers);
 	static map<string, Integer> loadi();

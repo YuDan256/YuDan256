@@ -401,6 +401,7 @@ void process(const string& expression, map<string, T>& variables, Parser parseFu
 	}
 	result.print();
 	variables[name] = result;
+	variables["ANS"] = result;
 	store(variables);
 	cout << "The result is successfully saved in Variable " + name << endl;
 }
@@ -474,6 +475,7 @@ void Normal::processn(const string& expression, map<string, double>& variables) 
 		return;
 	}
 	variables[name] = result;
+	variables["ANS"] = result;
 	storen(variables);
 	cout << "The result is successfully saved in Variable " + name << endl;
 	cout << "The result is: " << endl;

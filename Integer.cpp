@@ -4,10 +4,12 @@ using namespace std;
 
 map<char, int> Integer::iop = { {'+',1},{'-',1},{'*',2},{'/',2},{'%',2},{ '^',3 } };
 map<string, Integer(*)(const Integer&)>Integer::functioni1 = {
-	{"abs",fabs},{"sqrt",sqrt},{"sgn",sgn},{"length",length},{"len",length},{"digit",length},{"prime",prime}
+	{"abs",fabs},{"sqrt",sqrt},{"sgn",sgn},{"length",length},{"len",length},{"digit",length},{"prime",prime},{"pi",primePi},
+	{"log",log}
 };
 map<string, Integer(*)(const Integer&, const Integer&)>Integer::functioni2 = {
-	{"gcd",gcd},{"lcm",lcm},{"pow",pow},{"random",randint},{"randint",randint}
+	{"gcd",gcd},{"lcm",lcm},{"pow",pow},{"random",randint},{"randint",randint},
+	{"log",log}
 };
 
 ostream& operator<<(ostream& out, const Integer& num) {
@@ -671,6 +673,42 @@ Integer Integer::prime(const Integer& n) {
 	file.close();
 	if (i < n) throw invalid_argument("The prime number is too great.");
 	else return current_prime;
+}
+
+Integer Integer::primePi(const Integer& n){
+	string filename = "D:\\Prime\\Prime.txt";
+	ifstream file(filename);
+	if (!file.is_open()) {
+		throw runtime_error("Failed to open file: " + filename);
+	}
+	string line;
+	Integer current_prime, i = 0;
+	while (getline(file, line)) {
+		if (line.empty()) continue;
+		current_prime = Integer(line);
+		if (current_prime > n)break;
+		i++;
+	}
+	if (current_prime < n)throw invalid_argument("The number is too great.");
+	file.close();
+	return i;
+}
+
+Integer Integer::log(const Integer& n1, const Integer& n2){
+	if (n1 <= 1 || n2 < 1) {
+		throw invalid_argument("Invalid base or argument for logarithm.");
+	}
+	Integer result = 0;
+	Integer base = n1;
+	while (base <= n2) {
+		base *= n1;
+		result++;
+	}
+	return result;
+}
+
+Integer Integer::log(const Integer& n) {
+	return log(2, n);
 }
 
 Integer Integer::sqrt() const {
