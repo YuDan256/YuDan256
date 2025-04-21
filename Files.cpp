@@ -474,10 +474,10 @@ void Normal::processn(const string& expression, map<string, double>& variables) 
 		cout << "Error: " << e.what() << endl;
 		return;
 	}
+	cout << "The result is: " << endl;
+	cout << result << endl;
 	variables[name] = result;
 	variables["ANS"] = result;
 	storen(variables);
 	cout << "The result is successfully saved in Variable " + name << endl;
-	cout << "The result is: " << endl;
-	cout << result << endl;
 }
