@@ -585,6 +585,18 @@ Complex Complex::parsePowerc(const string& expr, size_t& currentPos, const map<s
 				}
 			}
 		}
+		else if (expr[currentPos] == '[') {
+			string express;
+			while (currentPos < expr.length() && expr[currentPos] != ']') {
+				express += expr[currentPos++];
+			}
+			if (currentPos < expr.length() && expr[currentPos] == ']') {
+				currentPos++;
+				express += ']';
+				result = stoc(express) * sign;
+			}
+			else throw runtime_error("Missing closing parenthesis.");
+		}
 		else if (!isspace(expr[currentPos])) {
 			throw runtime_error("Unexpected character: " + string(1, expr[currentPos]));
 		}
@@ -720,4 +732,18 @@ void Complex::newComplex() {
 			if (b)cout << "The result cannot be saved." << endl;
 		}
 	}
+}
+
+Complex Complex::stoc(const string& expr) {
+	map<string, double>p = { {"PI",PI},{"E",E} };
+	if (expr.empty())throw runtime_error("Empty expression.");
+	if (expr[0] != '[')throw runtime_error("Invalid expression.");
+	if (expr[expr.length() - 1] != ']')throw runtime_error("Invalid expression.");
+	string _real = expr.substr(1, expr.find(',') - 1);
+	string _image = expr.substr(expr.find(',') + 1, expr.length() - 3 - _real.length());
+	if (_real.empty() || _image.empty())throw runtime_error("Invalid expression.");
+	double real = Normal::parsen(_real, p);
+	double image = Normal::parsen(_image, p);
+	Complex result(real, image);
+	return result;
 }
