@@ -5,7 +5,7 @@ using namespace std;
 map<char, int> Integer::iop = { {'+',1},{'-',1},{'*',2},{'/',2},{'%',2},{ '^',3 } };
 map<string, Integer(*)(const Integer&)>Integer::functioni1 = {
 	{"abs",fabs},{"sqrt",sqrt},{"sgn",sgn},{"length",length},{"len",length},{"digit",length},{"prime",prime},{"pi",primePi},
-	{"log",log}
+	{"log",log},{"primePi",primePi},
 };
 map<string, Integer(*)(const Integer&, const Integer&)>Integer::functioni2 = {
 	{"gcd",gcd},{"lcm",lcm},{"pow",pow},{"random",randint},{"randint",randint},
@@ -1072,7 +1072,7 @@ void Integer::newInteger() {
 		if (expression == "function_list") {
 			cout << endl << "The following functions can only be used individually:" << endl;
 			cout << "Print - print(Z)" << endl;
-			cout << "Factorization - fact(Z)" << endl;
+			cout << "Factorization - fact(Z)" << endl << endl;
 			cout << "The following functions can be used with expressions:" << endl;
 			cout << "Absolute value - abs(Z)" << endl;
 			cout << "Square root - sqrt(Z)" << endl;
@@ -1080,6 +1080,10 @@ void Integer::newInteger() {
 			cout << "Power - pow(Z,Z)" << endl;
 			cout << "GCD - gcd(Z,Z)" << endl;
 			cout << "LCM - lcm(Z,Z)" << endl;
+			cout << "Logarithm - log(N+,N+)" << endl;
+			cout << "Logarithm base 2 - log(N+)" << endl;
+			cout << "Prime number - prime(N+)" << endl;
+			cout << "Prime number pi - primePi(Z) or pi(Z)" << endl;
 			cout << endl;
 			continue;
 		}
