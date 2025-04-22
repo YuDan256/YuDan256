@@ -403,7 +403,7 @@ void Base::factorization(const Base& b) {
 		throw invalid_argument("The number must be greater than 1.");
 	}
 	map<Base, Integer> frequency;
-	map<Integer, Integer>result = num.factorization();
+	map<Integer, Integer>result = num.factor();
 	for (pair i : result) {
 		frequency[Base(b.base, i.first)] = i.second;
 	}

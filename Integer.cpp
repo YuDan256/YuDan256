@@ -5,11 +5,12 @@ using namespace std;
 map<char, int> Integer::iop = { {'+',1},{'-',1},{'*',2},{'/',2},{'%',2},{ '^',3 } };
 map<string, Integer(*)(const Integer&)>Integer::functioni1 = {
 	{"abs",fabs},{"sqrt",sqrt},{"sgn",sgn},{"length",length},{"len",length},{"digit",length},{"prime",prime},{"pi",primePi},
-	{"log",log},{"primePi",primePi},
+	{"log",log},{"primePi",primePi},{"phi",phi},{"F",factorial},{"d",d},{"fibonacci",fibonacci},{"fib",fibonacci},
+	{"Omega",Omega},{"omega",omega},{"sigma",sigma}
 };
 map<string, Integer(*)(const Integer&, const Integer&)>Integer::functioni2 = {
 	{"gcd",gcd},{"lcm",lcm},{"pow",pow},{"random",randint},{"randint",randint},
-	{"log",log}
+	{"log",log},{"sigma",sigma}
 };
 
 ostream& operator<<(ostream& out, const Integer& num) {
@@ -614,7 +615,7 @@ Integer Integer::lcm(const Integer& n) const {
 	return a * b / gcd(a, b);
 }
 
-map<Integer, Integer> Integer::factorization() const {
+map<Integer, Integer> Integer::factor() const {
 	Integer num = *this;
 	if (num <= 1) {
 		throw invalid_argument("The number must be greater than 1.");
@@ -674,8 +675,8 @@ map<Integer, Integer> Integer::factorization() const {
 	return result;
 }
 
-void Integer::factor() const {
-	map<Integer, Integer>factors = factorization();
+void Integer::factorization() const {
+	map<Integer, Integer>factors = factor();
 	cout << "Factor\tPower" << endl;
 	for (auto& pair : factors) {
 		cout << pair.first << '\t' << pair.second << endl;
@@ -774,6 +775,126 @@ Integer Integer::log(const Integer& n) {
 	return log(2, n);
 }
 
+Integer Integer::phi(const Integer& n) {
+	if (n < 1) {
+		throw invalid_argument("The number must be positive.");
+	}
+	if (n == 1) return 1;
+	Integer result = n;
+	map<Integer, Integer> factors = n.factor();
+	for (const auto& pair : factors) {
+		result *= (pair.first - 1);
+		result /= pair.first;
+	}
+	return result;
+}
+
+Integer Integer::factorial(const Integer& n) {
+	if (n < 0) {
+		throw invalid_argument("Factorial is not defined for negative numbers.");
+	}
+	if (n == 0 || n == 1) return 1;
+	Integer result = 1;
+	for (Integer i = 2; i <= n; i++) {
+		result *= i;
+	}
+	return result;
+}
+
+Integer Integer::d(const Integer& n) {
+	if (n < 1) {
+		throw invalid_argument("The number must be positive.");
+	}
+	if (n == 1) return 1;
+	Integer result = 1;
+	map<Integer, Integer> factors = n.factor();
+	for (const auto& pair : factors) {
+		result *= (pair.second + 1);
+	}
+	return result;
+}
+
+Integer Integer::omega(const Integer& n) {
+	if (n < 1) {
+		throw invalid_argument("The number must be positive.");
+	}
+	if (n == 1) return 0;
+	Integer result = 0;
+	map<Integer, Integer> factors = n.factor();
+	for (const auto& pair : factors) {
+		result++;
+	}
+	return result;
+}
+
+Integer Integer::Omega(const Integer& n) {
+	if (n < 1) {
+		throw invalid_argument("The number must be positive.");
+	}
+	if (n == 1) return 0;
+	Integer result = 0;
+	map<Integer, Integer> factors = n.factor();
+	for (const auto& pair : factors) {
+		result += pair.second;
+	}
+	return result;
+}
+
+Integer Integer::fibonacci(const Integer& n) {
+	if (n < 0) {
+		throw invalid_argument("Fibonacci is not defined for negative numbers.");
+	}
+	if (n == 0) return 0;
+	if (n == 1) return 1;
+	Integer a = 0, b = 1, c;
+	for (Integer i = 2; i <= n; i++) {
+		c = a + b;
+		a = b;
+		b = c;
+	}
+	return b;
+}
+
+Integer Integer::sigma(const Integer& n) {
+	if (n < 1) {
+		throw invalid_argument("The number must be positive.");
+	}
+	if (n == 1) return 1;
+	map<Integer, Integer> factors = n.factor();
+	Integer result = 1;
+	for (const auto& pair : factors) {
+		Integer p = pair.first;
+		Integer k = pair.second;
+		Integer sum = 1;
+		Integer p_power = 1;
+		for (Integer i = 0; i < k; i++) {
+			p_power *= p;
+			sum += p_power;
+		}
+		result *= sum;
+	}
+	return result;
+}
+
+Integer Integer::sigma(const Integer& n1, const Integer& n2) {
+	if (n1 < 1) {
+		throw invalid_argument("The number must be positive.");
+	}
+	if (n1 == 1) return 1;
+	map<Integer, Integer> factors = n1.factor();
+	Integer result = 1;
+	for (const auto& pair : factors) {
+		Integer p = pair.first;
+		Integer k = pair.second;
+		Integer sum = 1;
+		for (Integer i = 0; i < k; i++) {
+			sum += pow(p, (i + 1) * n2);
+		}
+		result *= sum;
+	}
+	return result;
+}
+
 Integer Integer::sqrt() const {
 	if (*this < 0) {
 		throw invalid_argument("Square root of negative number.");
@@ -855,7 +976,7 @@ Integer Integer::parseFunctioni(const string& expr, const map<string, Integer>& 
 				throw true;
 			}
 			else if (identifier == "fact") {
-				z.factor();
+				z.factorization();
 				throw true;
 			}
 		}

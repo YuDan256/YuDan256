@@ -99,8 +99,8 @@ public:
 	Integer pow(const Integer& n) const;
 	Integer gcd(const Integer& n) const;
 	Integer lcm(const Integer& n)const;
-	map<Integer, Integer>factorization()const;
-	void factor()const;
+	map<Integer,Integer> factor()const;
+	void factorization()const;
 	static vector<Integer> read_primes(const string& filename, const Integer& max_size);
 	static string to_string(const Integer& n);
 
@@ -116,6 +116,14 @@ public:
 	static Integer primePi(const Integer& n);
 	static Integer log(const Integer& n1, const Integer& n2);
 	static Integer log(const Integer& n);
+	static Integer phi(const Integer& n);
+	static Integer factorial(const Integer& n);
+	static Integer d(const Integer& n);
+	static Integer omega(const Integer& n);
+	static Integer Omega(const Integer& n);
+	static Integer fibonacci(const Integer& n);
+	static Integer sigma(const Integer& n);
+	static Integer sigma(const Integer& n1, const Integer& n2);
 
 	static void storei(const map<string, Integer>& numbers);
 	static map<string, Integer> loadi();
