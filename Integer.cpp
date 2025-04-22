@@ -244,7 +244,7 @@ Integer Integer::operator/(const int& divisor) const {
 	if (divisor == 0) {
 		throw invalid_argument("Division by zero error.");
 	}
-	bool b = divisor >= 0;
+	bool b = (divisor >= 0) == (this->sign);
 	int d = static_cast<int>(std::fabs(divisor));
 	vector<int> result;
 	int remainder = 0;
@@ -280,19 +280,82 @@ Integer Integer::operator%(const Integer& n) const {
 }
 
 Integer Integer::operator^(const Integer& n) const {
-	return value() ^ n.value();
+	Integer A = fabs(*this), B = fabs(n), result;
+	vector<int>a, b;
+	do {
+		bool i = A % 2 == 1;
+		A /= 2;
+		a.push_back(i);
+	} while (A > 0);
+	do {
+		bool i = B % 2 == 1;
+		B /= 2;
+		b.push_back(i);
+	} while (B > 0);
+	if (a.size() > b.size()) {
+		while (a.size() != b.size())b.push_back(0);
+	}
+	else {
+		while (a.size() != b.size())a.push_back(0);
+	}
+	for (size_t i = 0; i < a.size(); i++) {
+		if (a[i] != b[i])result += pow(2, i);
+	}
+	return result * (this->sign == n.sign ? 1 : -1);
 }
 
 Integer Integer::operator|(const Integer& n) const {
-	return value() | n.value();
+	Integer A = fabs(*this), B = fabs(n), result;
+	vector<int>a, b;
+	do {
+		bool i = A % 2 == 1;
+		A /= 2;
+		a.push_back(i);
+	} while (A > 0);
+	do {
+		bool i = B % 2 == 1;
+		B /= 2;
+		b.push_back(i);
+	} while (B > 0);
+	if (a.size() > b.size()) {
+		while (a.size() != b.size())b.push_back(0);
+	}
+	else {
+		while (a.size() != b.size())a.push_back(0);
+	}
+	for (size_t i = 0; i < a.size(); i++) {
+		if (a[i] + b[i] > 0)result += pow(2, i);
+	}
+	return result * (this->sign == n.sign ? 1 : -1);
 }
 
 Integer Integer::operator&(const Integer& n) const {
-	return value() & n.value();
+	Integer A = fabs(*this), B = fabs(n), result;
+	vector<int>a, b;
+	do {
+		bool i = A % 2 == 1;
+		A /= 2;
+		a.push_back(i);
+	} while (A > 0);
+	do {
+		bool i = B % 2 == 1;
+		B /= 2;
+		b.push_back(i);
+	} while (B > 0);
+	if (a.size() > b.size()) {
+		while (a.size() != b.size())b.push_back(0);
+	}
+	else {
+		while (a.size() != b.size())a.push_back(0);
+	}
+	for (size_t i = 0; i < a.size(); i++) {
+		if (a[i] * b[i] == 1)result += pow(2, i);
+	}
+	return result * (this->sign == n.sign ? 1 : -1);
 }
 
 Integer Integer::operator~() const {
-	return ~value();
+	return -(*this) - 1;
 }
 
 Integer Integer::operator<<(const Integer& n) const {
@@ -675,7 +738,7 @@ Integer Integer::prime(const Integer& n) {
 	else return current_prime;
 }
 
-Integer Integer::primePi(const Integer& n){
+Integer Integer::primePi(const Integer& n) {
 	string filename = "D:\\Prime\\Prime.txt";
 	ifstream file(filename);
 	if (!file.is_open()) {
@@ -694,7 +757,7 @@ Integer Integer::primePi(const Integer& n){
 	return i;
 }
 
-Integer Integer::log(const Integer& n1, const Integer& n2){
+Integer Integer::log(const Integer& n1, const Integer& n2) {
 	if (n1 <= 1 || n2 < 1) {
 		throw invalid_argument("Invalid base or argument for logarithm.");
 	}

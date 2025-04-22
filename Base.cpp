@@ -630,8 +630,8 @@ Base Base::parseExpressionb(const string& expr, size_t& currentPos, const map<st
 			result = result >> rhs;
 		}
 		else if (bop.find(expr[currentPos]) != bop.end()) {
-			++currentPos;
 			char op = expr[currentPos];
+			++currentPos;
 			Base rhs = parseAdditionb(expr, currentPos, baseNumbers);
 			switch (op) {
 			case'&': result = result & rhs; break;
