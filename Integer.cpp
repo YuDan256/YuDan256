@@ -1046,21 +1046,21 @@ Integer Integer::parseTermi(const string& expr, size_t& currentPos, const map<st
 Integer Integer::parsePoweri(const string& expr, size_t& currentPos, const map<string, Integer>& numbers) {
 	Integer result = 0, sign = 1;
 
-	if (currentPos < expr.length()) {
+	while (currentPos < expr.length()) {
 		if (expr[currentPos] == '+') {
-			sign = 1;
 			++currentPos;
 		}
 		else if (expr[currentPos] == '-') {
-			sign = -1;
+			sign *= -1;
 			++currentPos;
 		}
+		else break;
 	}
 
 	if (currentPos < expr.length()) {
 		if (expr[currentPos] == '(') {
 			++currentPos;
-			result = sign * parseExpressioni(expr, currentPos, numbers);
+			result = parseExpressioni(expr, currentPos, numbers);
 			if (expr[currentPos] == ')') {
 				++currentPos;
 			}
@@ -1073,7 +1073,7 @@ Integer Integer::parsePoweri(const string& expr, size_t& currentPos, const map<s
 			while (currentPos < expr.length() && isdigit(expr[currentPos])) {
 				number += expr[currentPos++];
 			}
-			result = sign * Integer(number);
+			result = Integer(number);
 		}
 		else if (isalpha(expr[currentPos])) { // 支持函数和变量
 			string identifier;
@@ -1087,7 +1087,7 @@ Integer Integer::parsePoweri(const string& expr, size_t& currentPos, const map<s
 					++currentPos; // 消耗 ')'
 					auto it = functioni1.find(identifier);
 					if (it != functioni1.end()) {
-						result = sign * it->second(argument);
+						result = it->second(argument);
 					}
 					else {
 						throw runtime_error("Unknown function: " + identifier);
@@ -1101,7 +1101,7 @@ Integer Integer::parsePoweri(const string& expr, size_t& currentPos, const map<s
 						++currentPos;
 						auto it = functioni2.find(identifier);
 						if (it != functioni2.end()) {
-							result = sign * it->second(argument, argument2);
+							result = it->second(argument, argument2);
 						}
 						else {
 							throw runtime_error("Unknown function: " + identifier);
@@ -1114,7 +1114,7 @@ Integer Integer::parsePoweri(const string& expr, size_t& currentPos, const map<s
 			else { // 否则视为整数
 				auto it = numbers.find(identifier);
 				if (it != numbers.end()) {
-					result = sign * it->second;
+					result = it->second;
 				}
 				else {
 					throw runtime_error("Undefined variable: " + identifier);
@@ -1132,7 +1132,7 @@ Integer Integer::parsePoweri(const string& expr, size_t& currentPos, const map<s
 		result = result.pow(rhs);
 	}
 
-	return result;
+	return sign * result;
 }
 
 void Integer::newInteger() {

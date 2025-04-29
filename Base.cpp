@@ -706,26 +706,26 @@ Base Base::parsePowerb(const string& expr, size_t& currentPos, const map<string,
 	Integer sign = 1;
 	Integer num;
 
-	if (currentPos < expr.length()) {
+	while (currentPos < expr.length()) {
 		if (expr[currentPos] == '+') {
-			sign = 1;
 			++currentPos;
 		}
 		else if (expr[currentPos] == '-') {
-			sign = -1;
+			sign *= -1;
 			++currentPos;
 		}
+		else break;
 	}
 
 	if (currentPos < expr.length()) {
 		if (expr[currentPos] == '~') {
 			++currentPos;
-			result = ~parsePowerb(expr, currentPos, baseNumbers) * sign;
+			result = ~parsePowerb(expr, currentPos, baseNumbers);
 		}
 
 		else if (expr[currentPos] == '(') {
 			++currentPos;
-			result = parseExpressionb(expr, currentPos, baseNumbers) * sign;
+			result = parseExpressionb(expr, currentPos, baseNumbers);
 			if (expr[currentPos] == ')') {
 				++currentPos;
 			}
@@ -738,7 +738,7 @@ Base Base::parsePowerb(const string& expr, size_t& currentPos, const map<string,
 			while (currentPos < expr.length() && (isdigit(expr[currentPos]))) {
 				number += expr[currentPos++];
 			}
-			result = Integer(number) * sign;
+			result = Integer(number);
 		}
 		else if (isalpha(expr[currentPos])) { // 支持函数和变量
 			string identifier;
@@ -751,7 +751,7 @@ Base Base::parsePowerb(const string& expr, size_t& currentPos, const map<string,
 					Base b1 = parseExpressionb(expr, currentPos, baseNumbers);
 					if (expr[currentPos] == ')') {
 						currentPos++;
-						result = Base(b1.base) * Base(sign);
+						result = Base(b1.base);
 					}
 					else throw invalid_argument("Missing closing parenthesis.");
 				}
@@ -759,7 +759,7 @@ Base Base::parsePowerb(const string& expr, size_t& currentPos, const map<string,
 					Base b1 = parseExpressionb(expr, currentPos, baseNumbers);
 					if (expr[currentPos] == ')') {
 						currentPos++;
-						result = Base(b1.data) * Base(sign);
+						result = Base(b1.data);
 					}
 					else throw invalid_argument("Missing closing parenthesis.");
 				}
@@ -767,7 +767,7 @@ Base Base::parsePowerb(const string& expr, size_t& currentPos, const map<string,
 					Base b1 = parseExpressionb(expr, currentPos, baseNumbers);
 					if (expr[currentPos] == ')') {
 						currentPos++;
-						result = Base(b1.length()) * Base(sign);
+						result = Base(b1.length());
 					}
 					else throw invalid_argument("Missing closing parenthesis.");
 				}
@@ -778,7 +778,7 @@ Base Base::parsePowerb(const string& expr, size_t& currentPos, const map<string,
 						Base b2 = parseExpressionb(expr, currentPos, baseNumbers);
 						if (expr[currentPos] == ')') {
 							currentPos++;
-							result = powb(b1, b2) * Base(sign);
+							result = powb(b1, b2);
 						}
 						else throw invalid_argument("Missing closing parenthesis.");
 					}
@@ -795,7 +795,7 @@ Base Base::parsePowerb(const string& expr, size_t& currentPos, const map<string,
 						num = Integer(_num);
 						if (expr[currentPos] == ')') {
 							currentPos++;
-							result = Base(num, b1.data) * Base(sign);
+							result = Base(num, b1.data);
 						}
 						else throw invalid_argument("Missing closing parenthesis.");
 					}
@@ -806,7 +806,7 @@ Base Base::parsePowerb(const string& expr, size_t& currentPos, const map<string,
 			else { // 否则视为变量
 				auto it = baseNumbers.find(identifier);
 				if (it != baseNumbers.end()) {
-					result = it->second * Base(sign);
+					result = it->second;
 				}
 				else {
 					throw runtime_error("Undefined variable: " + identifier);
@@ -821,7 +821,7 @@ Base Base::parsePowerb(const string& expr, size_t& currentPos, const map<string,
 			if (currentPos < expr.length() && expr[currentPos] == ']') {
 				currentPos++;
 				express += ']';
-				result = stob(express) * sign;
+				result = stob(express);
 			}
 			else throw runtime_error("Missing closing parenthesis.");
 		}
@@ -829,7 +829,7 @@ Base Base::parsePowerb(const string& expr, size_t& currentPos, const map<string,
 			throw runtime_error("Unexpected character: " + string(1, expr[currentPos]));
 		}
 	}
-	return result;
+	return result * sign;
 }
 
 ostream& operator<<(ostream& out, const Base& b) {

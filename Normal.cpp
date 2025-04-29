@@ -85,21 +85,21 @@ double Normal::parsePowern(const string& expr, size_t& currentPos, const map<str
 	double result = 0.0; // 初始化result
 	double sign = 1.0; // 用于处理正负号
 
-	if (currentPos < expr.length()) {
+	while (currentPos < expr.length()) {
 		if (expr[currentPos] == '+') {
-			sign = 1.0;
 			++currentPos;
 		}
 		else if (expr[currentPos] == '-') {
-			sign = -1.0;
+			sign *= -1.0;
 			++currentPos;
 		}
+		else break;
 	}
 
 	if (currentPos < expr.length()) {
 		if (expr[currentPos] == '(') {
 			++currentPos;
-			result = sign * parseExpressionn(expr, currentPos, variables);
+			result = parseExpressionn(expr, currentPos, variables);
 			if (expr[currentPos] == ')') {
 				++currentPos;
 			}
@@ -112,7 +112,7 @@ double Normal::parsePowern(const string& expr, size_t& currentPos, const map<str
 			while (currentPos < expr.length() && (isdigit(expr[currentPos]) || expr[currentPos] == '.')) {
 				number += expr[currentPos++];
 			}
-			result = sign * stod(number);
+			result = stod(number);
 		}
 		else if (isalpha(expr[currentPos])) { // 支持函数和变量
 			string identifier;
@@ -126,7 +126,7 @@ double Normal::parsePowern(const string& expr, size_t& currentPos, const map<str
 					++currentPos; // 消耗 ')'
 					auto it = functionn.find(identifier);
 					if (it != functionn.end()) {
-						result = sign * it->second(argument);
+						result = it->second(argument);
 					}
 					else {
 						throw runtime_error("Unknown function: " + identifier);
@@ -139,7 +139,7 @@ double Normal::parsePowern(const string& expr, size_t& currentPos, const map<str
 			else { // 否则视为变量
 				auto it = variables.find(identifier);
 				if (it != variables.end()) {
-					result = sign * it->second;
+					result = it->second;
 				}
 				else {
 					throw runtime_error("Undefined variable: " + identifier);
@@ -156,7 +156,8 @@ double Normal::parsePowern(const string& expr, size_t& currentPos, const map<str
 		double rhs = parsePowern(expr, currentPos, variables);
 		result = pow(result, rhs);
 	}
-	return result;
+
+	return sign * result;
 }
 
 void Normal::input(map<string, double>& variables) {

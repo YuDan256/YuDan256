@@ -1701,21 +1701,21 @@ Matrix Matrix::parsePowerm(const string& expr, size_t& currentPos, const map<str
 	Matrix result = 0.0; // 初始化result
 	double sign = 1.0; // 用于处理正负号
 
-	if (currentPos < expr.length()) {
+	while (currentPos < expr.length()) {
 		if (expr[currentPos] == '+') {
-			sign = 1.0;
 			++currentPos;
 		}
 		else if (expr[currentPos] == '-') {
-			sign = -1.0;
+			sign *= -1.0;
 			++currentPos;
 		}
+		else break;
 	}
 
 	if (currentPos < expr.length()) {
 		if (expr[currentPos] == '(') {
 			++currentPos;
-			result = sign * parseExpressionm(expr, currentPos, matrices);
+			result = parseExpressionm(expr, currentPos, matrices);
 			if (expr[currentPos] == ')') {
 				++currentPos;
 			}
@@ -1728,7 +1728,7 @@ Matrix Matrix::parsePowerm(const string& expr, size_t& currentPos, const map<str
 			while (currentPos < expr.length() && (isdigit(expr[currentPos]) || expr[currentPos] == '.')) {
 				number += expr[currentPos++];
 			}
-			result = sign * stod(number);
+			result = stod(number);
 		}
 		else if (isalpha(expr[currentPos])) { // 支持函数和变量
 			string identifier;
@@ -1741,7 +1741,7 @@ Matrix Matrix::parsePowerm(const string& expr, size_t& currentPos, const map<str
 				if (expr[currentPos] == ')') {
 					++currentPos; // 消耗 ')'
 					auto it = functionm.find(identifier);
-					if (it != functionm.end())result = sign * it->second(argument);
+					if (it != functionm.end())result = it->second(argument);
 					else throw runtime_error("Unknown function: " + identifier);
 				}
 				else if (expr[currentPos] == ',') {
@@ -1750,7 +1750,7 @@ Matrix Matrix::parsePowerm(const string& expr, size_t& currentPos, const map<str
 					if (expr[currentPos] == ')') {
 						++currentPos;
 						auto it = functionm2.find(identifier);
-						if (it != functionm2.end())result = sign * it->second(argument, a2);
+						if (it != functionm2.end())result = it->second(argument, a2);
 						else throw runtime_error("Unknown function: " + identifier);
 					}
 					else if (expr[currentPos] == ',') {
@@ -1759,7 +1759,7 @@ Matrix Matrix::parsePowerm(const string& expr, size_t& currentPos, const map<str
 						if (expr[currentPos] == ')') {
 							++currentPos;
 							auto it = functionm3.find(identifier);
-							if (it != functionm3.end())result = sign * it->second(argument, a2, a3);
+							if (it != functionm3.end())result = it->second(argument, a2, a3);
 							else throw runtime_error("Unknown function: " + identifier);
 						}
 						else if (expr[currentPos] == ',') {
@@ -1768,7 +1768,7 @@ Matrix Matrix::parsePowerm(const string& expr, size_t& currentPos, const map<str
 							if (expr[currentPos] == ')') {
 								++currentPos;
 								auto it = functionm4.find(identifier);
-								if (it != functionm4.end()) result = sign * it->second(argument, a2, a3, a4);
+								if (it != functionm4.end()) result = it->second(argument, a2, a3, a4);
 								else throw runtime_error("Unknown function: " + identifier);
 							}
 							else throw runtime_error("Missing closing parenthesis.");
@@ -1783,7 +1783,7 @@ Matrix Matrix::parsePowerm(const string& expr, size_t& currentPos, const map<str
 			else { // 否则视为矩阵
 				auto it = matrices.find(identifier);
 				if (it != matrices.end()) {
-					result = sign * it->second;
+					result = it->second;
 				}
 				else {
 					throw runtime_error("Undefined variable: " + identifier);
@@ -1798,7 +1798,7 @@ Matrix Matrix::parsePowerm(const string& expr, size_t& currentPos, const map<str
 			if (currentPos < expr.length() && expr[currentPos] == ']') {
 				currentPos++;
 				express += ']';
-				result = stom(express) * sign;
+				result = stom(express);
 			}
 			else throw runtime_error("Missing closing parenthesis.");
 		}
@@ -1812,7 +1812,7 @@ Matrix Matrix::parsePowerm(const string& expr, size_t& currentPos, const map<str
 		Matrix rhs = parsePowerm(expr, currentPos, matrices);
 		result ^= rhs;
 	}
-	return result;
+	return sign * result;
 }
 
 void Matrix::newMatrix() {

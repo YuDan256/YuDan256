@@ -437,21 +437,21 @@ Vector Vector::parsePowerv(const string& expr, size_t& currentPos, const map<str
 	Vector result = 0.0; // 初始化result
 	double sign = 1.0; // 用于处理正负号
 
-	if (currentPos < expr.length()) {
+	while (currentPos < expr.length()) {
 		if (expr[currentPos] == '+') {
-			sign = 1.0;
 			++currentPos;
 		}
 		else if (expr[currentPos] == '-') {
-			sign = -1.0;
+			sign *= -1.0;
 			++currentPos;
 		}
+		else break;
 	}
 
 	if (currentPos < expr.length()) {
 		if (expr[currentPos] == '(') {
 			++currentPos;
-			result = sign * parseExpressionv(expr, currentPos, vectors);
+			result = parseExpressionv(expr, currentPos, vectors);
 			if (expr[currentPos] == ')') {
 				++currentPos;
 			}
@@ -464,7 +464,7 @@ Vector Vector::parsePowerv(const string& expr, size_t& currentPos, const map<str
 			while (currentPos < expr.length() && (isdigit(expr[currentPos]) || expr[currentPos] == '.')) {
 				number += expr[currentPos++];
 			}
-			result = sign * stod(number);
+			result = stod(number);
 		}
 		else if (isalpha(expr[currentPos])) { // 支持函数和变量
 			string identifier;
@@ -478,7 +478,7 @@ Vector Vector::parsePowerv(const string& expr, size_t& currentPos, const map<str
 					++currentPos; // 消耗 ')'
 					auto it = functionv1.find(identifier);
 					if (it != functionv1.end()) {
-						result = sign * it->second(argument1);
+						result = it->second(argument1);
 					}
 					else {
 						throw runtime_error("Unknown function: " + identifier);
@@ -491,7 +491,7 @@ Vector Vector::parsePowerv(const string& expr, size_t& currentPos, const map<str
 						++currentPos;
 						auto it = functionv2.find(identifier);
 						if (it != functionv2.end()) {
-							result = sign * it->second(argument1, argument2);
+							result = it->second(argument1, argument2);
 						}
 						else {
 							throw runtime_error("Unknown function: " + identifier);
@@ -503,28 +503,20 @@ Vector Vector::parsePowerv(const string& expr, size_t& currentPos, const map<str
 						if (expr[currentPos] == ')') {
 							++currentPos;
 							if (identifier == "mix") {
-								result = sign * argument1.mixedProduct(argument2, argument3);
+								result = argument1.mixedProduct(argument2, argument3);
 							}
-							else {
-								throw runtime_error("Unknown function : " + identifier);
-							}
+							else throw runtime_error("Unknown function : " + identifier);	
 						}
-						else {
-							throw runtime_error("Missing closing parenthesis.");
-						}
+						else throw runtime_error("Missing closing parenthesis.");
 					}
-					else {
-						throw runtime_error("Missing closing parenthesis.");
-					}
+					else throw runtime_error("Missing closing parenthesis.");	
 				}
-				else {
-					throw runtime_error("Missing closing parenthesis.");
-				}
+				else throw runtime_error("Missing closing parenthesis.");
 			}
-			else { // 否则视为复数
+			else { // 否则视为向量
 				auto it = vectors.find(identifier);
 				if (it != vectors.end()) {
-					result = sign * it->second;
+					result = it->second;
 				}
 				else {
 					throw runtime_error("Undefined variable: " + identifier);
@@ -539,7 +531,7 @@ Vector Vector::parsePowerv(const string& expr, size_t& currentPos, const map<str
 			if (currentPos < expr.size() && expr[currentPos] == ']') {
 				++currentPos;
 				express += ']';
-				result = sign * stov(express);
+				result = stov(express);
 			}
 			else {
 				throw runtime_error("Missing closing parenthesis.");
@@ -555,7 +547,7 @@ Vector Vector::parsePowerv(const string& expr, size_t& currentPos, const map<str
 		Vector rhs = parsePowerv(expr, currentPos, vectors);
 		result ^= rhs;
 	}
-	return result;
+	return sign * result;
 }
 
 void Vector::newVector() {

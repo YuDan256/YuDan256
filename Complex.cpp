@@ -512,21 +512,21 @@ Complex Complex::parsePowerc(const string& expr, size_t& currentPos, const map<s
 	Complex result = 0.0; // 初始化result
 	double sign = 1.0; // 用于处理正负号
 
-	if (currentPos < expr.length()) {
+	while (currentPos < expr.length()) {
 		if (expr[currentPos] == '+') {
-			sign = 1.0;
 			++currentPos;
 		}
 		else if (expr[currentPos] == '-') {
-			sign = -1.0;
+			sign *= -1.0;
 			++currentPos;
 		}
+		else break;
 	}
 
 	if (currentPos < expr.length()) {
 		if (expr[currentPos] == '(') {
 			++currentPos;
-			result = sign * parseExpressionc(expr, currentPos, numbers);
+			result = parseExpressionc(expr, currentPos, numbers);
 			if (expr[currentPos] == ')') {
 				++currentPos;
 			}
@@ -539,7 +539,7 @@ Complex Complex::parsePowerc(const string& expr, size_t& currentPos, const map<s
 			while (currentPos < expr.length() && (isdigit(expr[currentPos]) || expr[currentPos] == '.')) {
 				number += expr[currentPos++];
 			}
-			result = sign * stod(number);
+			result = stod(number);
 		}
 		else if (isalpha(expr[currentPos])) { // 支持函数和变量
 			string identifier;
@@ -553,7 +553,7 @@ Complex Complex::parsePowerc(const string& expr, size_t& currentPos, const map<s
 					++currentPos; // 消耗 ')'
 					auto it = functionc.find(identifier);
 					if (it != functionc.end()) {
-						result = sign * it->second(argument);
+						result = it->second(argument);
 					}
 					else {
 						throw runtime_error("Unknown function: " + identifier);
@@ -567,7 +567,7 @@ Complex Complex::parsePowerc(const string& expr, size_t& currentPos, const map<s
 					if (expr[currentPos] == ')') {
 						++currentPos;
 						if (identifier == "fr") {
-							result = sign * argument.firstRoot(n);
+							result = argument.firstRoot(n);
 						}
 						else throw runtime_error("Unknown function: " + identifier);
 					}
@@ -578,7 +578,7 @@ Complex Complex::parsePowerc(const string& expr, size_t& currentPos, const map<s
 			else { // 否则视为复数
 				auto it = numbers.find(identifier);
 				if (it != numbers.end()) {
-					result = sign * it->second;
+					result = it->second;
 				}
 				else {
 					throw runtime_error("Undefined variable: " + identifier);
@@ -593,7 +593,7 @@ Complex Complex::parsePowerc(const string& expr, size_t& currentPos, const map<s
 			if (currentPos < expr.length() && expr[currentPos] == ']') {
 				currentPos++;
 				express += ']';
-				result = stoc(express) * sign;
+				result = stoc(express);
 			}
 			else throw runtime_error("Missing closing parenthesis.");
 		}
@@ -608,7 +608,7 @@ Complex Complex::parsePowerc(const string& expr, size_t& currentPos, const map<s
 		result ^= rhs;
 	}
 
-	return result;
+	return sign * result;
 }
 
 void Complex::newComplex() {
