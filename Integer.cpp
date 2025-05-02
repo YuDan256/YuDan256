@@ -628,9 +628,9 @@ map<Integer, Integer> Integer::factor() const {
 		num /= 2;
 	}
 
-	ifstream file("D:\\Prime\\Prime.txt");
+	ifstream file("D:\\Calculator\\Prime.txt");
 	if (!file.is_open()) {
-		throw runtime_error("Failed to open file: D:\\Prime\\Prime.txt");
+		throw runtime_error("Failed to open file: D:\\Calculator\\Prime.txt");
 	}
 
 	string line;
@@ -721,7 +721,7 @@ Integer Integer::length(const Integer& n) {
 }
 
 Integer Integer::prime(const Integer& n) {
-	string filename = "D:\\Prime\\Prime.txt";
+	string filename = "D:\\Calculator\\Prime.txt";
 	ifstream file(filename);
 	if (!file.is_open()) {
 		throw runtime_error("Failed to open file: " + filename);
@@ -740,7 +740,7 @@ Integer Integer::prime(const Integer& n) {
 }
 
 Integer Integer::primePi(const Integer& n) {
-	string filename = "D:\\Prime\\Prime.txt";
+	string filename = "D:\\Calculator\\Prime.txt";
 	ifstream file(filename);
 	if (!file.is_open()) {
 		throw runtime_error("Failed to open file: " + filename);
@@ -979,6 +979,10 @@ Integer Integer::parseFunctioni(const string& expr, const map<string, Integer>& 
 				z.factorization();
 				throw true;
 			}
+			else if (identifier == "add_prime") {
+				add_prime(z.uvalue());
+				throw true;
+			}
 		}
 	}
 	currentPos = 0;
@@ -1193,6 +1197,7 @@ void Integer::newInteger() {
 		if (expression == "function_list") {
 			cout << endl << "The following functions can only be used individually:" << endl;
 			cout << "Print - print(Z)" << endl;
+			cout << "Extend prime list - add_prime(Z)" << endl;
 			cout << "Factorization - fact(Z)" << endl << endl;
 			cout << "The following functions can be used with expressions:" << endl;
 			cout << "Absolute value - abs(Z)" << endl;
@@ -1205,6 +1210,15 @@ void Integer::newInteger() {
 			cout << "Logarithm base 2 - log(N+)" << endl;
 			cout << "Prime number - prime(N+)" << endl;
 			cout << "Prime number pi - primePi(Z) or pi(Z)" << endl;
+			cout << "Euler's totient function - phi(Z)" << endl;
+			cout << "Factorial - F(Z)" << endl;
+			cout << "Divisor count - d(Z)" << endl;
+			cout << "Omega - omega(Z)" << endl;
+			cout << "Big Omega - Omega(Z)" << endl;
+			cout << "Sigma - sigma(Z)" << endl;
+			cout << "Fibonacci - fib(Z)" << endl;
+			cout << "Random integer - random(Z,Z) or randint(Z,Z)" << endl;
+			cout << "Length - length(Z), len(Z) or digit(Z)" << endl;
 			cout << endl;
 			continue;
 		}
@@ -1243,4 +1257,132 @@ void Integer::newInteger() {
 			if (b)cout << "The result cannot be saved." << endl;
 		}
 	}
+}
+
+// 使用埃拉托斯特尼筛法生成小范围内的质数
+std::vector<ull> Integer::generateSmallPrimes(ull maxNumber) {
+	if (maxNumber < 2) {
+		return std::vector<ull>();
+	}
+
+	std::vector<bool> isPrime(maxNumber + 1, true);
+	isPrime[0] = isPrime[1] = false;
+
+	for (ull i = 2; i <= std::sqrt(maxNumber); ++i) {
+		if (isPrime[i]) {
+			for (ull j = i * i; j <= maxNumber; j += i) {
+				isPrime[j] = false;
+			}
+		}
+	}
+
+	std::vector<ull> primes;
+	for (ull i = 2; i <= maxNumber; ++i) {
+		if (isPrime[i]) {
+			primes.push_back(i);
+		}
+	}
+
+	return primes;
+}
+
+// 使用分段筛法生成指定范围内的质数
+std::vector<ull> Integer::segmentedSieve(ull low, ull high) {
+	std::vector<bool> isPrime(high - low + 1, true);
+
+	// 生成小范围内的质数（用于标记非质数）
+	ull sqrtHigh = static_cast<ull>(std::sqrt(high)) + 1;
+	std::vector<ull> smallPrimes = generateSmallPrimes(sqrtHigh);
+
+	// 标记非质数
+	for (ull p : smallPrimes) {
+		ull start = ((low / p) * p);
+		if (start < low) {
+			start += p;
+		}
+		for (ull i = start; i <= high; i += p) {
+			isPrime[i - low] = false;
+		}
+	}
+
+	std::vector<ull> primes;
+	for (ull i = low; i <= high; ++i) {
+		if (isPrime[i - low]) {
+			primes.push_back(i);
+		}
+	}
+
+	return primes;
+}
+
+// 将质数写入文件
+void Integer::writePrimesToFile(const std::vector<ull>& primes, const std::string& filePath, bool append = false) {
+	std::ios_base::openmode mode = std::ios::out;
+	if (append) {
+		mode |= std::ios::app;
+	}
+	else {
+		mode |= std::ios::trunc;
+	}
+
+	std::ofstream file(filePath, mode);
+
+	if (!file) {
+		std::cerr << "Failed to open: " << filePath << std::endl;
+		return;
+	}
+
+	for (size_t i = 0; i < primes.size(); ++i) {
+		file << primes[i];
+		file << std::endl; // 每个质数占一行
+	}
+
+
+	file.close();
+	std::cout << "The primes have already been written into: " << filePath << std::endl;
+}
+
+void Integer::add_prime(const ull& interval){
+	std::string filePath = "D:\\Calculator\\Prime.txt";
+	ull lastPrime = getLastPrime(filePath);
+
+	if (lastPrime == 0) {
+		std::cout << "The file is empty or does not exist. Starting to generate primes from the beginning." << std::endl;
+		ull maxNumber = interval;
+
+		if (maxNumber < 2) throw invalid_argument("Please enter a number greater than or equal to 2!");
+
+		std::vector<ull> primes = generateSmallPrimes(maxNumber);
+		writePrimesToFile(primes, filePath, false);
+		std::cout << "Generated " << primes.size() << " primes." << std::endl;
+	}
+	else {
+		std::cout << "The largest prime read from the file is: " << lastPrime << std::endl;
+
+		ull count = interval;
+
+		if (count <= 0) throw invalid_argument("Please enter a number greater than or equal to 0!");
+
+		ull start = lastPrime + 1;
+		ull high = start + count - 1;
+
+		std::vector<ull> newPrimes = segmentedSieve(start, high);
+		writePrimesToFile(newPrimes, filePath, true);
+
+		std::cout << "Generated " << newPrimes.size() << " new primes." << std::endl;
+	}
+}
+
+// 读取文件中的最后一个质数
+ull Integer::getLastPrime(const std::string& filePath) {
+	std::ifstream file(filePath);
+	ull lastPrime = 0;
+	ull prime;
+
+	while (file >> prime) {
+		lastPrime = prime;
+	}
+
+	file.close();
+	return lastPrime;
 }

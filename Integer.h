@@ -133,6 +133,12 @@ public:
 	static void input(map<string, Integer>& variables);
 	static void newInteger();
 
+	static std::vector<ull> generateSmallPrimes(ull maxNumber);
+	static std::vector<ull> segmentedSieve(ull low, ull high);
+	static void writePrimesToFile(const std::vector<ull>& primes, const std::string& filePath, bool append);
+	static void add_prime(const ull& interval);
+	static ull getLastPrime(const std::string& filePath);
+
 	static Integer parseFunctioni(const string& expr, const map<string, Integer>& numbers);
 	static Integer parseExpressioni(const string& expr, size_t& currentPos, const map<string, Integer>& numbers);
 	static Integer parseTermi(const string& expr, size_t& currentPos, const map<string, Integer>& numbers);

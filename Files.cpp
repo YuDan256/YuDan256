@@ -16,7 +16,7 @@ void initialize() {
 	filesystem::create_directories(p);
 
 	vector<string> fileNames = {
-		"Complex.txt", "Vector.txt", "Matrix.txt",
+		"Complex.txt", "Vector.txt", "Matrix.txt", "Prime.txt",
 		"Base.txt", "Statistics.txt", "Normal.txt", "Function.txt"
 	};
 
