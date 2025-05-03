@@ -379,6 +379,14 @@ Integer Integer::operator>>(const Integer& n) const {
 	return result;
 }
 
+Integer& Integer::operator=(const Integer& n){
+	if (this != &n) {
+		sign = n.sign;
+		data = n.data;
+	}
+	return *this;
+}
+
 Integer& Integer::operator+=(const Integer& n) {
 	*this = *this + n;
 	return *this;
