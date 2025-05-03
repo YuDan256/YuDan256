@@ -90,7 +90,9 @@ double Vector::angle(const Vector& other)const {
 	}
 	else {
 		double result = dot(other) / (modulus() * other.modulus());
-		return acos(result);
+		result = acos(result);
+		if (fabs(result) < 1e-7)result = 0;
+		return result;
 	}
 }
 
