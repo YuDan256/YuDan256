@@ -14,11 +14,11 @@ map<string, Vector(*)(const Vector&, const Vector&)>Vector::functionv2 = {
 	{"dot",dotProduct},{"SP",SP},{"PV",PV},{"ang",ang}
 };
 
-void Vector::print()const {
+void Vector::print(const string& end)const {
 	if (n == 0)return;
 	if (n == 1) {
-		if (fabs(data[0]) < 1e-10)cout << 0 << endl;
-		else std::cout << data[0] << endl;
+		if (fabs(data[0]) < 1e-10)cout << 0 << end;
+		else std::cout << data[0] << end;
 		return;
 	}
 	std::cout << "(";
@@ -27,8 +27,8 @@ void Vector::print()const {
 		else std::cout << data[i] << ",";
 	}
 	int m = n - 1;//±ÜÃâÒç³ö
-	if (fabs(data[m]) < 1e-10)cout << 0 << ")" << endl;
-	else std::cout << data[m] << ")" << endl;
+	if (fabs(data[m]) < 1e-10)cout << 0 << ")" << end;
+	else std::cout << data[m] << ")" << end;
 }
 
 double Vector::modulus()const {

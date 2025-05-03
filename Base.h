@@ -23,7 +23,7 @@ public:
 	Integer getBase()const { return base; }
 	Integer getData()const { return data; }
 	Integer length()const;
-	void print()const;
+	void print(const string& end = "\n")const;
 	void setBase(const Integer& b) { base = b; }
 	void setData(const Integer& d) { data = d; }
 

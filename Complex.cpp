@@ -14,19 +14,19 @@ map<string, Complex(*)(const Complex&)> Complex::functionc = {
 	{"exp",expc},{"abs",R}
 };
 
-void Complex::print()const {
+void Complex::print(const string& end)const {
 	if (fabs(real) > 1e-10) {
-		if (fabs(image - 1) < 1e-10)cout << real << "+i" << endl;
-		else if (fabs(image + 1) < 1e-10)cout << real << "-i" << endl;
-		else if (image > 1e-10)cout << real << "+" << image << "i" << endl;
-		else if (image < -1e-10) cout << real << "-" << -image << "i" << endl;
-		else cout << real << endl;
+		if (fabs(image - 1) < 1e-10)cout << real << "+i" << end;
+		else if (fabs(image + 1) < 1e-10)cout << real << "-i" << end;
+		else if (image > 1e-10)cout << real << "+" << image << "i" << end;
+		else if (image < -1e-10) cout << real << "-" << -image << "i" << end;
+		else cout << real << end;
 	}
-	else if (fabs(real) < 1e-10 && fabs(image) < 1e-10)cout << 0 << endl;
+	else if (fabs(real) < 1e-10 && fabs(image) < 1e-10)cout << 0 << end;
 	else {
-		if (fabs(image - 1) < 1e-10)cout << "i" << endl;
-		else if (fabs(image + 1) < 1e-10)cout << "-i" << endl;
-		else cout << image << "i" << endl;
+		if (fabs(image - 1) < 1e-10)cout << "i" << end;
+		else if (fabs(image + 1) < 1e-10)cout << "-i" << end;
+		else cout << image << "i" << end;
 	}
 }
 

@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Fraction.h" />
     <ClInclude Include="Integer.h" />
     <ClInclude Include="Base.h" />
     <ClInclude Include="Complex.h" />
@@ -29,6 +30,7 @@
     <ClInclude Include="Vector.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Fraction.cpp" />
     <ClCompile Include="Integer.cpp" />
     <ClCompile Include="Base.cpp" />
     <ClCompile Include="Calculator.cpp" />

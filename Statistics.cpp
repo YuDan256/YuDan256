@@ -51,10 +51,10 @@ double Statistics::get(const int& pos) const {
 	return data[pos];
 }
 
-void Statistics::print() const {
-	cout << "No.\tData" << endl;
+void Statistics::print(const string& end) const {
+	cout << "No.\tData" << end;
 	for (int i = 0; i < data.size(); i++) {
-		cout << i << '\t' << data[i] << endl;
+		cout << i << '\t' << data[i] << end;
 	}
 }
 

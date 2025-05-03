@@ -26,7 +26,7 @@ public:
 	Complex(const Complex& other) :real(other.real), image(other.image) {};
 
 	//Ê½Íâº¯Êý
-	void print()const;
+	void print(const string& end = "\n")const;
 	void triangle()const;
 	void root(const int& n)const;
 	double getReal() const { return real; }

@@ -31,7 +31,7 @@ public:
 	void set(const int& place, const double& value) { data[place] = value; }
 	double get(const int& place)const { return data[place]; }
 	int getDimension()const { return n; }
-	void print()const;
+	void print(const string& end = "\n")const;
 
 	//ÔËËã·ûÖØÔØ
 	Vector operator+(const Vector& other)const;

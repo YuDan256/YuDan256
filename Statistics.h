@@ -33,7 +33,7 @@ public:
 	void push_back(const double& value);
 	void pop_back();
 	double get(const int& pos)const;
-	void print()const;
+	void print(const string& end = "\n")const;
 	Statistics sort() const;
 	void insert(const int& pos, const double& value);
 	void erase(const int& pos);

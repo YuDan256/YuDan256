@@ -388,13 +388,13 @@ Matrix& Matrix::operator^=(const Matrix& n) {
 	}
 }
 
-void Matrix::print() const {
+void Matrix::print(const string& end) const {
 	for (int i = 0; i < rows; ++i) {
 		for (int j = 0; j < cols; ++j) {
 			if (fabs(data[i][j]) < 1e-10)cout << 0 << " ";
 			else cout << data[i][j] << " ";
 		}
-		cout << endl;
+		cout << end;
 	}
 }
 

@@ -99,7 +99,7 @@ public:
 
 	bool getSign()const;
 	vector<int>getData()const;
-	void print()const;
+	void print(const string& end = "\n")const;
 
 	ull uvalue()const;
 	size_t size()const;

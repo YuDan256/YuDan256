@@ -39,7 +39,7 @@ public:
 	bool isZeroCol(const int& col)const;
 	bool isNumber()const;
 	bool isInteger()const;
-	void print() const;
+	void print(const string& end = "\n") const;
 
 	//³õµÈ±ä»»
 	void swapRows(const int& row1, const int& row2);

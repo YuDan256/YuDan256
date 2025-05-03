@@ -10,6 +10,7 @@
 #include "Function.h"
 #include "Normal.h"
 #include "Integer.h"
+#include "Fraction.h"
 
 using namespace std;
 
@@ -88,4 +89,7 @@ void newInstructions() {
 void easterEgg() {
 	cout << "There are no Easter eggs in this calculator." << endl;
 	cout << "(^u^)" << endl;
+
+	Fraction f1(1, 2), f2(1, 3), f3 = f1 + f2;
+	f3.print();
 }

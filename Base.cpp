@@ -24,10 +24,10 @@ Integer Base::length()const {
 	return len;
 }
 
-void Base::print() const {
+void Base::print(const string& end) const {
 	if (base != 10) {
 		if (data == 0) {
-			std::cout << "[0]_" << base << std::endl;
+			std::cout << "[0]_" << base << end;
 			return;
 		}
 		ull len = length().uvalue(); 
@@ -64,10 +64,10 @@ void Base::print() const {
 			}
 			std::cout << print[0];
 		}
-		std::cout << "]_" << base << std::endl;
+		std::cout << "]_" << base << end;
 	}
 	else {
-		std::cout << data << std::endl;
+		std::cout << data << end;
 	}
 }
 

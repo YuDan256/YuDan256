@@ -472,8 +472,8 @@ vector<int> Integer::getData() const {
 	return data;
 }
 
-void Integer::print() const {
-	cout << *this << endl;
+void Integer::print(const string& end) const {
+	cout << *this << end;
 }
 
 ull Integer::uvalue()const {

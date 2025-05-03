@@ -49,8 +49,8 @@ double Function::solveEquation(const double& x0)const {
 	throw runtime_error("The solution cannot be found.");
 }
 
-void Function::print() const {
-	cout << "y = " << expr << endl;
+void Function::print(const string& end) const {
+	cout << "y = " << expr << end;
 }
 
 void Function::doTable(const double& x0, const double& path, const int& n)const {
