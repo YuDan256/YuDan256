@@ -24,42 +24,51 @@ Integer Base::length()const {
 	return len;
 }
 
-void Base::print()const {
+void Base::print() const {
 	if (base != 10) {
-		cout << "[";
-		ull len = length().uvalue();
-		Integer* print = new Integer[len]; // Allocate exactly 'len' elements
-		for (ull i = 0; i < len; i++) {   // Use 'ull' for consistency with 'len'
-			print[i] = 0;
+		if (data == 0) {
+			std::cout << "[0]_" << base << std::endl;
+			return;
 		}
-		if (data < 0)cout << '-';
+		ull len = length().uvalue(); 
+		std::vector<Integer> print(len, 0);
+
 		Integer temp = Integer::fabs(data);
-		for (ull i = 0; temp > 0 && i < len; i++) { // Ensure 'i' does not exceed 'len'
-			print[i] = temp % base;
+		ull i = 0;
+		while (temp > 0 && i < len) { 
+			print[i++] = temp % base;
 			temp /= base;
 		}
+
+		std::cout << '[';
+		if (data < 0)
+			std::cout << '-';
+
 		if (base <= 10) {
-			for (ull i = 0; i < len; i++) {
-				cout << print[len - i - 1];
+			for (ull i = 0; i < len; ++i) {
+				std::cout << print[len - i - 1];
 			}
 		}
 		else if (base <= 36) {
-			for (ull i = 0; i < len; i++) {
-				if (print[len - i - 1] >= 10)
-					cout << static_cast<char>((Integer(static_cast<ull>('A') - 10) + print[len - i - 1]).uvalue());
-				else cout << print[len - i - 1];
+			for (ull i = 0; i < len; ++i) {
+				Integer digit = print[len - i - 1];
+				if (digit >= 10)
+					std::cout << static_cast<char>('A' + digit.uvalue() - 10);
+				else
+					std::cout << digit;
 			}
 		}
 		else {
-			for (ull i = 0; i < len - 1; i++) {
-				cout << print[len - i - 1] << " ";
+			for (ull i = 0; i < len - 1; ++i) {
+				std::cout << print[len - i - 1] << ' ';
 			}
-			cout << print[0];
+			std::cout << print[0];
 		}
-		cout << "]_" << base << endl;
-		delete[] print; // Free allocated memory
+		std::cout << "]_" << base << std::endl;
 	}
-	else cout << data << endl;
+	else {
+		std::cout << data << std::endl;
+	}
 }
 
 //for bases from 2 to 10
