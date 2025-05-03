@@ -390,11 +390,12 @@ Matrix& Matrix::operator^=(const Matrix& n) {
 
 void Matrix::print(const string& end1, const string& end2) const {
 	for (int i = 0; i < rows; ++i) {
-		for (int j = 0; j < cols; ++j) {
+		for (int j = 0; j < cols - 1; ++j) {
 			if (fabs(data[i][j]) < 1e-10)cout << 0 << end1;
 			else cout << data[i][j] << end1;
 		}
-		cout << end2;
+		if (fabs(data[i][static_cast<size_t>(cols) - 1]) < 1e-10)cout << 0 << end2;
+		else cout << data[i][static_cast<size_t>(cols) - 1] << end2;
 	}
 }
 

@@ -30,12 +30,12 @@ void Base::print(const string& end) const {
 			std::cout << "[0]_" << base << end;
 			return;
 		}
-		ull len = length().uvalue(); 
+		ull len = length().uvalue();
 		std::vector<Integer> print(len, 0);
 
 		Integer temp = Integer::fabs(data);
 		ull i = 0;
-		while (temp > 0 && i < len) { 
+		while (temp > 0 && i < len) {
 			print[i++] = temp % base;
 			temp /= base;
 		}
@@ -416,10 +416,10 @@ void Base::factorization(const Base& b) {
 	for (pair i : result) {
 		frequency[Base(b.base, i.first)] = i.second;
 	}
+	cout << "Factor\tPower" << endl;
 	for (const auto& pair : frequency) {
-		cout << "Factor:\t";
-		pair.first.print();
-		cout << "Power:\t" << pair.second << endl;
+		pair.first.print("\t");
+		cout << pair.second << endl;
 	}
 }
 
