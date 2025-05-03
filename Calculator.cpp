@@ -29,7 +29,7 @@ int main() {
 }
 
 void newCalculation() {
-	char mode;
+	string mode;
 	bool quit = false;
 
 	while (1) {
@@ -46,58 +46,32 @@ void newCalculation() {
 			<< "S - statistics" << endl
 			<< "Z - integer" << endl
 			<< "Q - quit" << endl;
+
 		std::cin >> mode;
 
-		switch (mode) {
-		case'N':
+		if (mode == "N") {
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			Normal::newNormal();
-			break;
-		case'M':
-			Matrix::newMatrix();
-			break;
-		case'C':
-			Complex::newComplex();
-			break;
-		case'V':
-			Vector::newVector();
-			break;
-		case'L':
-			Matrix::doLinearEquations();
-			break;
-		case'P':
-			Complex::doPolynomial();
-			break;
-		case'B':
-			Base::newBase();
-			break;
-		case'I':
-			newInstructions();
-			break;
-		case'F':
+		}
+		else if (mode == "M")Matrix::newMatrix();
+		else if (mode == "C")Complex::newComplex();
+		else if (mode == "V")Vector::newVector();
+		else if (mode == "L")Matrix::doLinearEquations();
+		else if (mode == "P")Complex::doPolynomial();
+		else if (mode == "B")Base::newBase();
+		else if (mode == "I")newInstructions();
+		else if (mode == "F") {
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			Function::newFunction();
-			break;
-		case'S':
-			Statistics::newStatistics();
-			break;
-		case'Z':
-			Integer::newInteger();
-			break;
-		case'Q':
-			quit = 1;
-			break;
-		case'E':
-			easterEgg();
-			break;
-		default:
-			cout << "Invalid mode." << endl;
-			continue;
 		}
-		if (quit == 1) {
+		else if (mode == "S")Statistics::newStatistics();
+		else if (mode == "Z")Integer::newInteger();
+		else if (mode == "Q") {
 			cout << "Thanks!" << endl;
 			break;
 		}
+		else if (mode == "E")easterEgg();
+		else cout << "Invalid mode." << endl;
 	}
 }
 

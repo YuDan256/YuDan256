@@ -613,7 +613,7 @@ Complex Complex::parsePowerc(const string& expr, size_t& currentPos, const map<s
 
 void Complex::newComplex() {
 	map<string, Complex>numbers;
-	char choice;
+	string choice;
 
 	cout << "Welcome to the Complex Number Calculator!" << endl << endl;
 	cout << "Do you want to use the variables you defined before?(Y/N)" << endl
@@ -621,15 +621,15 @@ void Complex::newComplex() {
 
 	do {
 		cin >> choice;
-		if (choice == 'Y') {
+		if (choice == "Y") {
 			numbers = loadc();
 			cout << "The variables are avaliable now." << endl;
 		}
-		else if (choice == 'N') {
+		else if (choice == "N") {
 			cout << "The variable list is cleared." << endl;
 		}
 		else cout << "Invalid choice. Choose again." << endl;
-	} while (choice != 'Y' && choice != 'N');
+	} while (choice != "Y" && choice != "N");
 
 	numbers["i"] = Complex(0, 1);
 	numbers["E"] = Complex(E, 0);

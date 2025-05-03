@@ -552,22 +552,22 @@ Vector Vector::parsePowerv(const string& expr, size_t& currentPos, const map<str
 
 void Vector::newVector() {
 	map<string, Vector>vectors;
-	char choice;
+	string choice;
 
 	cout << "Welcome to the Vector Calculator!" << endl << endl;
 	cout << "Do you want to use the variables you defined before?(Y/N)" << endl
 		<< "If no,the variable list will be cleared." << endl;
 	do {
 		cin >> choice;
-		if (choice == 'Y') {
+		if (choice == "Y") {
 			vectors = loadv();
 			cout << "The variables are avaliable now." << endl;
 		}
-		else if (choice == 'N') {
+		else if (choice == "N") {
 			cout << "The variable list is cleared." << endl;
 		}
 		else cout << "Invalid choice. Choose again." << endl;
-	} while (choice != 'Y' && choice != 'N');
+	} while (choice != "Y" && choice != "N");
 
 	vectors["PI"] = Vector(3.14159265358979323846264);
 	vectors["E"] = Vector(2.7182818284590452353602874);

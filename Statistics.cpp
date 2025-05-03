@@ -303,7 +303,7 @@ void Statistics::newInput(map<string, Statistics>& datasets) {
 
 void Statistics::newStatistics() {
 	map<string, Statistics>datasets;
-	char choice;
+	string choice;
 
 	cout << "Welcome to the Statistics Calculator!" << endl << endl;
 	cout << "You can only utilize functions with defined datasets in this mode." << endl;
@@ -311,15 +311,15 @@ void Statistics::newStatistics() {
 		<< "If no,the variable list will be cleared." << endl;
 	do {
 		cin >> choice;
-		if (choice == 'Y') {
+		if (choice == "Y") {
 			datasets = loads();
 			cout << "The variables are avaliable now." << endl;
 		}
-		else if (choice == 'N') {
+		else if (choice == "N") {
 			cout << "The variable list is cleared." << endl;
 		}
 		else cout << "Invalid choice. Choose again." << endl;
-	} while (choice != 'Y' && choice != 'N');
+	} while (choice != "Y" && choice != "N");
 	stores(datasets);
 
 	string expression, name;

@@ -473,7 +473,7 @@ void Base::newInput(map<string, Base>& baseNumbers) {
 
 void Base::newBase() {
 	map<string, Base>numbers;
-	char choice;
+	string choice;
 
 	cout << "Welcome to the Base Calculator!" << endl << endl;
 	cout << "Do you want to use the variables you defined before?(Y/N)" << endl
@@ -481,18 +481,18 @@ void Base::newBase() {
 
 	do {
 		cin >> choice;
-		if (choice == 'Y') {
+		if (choice == "Y") {
 			numbers = loadb();
 			cout << "The variables are avaliable now." << endl;
 		}
-		else if (choice == 'N') {
+		else if (choice == "N") {
 			cout << "The variable list is cleared." << endl;
 		}
 		else {
 			cout << "Invalid choice. Choose again." << endl;
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		}
-	} while (choice != 'Y' && choice != 'N');
+	} while (choice != "Y" && choice != "N");
 
 	numbers["ANS"] = Base();
 	storeb(numbers);

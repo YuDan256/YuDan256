@@ -194,22 +194,22 @@ void Normal::input(map<string, double>& variables) {
 //新版操作系统
 void Normal::newNormal() {
 	map<string, double> variables;
-	char choice;
+	string choice;
 
 	cout << "Welcome to the Normal Calculator!" << endl << endl;
 	cout << "Do you want to use the variables you defined before?(Y/N)" << endl
 		<< "If no,the variable list will be cleared." << endl;
 	do {
 		cin >> choice;
-		if (choice == 'Y') {
+		if (choice == "Y") {
 			variables = loadn();
 			cout << "The variables are avaliable now." << endl;
 		}
-		else if (choice == 'N') {
+		else if (choice == "N") {
 			cout << "The variable list is cleared." << endl;
 		}
 		else cout << "Invalid choice. Choose again." << endl;
-	} while (choice != 'Y' && choice != 'N');
+	} while (choice != "Y" && choice != "N");
 	cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
 	variables["PI"] = 3.14159265358979323846264;

@@ -105,7 +105,7 @@ void Function::newInput(map<string, Function>& functions) {
 }
 
 void Function::newFunction() {
-	char choice;
+	string choice;
 	map<string, Function>functions;
 
 	cout << "Welcome to the Function Calculator!" << endl << endl;
@@ -114,13 +114,15 @@ void Function::newFunction() {
 		<< "If no,the function list will be cleared." << endl;
 	do {
 		cin >> choice;
-		if (choice == 'Y') {
+		if (choice == "Y") {
 			functions = loadf();
-			cout << "The functions are avaliable now." << endl;
+			cout << "The variables are avaliable now." << endl;
 		}
-		else if (choice == 'N') cout << "The function list is cleared." << endl;
+		else if (choice == "N") {
+			cout << "The variable list is cleared." << endl;
+		}
 		else cout << "Invalid choice. Choose again." << endl;
-	} while (choice != 'Y' && choice != 'N');
+	} while (choice != "Y" && choice != "N");
 	storef(functions);
 
 	string expression, name;
