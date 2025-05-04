@@ -45,6 +45,4 @@ public:
 	}
 };
 
-
-#endif // !FRACTION_H
-
+#endif
