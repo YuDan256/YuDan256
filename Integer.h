@@ -8,7 +8,7 @@
 #include <map>
 #include <random>
 
-#define CPP_INT template <typename T, typename = std::enable_if_t<std::is_integral_v<T>>>
+#define INT_T template <typename T, typename = std::enable_if_t<std::is_integral_v<T>>>
 
 using namespace std;
 typedef unsigned long long ull;
@@ -28,7 +28,7 @@ public:
 	Integer(const char* num);
 	Integer(const string& num);
 
-	CPP_INT Integer(const T& num) {
+	INT_T Integer(const T& num) {
 		ull n = 0;
 		vector<int>result;
 		if (num < 0) {
@@ -69,16 +69,16 @@ public:
 	Integer operator<<(const Integer& n) const;
 	Integer operator>>(const Integer& n) const;
 
-	CPP_INT friend Integer operator+(const T& n, const Integer& m) { return m + n; }
-	CPP_INT friend Integer operator-(const T& n, const Integer& m) { return Integer(n) - m; }
-	CPP_INT friend Integer operator*(const T& n, const Integer& m) { return m * n; }
-	CPP_INT friend Integer operator/(const T& n, const Integer& m) { return Integer(n) / m; }
-	CPP_INT friend Integer operator%(const T& n, const Integer& m) { return Integer(n) % m; }
-	CPP_INT friend Integer operator^(const T& n, const Integer& m) { return Integer(n) ^ m; }
-	CPP_INT friend Integer operator|(const T& n, const Integer& m) { return Integer(n) | m; }
-	CPP_INT friend Integer operator&(const T& n, const Integer& m) { return Integer(n) & m; }
-	CPP_INT friend Integer operator<<(const T& n, const Integer& m) { return Integer(n) << m; }
-	CPP_INT friend Integer operator>>(const T& n, const Integer& m) { return Integer(n) >> m; }
+	INT_T friend Integer operator+(const T& n, const Integer& m) { return m + n; }
+	INT_T friend Integer operator-(const T& n, const Integer& m) { return Integer(n) - m; }
+	INT_T friend Integer operator*(const T& n, const Integer& m) { return m * n; }
+	INT_T friend Integer operator/(const T& n, const Integer& m) { return Integer(n) / m; }
+	INT_T friend Integer operator%(const T& n, const Integer& m) { return Integer(n) % m; }
+	INT_T friend Integer operator^(const T& n, const Integer& m) { return Integer(n) ^ m; }
+	INT_T friend Integer operator|(const T& n, const Integer& m) { return Integer(n) | m; }
+	INT_T friend Integer operator&(const T& n, const Integer& m) { return Integer(n) & m; }
+	INT_T friend Integer operator<<(const T& n, const Integer& m) { return Integer(n) << m; }
+	INT_T friend Integer operator>>(const T& n, const Integer& m) { return Integer(n) >> m; }
 
 	Integer& operator=(const Integer& n);
 	Integer& operator+=(const Integer& n);

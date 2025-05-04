@@ -18,6 +18,7 @@ Fraction::Fraction(const Integer& n, const Integer& d) {
 
 
 void Fraction::reduction() {
+	if (den == 0)throw invalid_argument("The denominator cannot be 0.");
 	Integer c = Integer::gcd(num, den);
 	num /= c;
 	den /= c;
@@ -38,6 +39,13 @@ Fraction Fraction::reciprocal() const {
 void Fraction::print(const string& end) const {
 	if (den == 1)cout << num << end;
 	else cout << num << "/" << den << end;
+}
+
+double Fraction::value() const {
+	if (den == 0)throw invalid_argument("The denominator cannot be 0.");
+	if (den == 1)return static_cast<double>(num.value());
+	if (num == 0)return 0.0;
+	return static_cast<double>(num.value()) / static_cast<double>(den.value());
 }
 
 Fraction Fraction::operator+(const Fraction& f) const {
@@ -96,13 +104,13 @@ bool Fraction::operator>=(const Fraction& f) const {
 	return (((*this) - f).num >= 0);
 }
 
-Fraction& Fraction::operator=(const Fraction& f){
+Fraction& Fraction::operator=(const Fraction& f) {
 	num = f.num;
 	den = f.den;
 	return *this;
 }
 
-Fraction& Fraction::operator+=(const Fraction& f){
+Fraction& Fraction::operator+=(const Fraction& f) {
 	Integer l = Integer::lcm(den, f.den);
 	Integer n = num * l / den + f.num * l / f.den;
 	num = n;
@@ -133,4 +141,15 @@ Fraction& Fraction::operator*=(const Fraction& f) {
 Fraction& Fraction::operator/=(const Fraction& f) {
 	(*this) *= f.reciprocal();
 	return *this;
+}
+
+ostream& operator<<(ostream& out, const Fraction& f) {
+	out << f.num << " " << f.den;
+	return out;
+}
+
+istream& operator>>(istream& in, Fraction& f) {
+	in >> f.num >> f.den;
+	f.reduction();
+	return in;
 }
