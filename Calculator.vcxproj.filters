@@ -39,6 +39,9 @@
     <ClInclude Include="Integer.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Fraction.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Base.cpp">
@@ -77,6 +80,9 @@
     <ClCompile Include="Vector.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Fraction.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd">
@@ -106,6 +112,9 @@
       <Filter>资源文件</Filter>
     </Text>
     <Text Include="D:\Calculator\Integer.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="D:\Calculator\Prime.txt">
       <Filter>资源文件</Filter>
     </Text>
   </ItemGroup>
