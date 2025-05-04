@@ -20,14 +20,21 @@ public:
 	void reduction();
 	Fraction reciprocal()const;
 	void print(const string& end = "\n") const;
-	double value()const;
+	double value() const;
+	Fraction fabs() const;
+	Fraction pow(const Integer& n) const;
+	Fraction floor() const;
+	Fraction ceil() const;
+	Fraction round() const;
 
 	Fraction operator+(const Fraction& f) const;
 	Fraction operator-(const Fraction& f) const;
 	Fraction operator*(const Fraction& f) const;
 	Fraction operator/(const Fraction& f) const;
+	Fraction operator^(const Fraction& f) const;
 	Fraction operator+()const;
 	Fraction operator-()const;
+
 	bool operator==(const Fraction& f) const;
 	bool operator!=(const Fraction& f) const;
 	bool operator<(const Fraction& f) const;
@@ -40,6 +47,7 @@ public:
 	Fraction& operator-=(const Fraction& f);
 	Fraction& operator*=(const Fraction& f);
 	Fraction& operator/=(const Fraction& f);
+	Fraction& operator^=(const Fraction& f);
 
 	friend ostream& operator<<(ostream& out, const Fraction& f);
 	friend istream& operator>>(istream& in, Fraction& f);

@@ -33,6 +33,7 @@ void Fraction::reduction() {
 }
 
 Fraction Fraction::reciprocal() const {
+	if (num == 0)throw invalid_argument("The numerator cannot be 0.");
 	return Fraction(den, num);
 }
 
@@ -46,6 +47,31 @@ double Fraction::value() const {
 	if (den == 1)return static_cast<double>(num.value());
 	if (num == 0)return 0.0;
 	return static_cast<double>(num.value()) / static_cast<double>(den.value());
+}
+
+Fraction Fraction::fabs() const {
+	return Fraction(Integer::fabs(num), Integer::fabs(den));
+}
+
+Fraction Fraction::pow(const Integer& n) const {
+	return Fraction(num.pow(n), den.pow(n));
+}
+
+Fraction Fraction::floor() const {
+	if (num >= 0)return Fraction(num / den, 1);
+	else return Fraction(num / den, 1) - 1;
+}
+
+Fraction Fraction::ceil() const {
+	if (num >= 0)return Fraction(num / den, 1) + 1;
+	else return Fraction(num / den, 1);
+}
+
+Fraction Fraction::round() const {
+	if (den == 0)throw invalid_argument("The denominator cannot be 0.");
+	if (den == 1)return Fraction(num);
+	if (num >= 0)return Fraction((num + den / 2) / den, 1);
+	else return Fraction((num - den / 2) / den, 1);
 }
 
 Fraction Fraction::operator+(const Fraction& f) const {
@@ -70,6 +96,12 @@ Fraction Fraction::operator*(const Fraction& f) const {
 
 Fraction Fraction::operator/(const Fraction& f)const {
 	return (*this) * f.reciprocal();
+}
+
+Fraction Fraction::operator^(const Fraction& f) const {
+	if (den == 0 || f.den == 0)throw invalid_argument("The denominator cannot be 0.");
+	if (f.den != 1)throw invalid_argument("The exponent must be an integer.");
+	return pow(f.num);
 }
 
 Fraction Fraction::operator+() const {
@@ -140,6 +172,13 @@ Fraction& Fraction::operator*=(const Fraction& f) {
 
 Fraction& Fraction::operator/=(const Fraction& f) {
 	(*this) *= f.reciprocal();
+	return *this;
+}
+
+Fraction& Fraction::operator^=(const Fraction& f) {
+	if (den == 0 || f.den == 0)throw invalid_argument("The denominator cannot be 0.");
+	if (f.den != 1)throw invalid_argument("The exponent must be an integer.");
+	(*this) = pow(f.num);
 	return *this;
 }
 
