@@ -74,6 +74,46 @@ Fraction Fraction::round() const {
 	else return Fraction((num - den / 2) / den, 1);
 }
 
+Fraction Fraction::stof(const string& expr) {
+	if (expr.empty())throw runtime_error("Empty expression.");
+	if (expr[0] != '[')throw runtime_error("Invalid expression.");
+	if (expr[expr.length() - 1] != ']')throw runtime_error("Invalid expression.");
+	string numStr = expr.substr(1, expr.find(',') - 1);
+	string denStr = expr.substr(expr.find(',') + 1, expr.length() - 3 - numStr.length());
+	if (numStr.empty() || denStr.empty())throw runtime_error("Invalid expression.");
+	Integer base = Integer(numStr), den = Integer(denStr);
+	return Fraction(base, den);
+}
+
+string Fraction::to_string(const Fraction& f) {
+	string result;
+	if (f.den == 1)result = Integer::to_string(f.num);
+	else result = Integer::to_string(f.num) + "/" + Integer::to_string(f.den);
+	return result;
+}
+
+Fraction Fraction::random(const Fraction& f1, const Fraction& f2) {
+	if (f1.getDen() == 0 || f2.getDen() == 0) throw std::invalid_argument("Denominator cannot be zero.");
+	if (f1 > f2) throw std::invalid_argument("First fraction cannot be greater than the second.");
+
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_real_distribution<> dis(0.0, 1.0);
+
+	double randomDouble = dis(gen);
+	double targetValue = f1.value() + randomDouble * (f2.value() - f1.value());
+
+	std::uniform_int_distribution<> denDist(1, 10000);
+	int randomDen = denDist(gen);
+	int numerator = static_cast<int>(std::round(targetValue * randomDen));
+
+	Fraction result(numerator, randomDen);
+
+	if (result > f2) return f2;
+	else if (result < f1) return f1;
+	else return result;
+}
+
 Fraction Fraction::operator+(const Fraction& f) const {
 	Integer l = Integer::lcm(den, f.den);
 	Integer n = num * l / den + f.num * l / f.den;
@@ -82,7 +122,7 @@ Fraction Fraction::operator+(const Fraction& f) const {
 
 Fraction Fraction::operator-(const Fraction& f) const {
 	Integer l = Integer::lcm(den, f.den);
-	Integer n = num * l / den + f.num * l / f.den;
+	Integer n = num * l / den - f.num * l / f.den;
 	return Fraction(n, l);
 }
 

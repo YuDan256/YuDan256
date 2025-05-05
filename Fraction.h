@@ -27,6 +27,10 @@ public:
 	Fraction ceil() const;
 	Fraction round() const;
 
+	static Fraction stof(const string& expr);
+	static string to_string(const Fraction& f);
+	static Fraction random(const Fraction& f1, const Fraction& f2);
+
 	Fraction operator+(const Fraction& f) const;
 	Fraction operator-(const Fraction& f) const;
 	Fraction operator*(const Fraction& f) const;
