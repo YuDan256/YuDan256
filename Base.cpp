@@ -230,31 +230,48 @@ bool Base::operator<=(const Base& b)const {
 	else return false;
 }
 
-Base Base::operator&(const Base& bin)const {
-	if (base != 2 || bin.base != 2)throw invalid_argument("Bitwise AND operation is only defined for binary.");
-	Integer a = data, b = bin.data;
-	Integer result = a & b;
-	return Base(2, result);
+Base Base::operator&(const Base& b)const {
+	if (b.data == 0)throw runtime_error("The divisor cannot be 0.");
+	if (base == 10) {
+		return Base(b.base, data & b.data);
+	}
+	else if (b.base == 10) {
+		return Base(base, data & b.data);
+	}
+	else if (base != b.base)throw invalid_argument("The bases do not match for bitwise AND.");
+	Base result(base, data & b.data);
+	return result;
 }
 
-Base Base::operator|(const Base& bin)const {
-	if (base != 2 || bin.base != 2)throw invalid_argument("Bitwise OR operation is only defined for binary.");
-	Integer a = data, b = bin.data;
-	Integer result = a | b;
-	return Base(2, result);
+Base Base::operator|(const Base& b)const {
+	if (b.data == 0)throw runtime_error("The divisor cannot be 0.");
+	if (base == 10) {
+		return Base(b.base, data | b.data);
+	}
+	else if (b.base == 10) {
+		return Base(base, data | b.data);
+	}
+	else if (base != b.base)throw invalid_argument("The bases do not match for bitwise OR.");
+	Base result(base, data | b.data);
+	return result;
 }
 
-Base Base::operator^(const Base& bin) const {
-	if (base != 2 || bin.base != 2)throw invalid_argument("Bitwise XOR operation is only defined for binary.");
-	Integer a = data, b = bin.data;
-	Integer result = a ^ b;
-	return Base(2, result);
+Base Base::operator^(const Base& b) const {
+	if (b.data == 0)throw runtime_error("The divisor cannot be 0.");
+	if (base == 10) {
+		return Base(b.base, data ^ b.data);
+	}
+	else if (b.base == 10) {
+		return Base(base, data ^ b.data);
+	}
+	else if (base != b.base)throw invalid_argument("The bases do not match for bitwise XOR.");
+	Base result(base, data ^ b.data);
+	return result;
 }
 
 Base Base::operator~() const {
-	if (base != 2)throw invalid_argument("Bitwise NOT operation is only defined for binary.");
 	Integer result = ~data;
-	return Base(2, result);
+	return Base(base, result);
 }
 
 Base& Base::operator=(const Base& b) {

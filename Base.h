@@ -39,9 +39,9 @@ public:
 	bool operator!=(const Base& b)const;
 	bool operator>=(const Base& b)const;
 	bool operator<=(const Base& b)const;
-	Base operator&(const Base& bin)const;
-	Base operator|(const Base& bin)const;
-	Base operator^(const Base& bin)const;
+	Base operator&(const Base& b)const;
+	Base operator|(const Base& b)const;
+	Base operator^(const Base& b)const;
 	Base operator~() const;
 
 	friend ostream& operator<<(ostream& out, const Base& b);
@@ -52,9 +52,9 @@ public:
 	Base& operator*=(const Base& b);
 	Base& operator/=(const Base& b);
 	Base& operator%=(const Base& b);
-	Base& operator&=(const Base& bin);
-	Base& operator|=(const Base& bin);
-	Base& operator^=(const Base& bin);
+	Base& operator&=(const Base& b);
+	Base& operator|=(const Base& b);
+	Base& operator^=(const Base& b);
 	Base& operator++();
 	Base& operator--();
 	Base operator++(int);
