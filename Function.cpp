@@ -139,6 +139,7 @@ void Function::newFunction() {
 	while (1) {
 		cout << "Enter an expression:" << endl;
 		getline(cin, expression);
+		expression.erase(remove(expression.begin(), expression.end(), ' '), expression.end());
 		if (expression == "define") {
 			newInput(functions);
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');

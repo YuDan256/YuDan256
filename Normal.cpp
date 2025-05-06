@@ -232,6 +232,7 @@ void Normal::newNormal() {
 	while (1) {
 		cout << "Enter an expression: " << endl;
 		getline(cin, expression);
+		expression.erase(remove(expression.begin(), expression.end(), ' '), expression.end());
 		if (expression.find('=') != string::npos) {
 			processn(expression, variables);
 			continue;
@@ -266,6 +267,9 @@ void Normal::newNormal() {
 			cout << "Radian - rad(R)" << endl;
 			cout << "Absolute value - abs(R)" << endl;
 			cout << "Sign - sgn(R)" << endl;
+			cout << "Floor - floor(R)" << endl;
+			cout << "Ceil - ceil(R)" << endl;
+			cout << "Round - round(R)" << endl;
 			cout << "Sinh - sinh(R)/sh(R)" << endl;
 			cout << "Cosh - cosh(R)/ch(R)" << endl;
 			cout << "Tanh - tanh(R)/th(R)" << endl << endl;

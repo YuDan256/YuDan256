@@ -652,6 +652,7 @@ void Complex::newComplex() {
 	while (1) {
 		cout << "Enter an expression:" << endl;
 		getline(cin, expression);
+		expression.erase(remove(expression.begin(), expression.end(), ' '), expression.end());
 		if (expression.find('=') != string::npos) {
 			processc(expression, numbers);
 			continue;

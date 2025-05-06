@@ -537,6 +537,7 @@ void Base::newBase() {
 	while (1) {
 		cout << "Enter an expression:" << endl;
 		getline(cin, expression);
+		expression.erase(remove(expression.begin(), expression.end(), ' '), expression.end());
 		if (expression.find('=') != string::npos) {
 			processb(expression, numbers);
 			continue;

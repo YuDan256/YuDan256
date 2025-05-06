@@ -1185,6 +1185,7 @@ void Integer::newInteger() {
 	while (1) {
 		cout << "Enter an expression:" << endl;
 		getline(cin, expression);
+		expression.erase(remove(expression.begin(), expression.end(), ' '), expression.end());
 		if (expression.find('=') != string::npos) {
 			processi(expression, numbers);
 			continue;
