@@ -624,10 +624,10 @@ Matrix Matrix::integD(const Matrix& m1, const Matrix& m2) {
 }
 
 Matrix Matrix::Ldivide(const Matrix& m1, const Matrix& m2) {
+	if (m1.rows == 1 && m1.cols == 1)return m2 / m1;
 	if (m1.rows != m1.cols)throw invalid_argument("The divisor must be square.");
 	if (m1.cols != m2.rows)throw invalid_argument("Number of columns in the first matrix must be equal to the number of rows in the second matrix for division.");
 	if (fabs(m1.determinant()) < 1e-15)throw runtime_error("The divisor must be invertible.");
-	if (m1.rows == 1 && m1.cols == 1)return m2 / m1;
 	return inverse(m1) * m2;
 }
 
