@@ -207,6 +207,7 @@ void Function::newFunction() {
 }
 
 void Function::parseFunctionf(const string& expr, const map<string, Function>& functions) {
+	if (expr.empty())throw invalid_argument("Missing expression");
 	size_t currentPos = 0;
 	string identifier, name, _num3;
 	double num1, num2;

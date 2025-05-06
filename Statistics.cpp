@@ -393,6 +393,7 @@ void Statistics::newStatistics() {
 }
 
 void Statistics::parseFunctions(const string& expr, map<string, Statistics>& datasets) {
+	if (expr.empty())throw invalid_argument("Missing expression");
 	size_t currentPos = 0;
 	string identifier, argument1, argument2;
 	int num1 = 0;
