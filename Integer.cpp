@@ -379,7 +379,7 @@ Integer Integer::operator>>(const Integer& n) const {
 	return result;
 }
 
-Integer& Integer::operator=(const Integer& n){
+Integer& Integer::operator=(const Integer& n) {
 	if (this != &n) {
 		sign = n.sign;
 		data = n.data;
@@ -1350,7 +1350,7 @@ void Integer::writePrimesToFile(const std::vector<ull>& primes, const std::strin
 	std::cout << "The primes have already been written into: " << filePath << std::endl;
 }
 
-void Integer::add_prime(const ull& interval){
+void Integer::add_prime(const ull& interval) {
 	std::string filePath = "D:\\Calculator\\Prime.txt";
 	ull lastPrime = getLastPrime(filePath);
 
@@ -1363,6 +1363,7 @@ void Integer::add_prime(const ull& interval){
 		std::vector<ull> primes = generateSmallPrimes(maxNumber);
 		writePrimesToFile(primes, filePath, false);
 		std::cout << "Generated " << primes.size() << " primes." << std::endl;
+		std::cout << "The previous largest prime is " << primes.back() << std::endl;
 	}
 	else {
 		std::cout << "The largest prime read from the file is: " << lastPrime << std::endl;
@@ -1378,6 +1379,7 @@ void Integer::add_prime(const ull& interval){
 		writePrimesToFile(newPrimes, filePath, true);
 
 		std::cout << "Generated " << newPrimes.size() << " new primes." << std::endl;
+		std::cout << "The previous largest prime is " << newPrimes.back() << std::endl;
 	}
 }
 
