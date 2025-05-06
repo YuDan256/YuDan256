@@ -728,7 +728,7 @@ Base Base::parseTermb(const string& expr, size_t& currentPos, const map<string, 
 }
 
 Base Base::parsePowerb(const string& expr, size_t& currentPos, const map<string, Base>& baseNumbers) {
-	if (currentPos == expr.size())throw invalid_argument("Missing expression");
+	if (currentPos == expr.size())throw invalid_argument("Invalid syntax.");
 	Base result;
 	Integer sign = 1;
 	Integer num;

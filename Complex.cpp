@@ -509,7 +509,7 @@ Complex Complex::parseTermc(const string& expr, size_t& currentPos, const map<st
 }
 
 Complex Complex::parsePowerc(const string& expr, size_t& currentPos, const map<string, Complex>& numbers) {
-	if (currentPos == expr.size())throw invalid_argument("Missing expression");
+	if (currentPos == expr.size())throw invalid_argument("Invalid syntax.");
 	Complex result = 0.0; // 初始化result
 	double sign = 1.0; // 用于处理正负号
 

@@ -436,7 +436,7 @@ Vector Vector::parseTermv(const string& expr, size_t& currentPos, const map<stri
 }
 
 Vector Vector::parsePowerv(const string& expr, size_t& currentPos, const map<string, Vector>& vectors) {
-	if (currentPos == expr.size())throw invalid_argument("Missing expression");
+	if (currentPos == expr.size())throw invalid_argument("Invalid syntax.");
 	Vector result = 0.0; // 初始化result
 	double sign = 1.0; // 用于处理正负号
 

@@ -1699,7 +1699,7 @@ Matrix Matrix::parseLDivisionm(const string& expr, size_t& currentPos, const map
 }
 
 Matrix Matrix::parsePowerm(const string& expr, size_t& currentPos, const map<string, Matrix>& matrices) {
-	if (currentPos == expr.size())throw invalid_argument("Missing expression");
+	if (currentPos == expr.size())throw invalid_argument("Invalid syntax.");
 	Matrix result = 0.0; // 初始化result
 	double sign = 1.0; // 用于处理正负号
 

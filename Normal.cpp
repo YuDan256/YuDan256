@@ -82,7 +82,7 @@ double Normal::parseTermn(const string& expr, size_t& currentPos, const map<stri
 }
 
 double Normal::parsePowern(const string& expr, size_t& currentPos, const map<string, double>& variables) {
-	if (currentPos == expr.size())throw invalid_argument("Missing expression");
+	if (currentPos == expr.size())throw invalid_argument("Invalid syntax.");
 	double result = 0.0; // 初始化result
 	double sign = 1.0; // 用于处理正负号
 

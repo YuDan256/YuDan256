@@ -1056,7 +1056,7 @@ Integer Integer::parseTermi(const string& expr, size_t& currentPos, const map<st
 }
 
 Integer Integer::parsePoweri(const string& expr, size_t& currentPos, const map<string, Integer>& numbers) {
-	if (currentPos == expr.size())throw invalid_argument("Missing expression");
+	if (currentPos == expr.size())throw invalid_argument("Invalid syntax.");
 	Integer result = 0, sign = 1;
 
 	while (currentPos < expr.length()) {
