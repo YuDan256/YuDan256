@@ -81,10 +81,10 @@ Complex operator*(const double& p, const Complex& other) {
 }
 
 Complex Complex::operator/(const Complex& other)const {
-	if (other.modulus < 1e-15) {
+	if (other.modulus() < 1e-15) {
 		throw runtime_error("The divisor cannot be 0.");
 	}
-	double r = other.modulus;
+	double r = other.modulus();
 	Complex result((real * other.real + image * other.image) / (r * r), (image * other.real - real * other.image) / (r * r));
 	return result;
 }
@@ -105,20 +105,20 @@ Complex operator/(const double& p, const Complex& other) {
 }
 
 Complex Complex::operator^(const Complex& other) const {
-	if (getModulus() < 1e-15 && (fabs(other.image) > 1e-10 || other.real <= 1e-10)) {
+	if (modulus() < 1e-15 && (fabs(other.image) > 1e-10 || other.real <= 1e-10)) {
 		throw runtime_error("When the base is 0, the exponent can only be a positive real number.");
 	}
 	if (fabs(other.image) < 1e-15)return (*this) ^ other.real;
-	else if (getModulus() < 1e-15)return 0;
+	else if (modulus() < 1e-15)return 0;
 	return expc(other * lnc(*this));
 }
 
 Complex Complex::operator^(const double& p) const {
-	if (modulus < 1e-15 && p <= 0) {
+	if (modulus() < 1e-15 && p <= 0) {
 		throw runtime_error("When the base is 0, the exponent must be positive.");
 	}
-	else if (modulus < 1e-15)return 0;
-	double a = p * argument(), r = pow(modulus, p);
+	else if (modulus() < 1e-15)return 0;
+	double a = p * argument(), r = pow(modulus(), p);
 	Complex result(r * cos(a), r * sin(a));
 	return result;
 }
@@ -140,33 +140,28 @@ bool Complex::operator==(const Complex& other)const {
 Complex& Complex::operator=(const Complex& other) {
 	real = other.real;
 	image = other.image;
-	modulus = other.modulus;
 	return *this;
 }
 
 Complex& Complex::operator+=(const Complex& other) {
 	real += other.real;
 	image += other.image;
-	modulus = sqrt(real * real + image * image);
 	return *this;
 }
 
 Complex& Complex::operator+=(const double& p) {
 	real += p;
-	modulus = sqrt(real * real + image * image);
 	return *this;
 }
 
 Complex& Complex::operator-=(const Complex& other) {
 	real -= other.real;
 	image -= other.image;
-	modulus = sqrt(real * real + image * image);
 	return *this;
 }
 
 Complex& Complex::operator-=(const double& p) {
 	real -= p;
-	modulus = sqrt(real * real + image * image);
 	return *this;
 }
 
@@ -174,26 +169,23 @@ Complex& Complex::operator*=(const Complex& other) {
 	double r = real * other.real - image * other.image, i = real * other.image + image * other.real;
 	real = r;
 	image = i;
-	modulus = sqrt(real * real + image * image);
 	return *this;
 }
 
 Complex& Complex::operator*=(const double& p) {
 	real *= p;
 	image *= p;
-	modulus = sqrt(real * real + image * image);
 	return *this;
 }
 
 Complex& Complex::operator/=(const Complex& other) {
-	if (other.modulus < 1e-15) {
+	if (other.modulus() < 1e-15) {
 		throw runtime_error("The divisor cannot be 0.");
 	}
-	double r = other.modulus;
+	double r = other.modulus();
 	double _real = (real * other.real + image * other.image) / (r * r), _image = (image * other.real - real * other.image) / (r * r);
 	real = _real;
 	image = _image;
-	modulus = sqrt(real * real + image * image);
 	return *this;
 }
 
@@ -203,7 +195,6 @@ Complex& Complex::operator/=(const double& p) {
 	}
 	real /= p;
 	image /= p;
-	modulus = sqrt(real * real + image * image);
 	return *this;
 }
 
@@ -231,7 +222,7 @@ Complex Complex::Im(const Complex& z) {
 }
 
 Complex Complex::R(const Complex& z) {
-	return z.modulus;
+	return z.modulus();
 }
 
 Complex Complex::arg(const Complex& z) {
@@ -239,7 +230,7 @@ Complex Complex::arg(const Complex& z) {
 }
 
 double Complex::argument()const {
-	if (modulus == 0) {
+	if (modulus() == 0) {
 		throw runtime_error("The argument of 0 is arbitrary.");
 	}
 	if (real == 0 && image > 0)return PI / 2;
@@ -259,7 +250,7 @@ Complex Complex::powc(const int& n)const {
 		return result;
 	}
 	else if (n < 0) {
-		if (z.modulus < 1e-15) {
+		if (z.modulus() < 1e-15) {
 			throw runtime_error("When the exponent is non-positive,the base cannot be 0.");
 		}
 		for (int i = 0; i < -n; i++) {
@@ -271,8 +262,8 @@ Complex Complex::powc(const int& n)const {
 }
 
 void Complex::triangle()const {
-	if (fabs(modulus - 1) < 1e-10)cout << "cos(" << argument() << ")+i*sin(" << argument() << ")" << endl;
-	else cout << modulus << "*(cos(" << argument() << ")+i*sin(" << argument() << "))" << endl;
+	if (fabs(modulus() - 1) < 1e-10)cout << "cos(" << argument() << ")+i*sin(" << argument() << ")" << endl;
+	else cout << modulus() << "*(cos(" << argument() << ")+i*sin(" << argument() << "))" << endl;
 }
 
 void Complex::root(const int& n)const {
@@ -280,13 +271,13 @@ void Complex::root(const int& n)const {
 	vector<Complex>result(n);
 	double k = n;
 	Complex zero;
-	if (modulus == 0) {
+	if (modulus() == 0) {
 		for (int i = 0; i < n; i++) {
 			result[i] = zero;
 		}
 	}
 	else {
-		double a = argument(), r = getModulus();
+		double a = argument(), r = modulus();
 		for (int i = 0; i < n; i++) {
 			double x = std::pow(r, 1 / k) * cos(((i + 1) * 2 * PI + a) / k), y = std::pow(r, 1 / k) * sin(((i + 1) * 2 * PI + a) / k);
 			if (fabs(x) < 1e-5)x = 0; if (fabs(y) < 1e-5)y = 0;
@@ -305,14 +296,14 @@ Complex Complex::sqrtc(const Complex& z) {
 }
 
 Complex Complex::expc(const Complex& z) {
-	if (z.modulus < 1e-15)return 1;
+	if (z.modulus() < 1e-15)return 1;
 	Complex i(0, 1);
 	return exp(z.real) * (cos(z.image) + i * sin(z.image));
 }
 
 Complex Complex::lnc(const Complex& z) {
-	if (z.modulus < 1e-15)throw runtime_error("The argument of a logarithm cannot be zero.");
-	return Complex(log(z.modulus)) + Complex(0, z.argument());
+	if (z.modulus() < 1e-15)throw runtime_error("The argument of a logarithm cannot be zero.");
+	return Complex(log(z.modulus())) + Complex(0, z.argument());
 }
 
 Complex Complex::sinc(const Complex& z) {
@@ -328,7 +319,7 @@ Complex Complex::cosc(const Complex& z) {
 }
 
 Complex Complex::tanc(const Complex& z) {
-	if (cosc(z).modulus < 1e-15)throw runtime_error("The tangent value is undefined.");
+	if (cosc(z).modulus() < 1e-15)throw runtime_error("The tangent value is undefined.");
 	return sinc(z) / cosc(z);
 }
 
@@ -341,7 +332,7 @@ Complex Complex::coshc(const Complex& z) {
 }
 
 Complex Complex::tanhc(const Complex& z) {
-	if (coshc(z).getModulus() < 1e-15)throw runtime_error("Division by zero error.");
+	if (coshc(z).modulus() < 1e-15)throw runtime_error("Division by zero error.");
 	return sinhc(z) / coshc(z);
 }
 
@@ -372,9 +363,9 @@ Complex Complex::rad(const Complex& deg) {
 
 Complex Complex::firstRoot(const int& n)const {
 	if (n <= 0)throw runtime_error("The n for nth roots must be positive.");
-	if ((modulus) < 1e-15)return Complex(0);
+	if ((modulus()) < 1e-15)return Complex(0);
 	double k = n;
-	double a = argument(), r = modulus;
+	double a = argument(), r = modulus();
 	double x = std::pow(r, 1 / k) * cos(a / k), y = std::pow(r, 1 / k) * sin(a / k);
 	Complex result(x, y);
 	return result;

@@ -134,9 +134,9 @@ void Complex::doDegreeThree(const Complex& a, const Complex& b, const Complex& c
 	Complex u = (9 * a * b * c - 27 * (a ^ 2) * d - 2 * (b ^ 3)) / (54 * (a ^ 3)),
 		v = sqrtc(3 * (4 * a * (c ^ 3) - (b ^ 2) * (c ^ 2) - 18 * a * b * c * d + 27 * (a ^ 2) * (d ^ 2) + 4 * (b ^ 3) * d)) / (18 * (a ^ 2)),
 		m, n, w(-0.5, sqrt(3) / 2.0);
-	if ((u + v).modulus > (u - v).modulus)m = (u + v).firstRoot(3);
+	if ((u + v).modulus() > (u - v).modulus())m = (u + v).firstRoot(3);
 	else m = (u - v).firstRoot(3);
-	if (m.modulus == 0)n = 0;
+	if (m.modulus() == 0)n = 0;
 	else n = ((b ^ 2) - 3 * a * c) / (9 * (a ^ 2) * m);
 	Complex x1 = m + n - b / (3 * a),
 		x2 = w * m + (w ^ 2) * n - b / (3 * a),
@@ -160,9 +160,9 @@ void Complex::doDegreeFour(const Complex& a, const Complex& b, const Complex& c,
 		D, u, v, w(-0.5, sqrt(3) / 2);
 	D = Complex::sqrtc(Q * Q - P * P * P);
 	Complex s1 = Q + D, s2 = Q - D;
-	if (s1.getModulus() > s2.getModulus())u = s1.firstRoot(3);
+	if (s1.modulus() > s2.modulus())u = s1.firstRoot(3);
 	else u = s2.firstRoot(3);
-	if (fabs(u.getModulus()) < 1e-5) {
+	if (fabs(u.modulus()) < 1e-5) {
 		u = 0;
 	}
 	else v = P / u;
@@ -171,12 +171,12 @@ void Complex::doDegreeFour(const Complex& a, const Complex& b, const Complex& c,
 	for (int i = 1; i < 4; i++) {
 		t = b * b - 8 * a * c / 3 + 4 * a * (w.powc(i - 1) * u + w.powc(4 - i) * v);
 		t = t.firstRoot(2);
-		if (t.getModulus() > m.getModulus()) {
+		if (t.modulus() > m.modulus()) {
 			m = t;
 			k = i;
 		}
 	}
-	if (fabs(m.getModulus()) < 1e-5) {
+	if (fabs(m.modulus()) < 1e-5) {
 		m = 0;
 		S = b * b - 8 * a * c / 3;
 		T = 0;

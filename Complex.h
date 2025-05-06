@@ -13,7 +13,6 @@ using namespace std;
 class Complex {
 
 	double real, image;
-	double modulus = sqrt(real * real + image * image);
 
 	//”≥…‰
 	static map<char, int> zop;
@@ -31,7 +30,7 @@ public:
 	void root(const int& n)const;
 	double getReal() const { return real; }
 	double getImage() const { return image; }
-	double getModulus() const { return modulus; }
+	double modulus() const { return sqrt(real * real + image * image); }
 	Complex powc(const int& n)const;
 	Complex firstRoot(const int& n)const;
 	double argument()const;
