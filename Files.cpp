@@ -375,16 +375,18 @@ void process(const string& expression, map<string, T>& variables, Parser parseFu
 		cerr << "Error: Invalid expression." << endl;
 		return;
 	}
-
 	bool invalidName = false;
+	if (name == "end") invalidName = true;
 	for (char i : name) {
 		if (!isalpha(i)) {
-			cerr << "Error: Invalid name." << endl;
 			invalidName = true;
 			break;
 		}
 	}
-	if (invalidName) return;
+	if (invalidName) {
+		cerr << "Error: Invalid name." << endl;
+		return;
+	}
 
 	T result;
 	cout << "The result is: " << endl;
