@@ -13,7 +13,7 @@ map<string, Matrix(*)(const Matrix&)> Matrix::functionm = {
 	{"sin",sinm},{"cos",cosm},{"tan",tanm},{"ln",lnm},{"log",lnm},{"sqrt",sqrtm},{"sum",sum},{"pro",product},
 	{"deg",deg},{"rad",rad},{"row",row},{"col",col},{"ones",ones},{"zero",zero},{"exp",expm},{"P",pForDiag},
 	{"N",norm},{"norm",norm},{ "sinh",sinh },{"cosh",cosh},{"tanh",tanh},{"sh",sinh},{"ch",cosh},{"th",tanh},
-	{"magic",magic},{"random",random},{"randint",randint},{"abs",norm},{"n",norm1}
+	{"magic",magic},{"random",random},{"randint",randint},{"abs",norm},{"n",norm1},{"cond",condition},
 };
 
 map<string, Matrix(*)(const Matrix&, const Matrix&)>Matrix::functionm2 = {
@@ -615,6 +615,12 @@ Matrix Matrix::expm(const Matrix& m) {
 	}
 }
 
+Matrix Matrix::condition(const Matrix& m) {
+	if (m.rows != m.cols)throw invalid_argument("The matrix must be square.");
+	if (m.determinant() == 0)throw invalid_argument("The matrix must be invertible.");
+	return m.norm() * inverse(m).norm();
+}
+
 Matrix Matrix::integR(const Matrix& m1, const Matrix& m2) {
 	return m1.integR(m2);
 }
@@ -885,6 +891,7 @@ double Matrix::trace() const {
 }
 
 void Matrix::swap(const int& row1, const int& col1, const int& row2, const int& col2) {
+	if (row1 < 0 || row1 >= rows || col1 < 0 || col1 >= cols || row2 < 0 || row2 >= rows || col2 < 0 || col2 >= cols)throw invalid_argument("Index out of bounds.");
 	double temp;
 	temp = get(row1, col1);
 	set(row1, col1, get(row2, col2));
@@ -892,17 +899,20 @@ void Matrix::swap(const int& row1, const int& col1, const int& row2, const int& 
 }
 
 void Matrix::swapRows(const int& row1, const int& row2) {
+	if (row1 < 0 || row1 >= rows || row2 < 0 || row2 >= rows)throw invalid_argument("Index out of bounds.");
 	for (int i = 0; i < cols; i++) {
 		swap(row1, i, row2, i);
 	}
 }
 void Matrix::swapCols(const int& col1, const int& col2) {
+	if (col1 < 0 || col1 >= cols || col2 < 0 || col2 >= cols)throw invalid_argument("Index out of bounds.");
 	for (int i = 0; i < rows; i++) {
 		swap(i, col1, i, col2);
 	}
 }
 
 void Matrix::multiplyRows(const int& row, const double& scalar) {
+	if (row < 0 || row >= rows)throw invalid_argument("Index out of bounds.");
 	if (scalar == 0) {
 		throw invalid_argument("The scalar cannot be 0.");
 	}
@@ -912,6 +922,7 @@ void Matrix::multiplyRows(const int& row, const double& scalar) {
 }
 
 void Matrix::multiplyCols(const int& col, const double& scalar) {
+	if (col < 0 || col >= cols)throw invalid_argument("Index out of bounds.");
 	if (scalar == 0) {
 		throw invalid_argument("The scalar cannot be 0.");
 	}
@@ -921,12 +932,14 @@ void Matrix::multiplyCols(const int& col, const double& scalar) {
 }
 
 void Matrix::addRows(const int& row1, const int& row2, const double& scalar) {
+	if (row1 < 0 || row1 >= rows || row2 < 0 || row2 >= rows)throw invalid_argument("Index out of bounds.");
 	for (int i = 0; i < cols; i++) {
 		set(row1, i, data[row1][i] + scalar * data[row2][i]);
 	}
 }
 
 void Matrix::addCols(const int& col1, const int& col2, const double& scalar) {
+	if (col1 < 0 || col1 >= cols || col2 < 0 || col2 >= cols)throw invalid_argument("Index out of bounds.");
 	for (int i = 0; i < rows; i++) {
 		set(i, col1, data[i][col1] + scalar * data[i][col2]);
 	}
@@ -1895,9 +1908,10 @@ void Matrix::newMatrix() {
 			cout << "Inverse with adjugate matrix - i(M)" << endl;
 			cout << "Adjugate matrix - A(M) or adj(M)" << endl;
 			cout << "Reduced row echelon form - G(M) or gauss(M)" << endl;
-			cout << "Orthogonalization - O(M) or ortho(M)" << endl;
+			cout << "Schmidt orthogonalization - O(M) or ortho(M)" << endl;
 			cout << "Frobenius norm with square sum - N(M) or norm(M)" << endl;
 			cout << "Frobenius norm with trace - n(M)" << endl;
+			cout << "Frobenius condition - cond(M)" << endl;
 			cout << "Diagonalization - diag(M)" << endl;
 			cout << "Eigenvalue - E(M) or eig(M)" << endl;
 			cout << "Sum of all elements - sum(M)" << endl;

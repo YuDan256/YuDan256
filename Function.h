@@ -25,6 +25,7 @@ public:
 	void print(const string& end = "\n")const;
 	void doTable(const double& x0, const double& path, const int& n)const;
 	double sum(const double& i, const double& j) const;
+	double product(const double& i, const double& j) const;
 
 	//新版操作系统
 	static void newInput(map<string, Function>& functions);

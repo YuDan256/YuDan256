@@ -74,6 +74,15 @@ double Function::sum(const double& i, const double& j) const {
 	return s;
 }
 
+double Function::product(const double& i, const double& j) const{
+	if (i != floor(i) || j != floor(j))throw invalid_argument("The two parameters need to be integer.");
+	double s = 1;
+	for (int k = static_cast<int>(i); k < static_cast<int>(j) + 1; k++) {
+		s *= value(k);
+	}
+	return s;
+}
+
 void Function::newInput(map<string, Function>& functions) {
 	cout << "Enter \"end\" to finish definition." << endl;
 	cout << "The names of functions can only consist of letters." << endl;
@@ -176,6 +185,9 @@ void Function::newFunction() {
 				<< "Sum - sum(F,Z,Z):" << endl
 				<< "    The first parameter is the function." << endl
 				<< "    The second and the third parameter is the lower and upper limits of the sum." << endl
+				<< "Product - pro(F,Z,Z):" << endl
+				<< "    The first parameter is the function." << endl
+				<< "    The second and the third parameter is the lower and upper limits of the product." << endl
 				<< "Print - print(F):" << endl
 				<< "    The parameter is the function of which you want to print the expression." << endl
 				<< endl;
@@ -250,6 +262,7 @@ void Function::parseFunctionf(const string& expr, const map<string, Function>& f
 				if (expr[currentPos] == ')' && currentPos + 1 == expr.length()) {
 					if (identifier == "I")cout << f.integration(num1, num2) << endl;
 					else if (identifier == "sum")cout << f.sum(num1, num2) << endl;
+					else if (identifier == "pro")cout << f.product(num1, num2) << endl;
 					else throw runtime_error("Unknown operation: " + identifier);
 				}
 				else if (expr[currentPos] == ',') {

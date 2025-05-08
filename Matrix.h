@@ -148,6 +148,7 @@ public:
 	static Matrix norm(const Matrix& m);
 	static Matrix norm1(const Matrix& m);
 	static Matrix expm(const Matrix& m);
+	static Matrix condition(const Matrix& m);
 
 	//二参数函数
 	static Matrix integR(const Matrix& m1, const Matrix& m2);
