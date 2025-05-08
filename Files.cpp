@@ -236,6 +236,7 @@ void Complex::deletec(map<string, Complex>& variables) {
 	string name;
 	cout << "Enter end to finish delete." << endl;
 	while (1) {
+		showc(variables);
 		cout << "Enter the name of the variable you want to delete:" << endl;
 		cin >> name;
 		if (name == "end")break;
@@ -247,6 +248,7 @@ void Matrix::deletem(map<string, Matrix>& variables) {
 	string name;
 	cout << "Enter end to finish delete." << endl;
 	while (1) {
+		showm(variables);
 		cout << "Enter the name of the variable you want to delete:" << endl;
 		cin >> name;
 		if (name == "end")break;
@@ -258,6 +260,7 @@ void Vector::deletev(map<string, Vector>& variables) {
 	string name;
 	cout << "Enter end to finish delete." << endl;
 	while (1) {
+		showv(variables);
 		cout << "Enter the name of the variable you want to delete:" << endl;
 		cin >> name;
 		if (name == "end")break;
@@ -269,6 +272,7 @@ void Base::deleteb(map<string, Base>& variables) {
 	string name;
 	cout << "Enter end to finish delete." << endl;
 	while (1) {
+		showb(variables);
 		cout << "Enter the name of the variable you want to delete:" << endl;
 		cin >> name;
 		if (name == "end")break;
@@ -280,6 +284,7 @@ void Statistics::deletes(map<string, Statistics>& variables) {
 	string name;
 	cout << "Enter end to finish delete." << endl;
 	while (1) {
+		shows(variables);
 		cout << "Enter the name of the variable you want to delete:" << endl;
 		cin >> name;
 		if (name == "end")break;
@@ -291,6 +296,7 @@ void Normal::deleten(map<string, double>& variables) {
 	string name;
 	cout << "Enter end to finish delete." << endl;
 	while (1) {
+		shown(variables);
 		cout << "Enter the name of the variable you want to delete:" << endl;
 		cin >> name;
 		if (name == "end")break;
@@ -302,6 +308,7 @@ void Function::deletef(map<string, Function>& variables) {
 	string name;
 	cout << "Enter end to finish delete." << endl;
 	while (1) {
+		showf(variables);
 		cout << "Enter the name of the variable you want to delete:" << endl;
 		cin >> name;
 		if (name == "end")break;
@@ -313,6 +320,7 @@ void Integer::deletei(map<string, Integer>& variables) {
 	string name;
 	cout << "Enter end to finish delete." << endl;
 	while (1) {
+		showi(variables);
 		cout << "Enter the name of the variable you want to delete:" << endl;
 		cin >> name;
 		if (name == "end")break;
