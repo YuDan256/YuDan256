@@ -7,13 +7,13 @@ using namespace std;
 map<char, int>Matrix::mop = { {'+', 1}, {'-', 1}, {'*', 2}, {'/', 2},{'\\',3}, { '^',4 } };
 
 map<string, Matrix(*)(const Matrix&)> Matrix::functionm = {
-	{"R",r},{"rank",r},{ "T",transpose },{"trans",transpose},{ "D",det },{"det",det},{"I",inverse},{"inv",inverse1},
+	{"R",r},{"rank",r},{ "T",transpose },{"trans",transpose},{ "D",det },{"det",det},{"I",inverse},{"inv",inverse},
 	{"G",GaussianElimination},{"gauss",GaussianElimination},{"id",identity},{"O",SchmidtOrtho},{"ortho",SchmidtOrtho},
-	{"A",adjugate},{"adj",adjugate},{"E",eigenvalue},{"eig",eigenvalue},{ "tr",tr },{"diag",diagonalize},
+	{"A",adjugate},{"adj",adjugate},{"E",eigenvalue},{"eig",eigenvalue},{ "tr",tr },{"diag",diagonalize},{"i",inverse1},
 	{"sin",sinm},{"cos",cosm},{"tan",tanm},{"ln",lnm},{"log",lnm},{"sqrt",sqrtm},{"sum",sum},{"pro",product},
 	{"deg",deg},{"rad",rad},{"row",row},{"col",col},{"ones",ones},{"zero",zero},{"exp",expm},{"P",pForDiag},
 	{"N",norm},{"norm",norm},{ "sinh",sinh },{"cosh",cosh},{"tanh",tanh},{"sh",sinh},{"ch",cosh},{"th",tanh},
-	{"magic",magic},{"random",random},{"randint",randint},{"abs",norm}
+	{"magic",magic},{"random",random},{"randint",randint},{"abs",norm},{"n",norm1}
 };
 
 map<string, Matrix(*)(const Matrix&, const Matrix&)>Matrix::functionm2 = {
@@ -521,6 +521,10 @@ Matrix Matrix::rad(const Matrix& deg) {
 
 Matrix Matrix::norm(const Matrix& m) {
 	return Matrix(m.norm());
+}
+
+Matrix Matrix::norm1(const Matrix& m) {
+	return Matrix(std::sqrt((m * transpose(m)).trace()));
 }
 
 Matrix Matrix::magic(const Matrix& m) {
@@ -1887,12 +1891,13 @@ void Matrix::newMatrix() {
 			cout << "Determinant - D(M) or det(M)" << endl;
 			cout << "Rank - R(M) or rank(M)" << endl;
 			cout << "Transpose - T(M) or trans(M)" << endl;
-			cout << "Inverse with Gaussian Elimination - I(M)" << endl;
-			cout << "Inverse with adjugate matrix - inv(M)" << endl;
+			cout << "Inverse with Gaussian Elimination - I(M) or inv(M)" << endl;
+			cout << "Inverse with adjugate matrix - i(M)" << endl;
 			cout << "Adjugate matrix - A(M) or adj(M)" << endl;
 			cout << "Reduced row echelon form - G(M) or gauss(M)" << endl;
 			cout << "Orthogonalization - O(M) or ortho(M)" << endl;
-			cout << "Norm - N(M) or norm(M)" << endl;
+			cout << "Norm with square sum - N(M) or norm(M)" << endl;
+			cout << "Norm with trace - n(M)" << endl;
 			cout << "Diagonalization - diag(M)" << endl;
 			cout << "Eigenvalue - E(M) or eig(M)" << endl;
 			cout << "Sum of all elements - sum(M)" << endl;

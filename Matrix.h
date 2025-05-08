@@ -146,6 +146,7 @@ public:
 	static Matrix deg(const Matrix& rad);
 	static Matrix rad(const Matrix& deg);
 	static Matrix norm(const Matrix& m);
+	static Matrix norm1(const Matrix& m);
 	static Matrix expm(const Matrix& m);
 
 	//二参数函数
