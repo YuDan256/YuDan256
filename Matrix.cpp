@@ -1896,8 +1896,8 @@ void Matrix::newMatrix() {
 			cout << "Adjugate matrix - A(M) or adj(M)" << endl;
 			cout << "Reduced row echelon form - G(M) or gauss(M)" << endl;
 			cout << "Orthogonalization - O(M) or ortho(M)" << endl;
-			cout << "Norm with square sum - N(M) or norm(M)" << endl;
-			cout << "Norm with trace - n(M)" << endl;
+			cout << "Frobenius norm with square sum - N(M) or norm(M)" << endl;
+			cout << "Frobenius norm with trace - n(M)" << endl;
 			cout << "Diagonalization - diag(M)" << endl;
 			cout << "Eigenvalue - E(M) or eig(M)" << endl;
 			cout << "Sum of all elements - sum(M)" << endl;
