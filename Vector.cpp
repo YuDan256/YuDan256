@@ -508,11 +508,11 @@ Vector Vector::parsePowerv(const string& expr, size_t& currentPos, const map<str
 							if (identifier == "mix") {
 								result = argument1.mixedProduct(argument2, argument3);
 							}
-							else throw runtime_error("Unknown function : " + identifier);	
+							else throw runtime_error("Unknown function : " + identifier);
 						}
 						else throw runtime_error("Missing closing parenthesis.");
 					}
-					else throw runtime_error("Missing closing parenthesis.");	
+					else throw runtime_error("Missing closing parenthesis.");
 				}
 				else throw runtime_error("Missing closing parenthesis.");
 			}

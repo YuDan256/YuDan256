@@ -1564,7 +1564,7 @@ void Matrix::newInput(map<string, Matrix>& matrices) {
 			}
 		}
 		if (invalidInput) {
-			cout << "Invalid input.";
+			cout << "Invalid input." << endl;
 			continue;
 		}
 		rows = stoi(_rows);

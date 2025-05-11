@@ -74,7 +74,7 @@ double Function::sum(const double& i, const double& j) const {
 	return s;
 }
 
-double Function::product(const double& i, const double& j) const{
+double Function::product(const double& i, const double& j) const {
 	if (i != floor(i) || j != floor(j))throw invalid_argument("The two parameters need to be integer.");
 	double s = 1;
 	for (int k = static_cast<int>(i); k < static_cast<int>(j) + 1; k++) {
