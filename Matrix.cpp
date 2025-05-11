@@ -52,8 +52,8 @@ double Matrix::get(const int& row, const int& col) const {
 Matrix Matrix::get(const Matrix& m, const Matrix& row, const Matrix& col) {
 	if (row.rows != 1 || row.cols != 1 || col.rows != 1 || col.cols != 1)throw invalid_argument("The parameters must be two integers.");
 	double _row = row.get(0, 0), _col = col.get(0, 0);
-	if (fabs(_row - floor(_row)) > 1e-15 || fabs(_col - floor(_col)) > 1e-15)throw invalid_argument("The parameters must be two integers.");
-	int r = static_cast<int>(floor(_row)), c = static_cast<int>(floor(_col));
+	if (fabs(_row - round(_row)) > 1e-15 || fabs(_col - round(_col)) > 1e-15)throw invalid_argument("The parameters must be two integers.");
+	int r = static_cast<int>(round(_row)), c = static_cast<int>(round(_col));
 	if (r >= 0 && r < m.rows && c >= 0 && c < m.cols)return Matrix(m.data[r][c]);
 	else throw invalid_argument("Index out of bounds.");
 }
@@ -1093,7 +1093,7 @@ bool Matrix::isNumber() const {
 bool Matrix::isInteger() const {
 	if (!isNumber())return false;
 	double a = data[0][0];
-	if (fabs(a - floor(a)) > 1e-15)return false;
+	if (fabs(a - round(a)) > 1e-15)return false;
 	else return true;
 }
 
