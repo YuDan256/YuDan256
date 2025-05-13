@@ -29,7 +29,7 @@ public:
 
 	//新版操作系统
 	static void newInput(map<string, Function>& functions);
-	static void newFunction();
+	static void doFunction();
 	static void parseFunctionf(const string& expr, const map<string, Function>& functions);
 	static void storef(const map<string, Function>& functions);
 	static map<string, Function> loadf();

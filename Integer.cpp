@@ -1148,7 +1148,7 @@ Integer Integer::parsePoweri(const string& expr, size_t& currentPos, const map<s
 	return sign * result;
 }
 
-void Integer::newInteger() {
+void Integer::doInteger() {
 	map<string, Integer>numbers;
 	string choice;
 

@@ -603,7 +603,7 @@ Complex Complex::parsePowerc(const string& expr, size_t& currentPos, const map<s
 	return sign * result;
 }
 
-void Complex::newComplex() {
+void Complex::doComplex() {
 	map<string, Complex>numbers;
 	string choice;
 

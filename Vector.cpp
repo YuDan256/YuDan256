@@ -553,7 +553,7 @@ Vector Vector::parsePowerv(const string& expr, size_t& currentPos, const map<str
 	return sign * result;
 }
 
-void Vector::newVector() {
+void Vector::doVector() {
 	map<string, Vector>vectors;
 	string choice;
 

@@ -143,7 +143,7 @@ public:
 	static void showi(const map<string, Integer>& variables);
 	static void processi(const string& expression, map<string, Integer>& variables);
 	static void input(map<string, Integer>& variables);
-	static void newInteger();
+	static void doInteger();
 
 	static std::vector<ull> generateSmallPrimes(ull maxNumber);
 	static std::vector<ull> segmentedSieve(ull low, ull high);

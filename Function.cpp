@@ -113,7 +113,7 @@ void Function::newInput(map<string, Function>& functions) {
 	}
 }
 
-void Function::newFunction() {
+void Function::doFunction() {
 	string choice;
 	map<string, Function>functions;
 

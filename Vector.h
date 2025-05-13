@@ -73,7 +73,7 @@ public:
 	static Vector parseExpressionv(const string& expr, size_t& currentPos, const map<string, Vector>& vectors);
 	static Vector parseTermv(const string& expr, size_t& currentPos, const map<string, Vector>& vectors);
 	static Vector parsePowerv(const string& expr, size_t& currentPos, const map<string, Vector>& vectors);
-	static void newVector();
+	static void doVector();
 	static void storev(const map<string, Vector>& vectors);
 	static map<string, Vector> loadv();
 	static void deletev(map<string, Vector>& variables);

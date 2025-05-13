@@ -94,7 +94,7 @@ public:
 	static Complex parseExpressionc(const string& expr, size_t& currentPos, const map<string, Complex>& numbers);
 	static Complex parseTermc(const string& expr, size_t& currentPos, const map<string, Complex>& numbers);
 	static Complex parsePowerc(const string& expr, size_t& currentPos, const map<string, Complex>& numbers);
-	static void newComplex();
+	static void doComplex();
 	static Complex stoc(const string& expr);
 	static void storec(const map<string, Complex>& complexes);
 	static map<string, Complex> loadc();

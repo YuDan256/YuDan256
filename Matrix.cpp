@@ -1834,7 +1834,7 @@ Matrix Matrix::parsePowerm(const string& expr, size_t& currentPos, const map<str
 	return sign * result;
 }
 
-void Matrix::newMatrix() {
+void Matrix::doMatrix() {
 	map<string, Matrix>matrices;
 	string choice;
 

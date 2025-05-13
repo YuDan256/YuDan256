@@ -77,7 +77,7 @@ public:
 
 	//新版操作系统
 	static void newInput(map<string, Base>& baseNumbers);
-	static void newBase();
+	static void doBase();
 	static Base parseFunctionb(const string& expr, const map<string, Base>& baseNumbers);
 	static Base parseExpressionb(const string& expr, size_t& currentPos, const map<string, Base>& baseNumbers);
 	static Base parseAdditionb(const string& expr, size_t& currentPos, const map<string, Base>& baseNumbers);

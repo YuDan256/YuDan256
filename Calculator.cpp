@@ -14,9 +14,9 @@
 
 using namespace std;
 
-void newInstructions();
+void instructions();
 void easterEgg();
-void newCalculation();
+void doCalculation();
 void initialize();
 
 int main() {
@@ -24,11 +24,11 @@ int main() {
 	cout << "Junk Calculator [1.9.3] By YuDan" << endl << endl
 		<< "Welcome to My Calculator!" << endl
 		<< "This calculator has an extremely user-unfriendly operating system, please bear with it." << endl;
-	newCalculation();
+	doCalculation();
 	return 0;
 }
 
-void newCalculation() {
+void doCalculation() {
 	string mode;
 	bool quit = false;
 
@@ -51,21 +51,21 @@ void newCalculation() {
 
 		if (mode == "N") {
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
-			Normal::newNormal();
+			Normal::doNormal();
 		}
-		else if (mode == "M")Matrix::newMatrix();
-		else if (mode == "C")Complex::newComplex();
-		else if (mode == "V")Vector::newVector();
+		else if (mode == "M")Matrix::doMatrix();
+		else if (mode == "C")Complex::doComplex();
+		else if (mode == "V")Vector::doVector();
 		else if (mode == "L")Matrix::doLinearEquations();
 		else if (mode == "P")Complex::doPolynomial();
-		else if (mode == "B")Base::newBase();
-		else if (mode == "I")newInstructions();
+		else if (mode == "B")Base::doBase();
+		else if (mode == "I")instructions();
 		else if (mode == "F") {
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
-			Function::newFunction();
+			Function::doFunction();
 		}
-		else if (mode == "S")Statistics::newStatistics();
-		else if (mode == "Z")Integer::newInteger();
+		else if (mode == "S")Statistics::doStatistics();
+		else if (mode == "Z")Integer::doInteger();
 		else if (mode == "Q") {
 			cout << "Thanks!" << endl;
 			break;
@@ -75,7 +75,7 @@ void newCalculation() {
 	}
 }
 
-void newInstructions() {
+void instructions() {
 	cout << endl << "Operating instructions:" << endl;
 	cout << "1. The calculator can parse the expressions you input after you choose a mode." << endl;
 	cout << "2. You can enter the commands when asked to enter an expression." << endl;

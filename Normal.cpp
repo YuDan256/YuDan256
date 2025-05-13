@@ -193,7 +193,7 @@ void Normal::input(map<string, double>& variables) {
 }
 
 //新版操作系统
-void Normal::newNormal() {
+void Normal::doNormal() {
 	map<string, double> variables;
 	string choice;
 

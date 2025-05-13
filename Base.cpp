@@ -497,7 +497,7 @@ void Base::newInput(map<string, Base>& baseNumbers) {
 	}
 }
 
-void Base::newBase() {
+void Base::doBase() {
 	map<string, Base>numbers;
 	string choice;
 

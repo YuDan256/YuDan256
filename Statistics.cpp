@@ -301,7 +301,7 @@ void Statistics::newInput(map<string, Statistics>& datasets) {
 	}
 }
 
-void Statistics::newStatistics() {
+void Statistics::doStatistics() {
 	map<string, Statistics>datasets;
 	string choice;
 

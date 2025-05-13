@@ -66,7 +66,7 @@ public:
 
 	//新版统计操作
 	static void newInput(map<string, Statistics>& datasets);
-	static void newStatistics();
+	static void doStatistics();
 	static void parseFunctions(const string& expr, map<string, Statistics>& datasets);
 	static void newSingle(const Statistics& X);
 	static void newBivariate(const Statistics& _X, const Statistics& _Y);
