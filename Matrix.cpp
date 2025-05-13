@@ -1527,7 +1527,7 @@ void Matrix::QRdecomposition(map<string, Matrix>& matrices) const {
 	R.print();
 }
 
-void Matrix::newInput(map<string, Matrix>& matrices) {
+void Matrix::input(map<string, Matrix>& matrices) {
 	int rows, cols;
 	map<string, double>variables = {
 		{"PI",3.14159265358979323846264},{"E",2.7182818284590452353602874}
@@ -1878,7 +1878,7 @@ void Matrix::doMatrix() {
 			continue;
 		}
 		if (expression == "define") {
-			newInput(matrices);
+			input(matrices);
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			continue;
 		}

@@ -89,7 +89,7 @@ public:
 	static Complex rad(const Complex& deg);
 
 	//新版操作系统
-	static void newInput(map<string, Complex>& numbers);
+	static void input(map<string, Complex>& numbers);
 	static Complex parseFunctionc(const string& expr, const map<string, Complex>& numbers);
 	static Complex parseExpressionc(const string& expr, size_t& currentPos, const map<string, Complex>& numbers);
 	static Complex parseTermc(const string& expr, size_t& currentPos, const map<string, Complex>& numbers);

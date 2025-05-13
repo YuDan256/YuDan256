@@ -65,7 +65,7 @@ public:
 	static void linearRegression(const Statistics& s1, const Statistics& s2);
 
 	//新版统计操作
-	static void newInput(map<string, Statistics>& datasets);
+	static void input(map<string, Statistics>& datasets);
 	static void doStatistics();
 	static void parseFunctions(const string& expr, map<string, Statistics>& datasets);
 	static void newSingle(const Statistics& X);

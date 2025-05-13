@@ -83,7 +83,7 @@ double Function::product(const double& i, const double& j) const {
 	return s;
 }
 
-void Function::newInput(map<string, Function>& functions) {
+void Function::input(map<string, Function>& functions) {
 	cout << "Enter \"end\" to finish definition." << endl;
 	cout << "The names of functions can only consist of letters." << endl;
 	cout << "Ensure the function has x as the independent variable." << endl;
@@ -150,7 +150,7 @@ void Function::doFunction() {
 		getline(cin, expression);
 		expression.erase(remove(expression.begin(), expression.end(), ' '), expression.end());
 		if (expression == "define") {
-			newInput(functions);
+			input(functions);
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			continue;
 		}

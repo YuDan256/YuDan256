@@ -256,7 +256,7 @@ void Statistics::linearRegression(const Statistics& s1, const Statistics& s2) {
 	cout << "Coefficient of Determination - R^2: " << R2(s1, s2) << endl;
 }
 
-void Statistics::newInput(map<string, Statistics>& datasets) {
+void Statistics::input(map<string, Statistics>& datasets) {
 	string expr, name;
 	map<string, double>variables;
 	double _x;
@@ -337,7 +337,7 @@ void Statistics::doStatistics() {
 		getline(cin, expression);
 		expression.erase(remove(expression.begin(), expression.end(), ' '), expression.end());
 		if (expression == "define") {
-			newInput(datasets);
+			input(datasets);
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			continue;
 		}

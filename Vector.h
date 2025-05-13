@@ -68,7 +68,7 @@ public:
 	bool parallel(const Vector& other)const;
 
 	//新版操作系统
-	static void newInput(map<string, Vector>& vectors);
+	static void input(map<string, Vector>& vectors);
 	static Vector parseFunctionv(const string& expr, const map<string, Vector>& vectors);
 	static Vector parseExpressionv(const string& expr, size_t& currentPos, const map<string, Vector>& vectors);
 	static Vector parseTermv(const string& expr, size_t& currentPos, const map<string, Vector>& vectors);

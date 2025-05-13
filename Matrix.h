@@ -97,7 +97,7 @@ public:
 	double norm()const;
 
 	//新版操作系统
-	static void newInput(map<string, Matrix>& matrices);
+	static void input(map<string, Matrix>& matrices);
 	static Matrix parseFunctionm(const string& expr, map<string, Matrix>& matrices);
 	static Matrix parseExpressionm(const string& expr, size_t& currentPos, const map<string, Matrix>& matrices);
 	static Matrix parseTermm(const string& expr, size_t& currentPos, const map<string, Matrix>& matrices);

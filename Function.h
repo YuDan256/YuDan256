@@ -28,7 +28,7 @@ public:
 	double product(const double& i, const double& j) const;
 
 	//新版操作系统
-	static void newInput(map<string, Function>& functions);
+	static void input(map<string, Function>& functions);
 	static void doFunction();
 	static void parseFunctionf(const string& expr, const map<string, Function>& functions);
 	static void storef(const map<string, Function>& functions);

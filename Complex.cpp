@@ -371,7 +371,7 @@ Complex Complex::firstRoot(const int& n)const {
 	return result;
 }
 
-void Complex::newInput(map<string, Complex>& numbers) {
+void Complex::input(map<string, Complex>& numbers) {
 	cout << "Enter the name, real and imaginary part of the complex numbers you need." << endl;
 	cout << "The name of the complex numbers can only consist of letters." << endl;
 	cout << "Enter 'end' to finish definition." << endl;
@@ -649,7 +649,7 @@ void Complex::doComplex() {
 			continue;
 		}
 		if (expression == "define") {
-			newInput(numbers);
+			input(numbers);
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			continue;
 		}

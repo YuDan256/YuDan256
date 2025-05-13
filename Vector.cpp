@@ -283,7 +283,7 @@ bool Vector::parallel(const Vector& other)const {
 	else return (angle(other) == 0 || angle(other) == PI);
 }
 
-void Vector::newInput(map<string, Vector>& vectors) {
+void Vector::input(map<string, Vector>& vectors) {
 	int n;
 	map<string, double>variables = {
 		{"PI",3.14159265358979323846264},{"E",2.7182818284590452353602874}
@@ -597,7 +597,7 @@ void Vector::doVector() {
 			continue;
 		}
 		if (expression == "define") {
-			newInput(vectors);
+			input(vectors);
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			continue;
 		}

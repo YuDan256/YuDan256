@@ -447,7 +447,7 @@ Base Base::enterBase(const Integer& base, const string& num) {
 	else return enterBase3(base, num);
 }
 
-void Base::newInput(map<string, Base>& baseNumbers) {
+void Base::input(map<string, Base>& baseNumbers) {
 	cout << "The name of the base numbers can only consist of letters" << endl;
 	cout << "Enter end to finish definition." << endl;
 	string name, expr, _base;
@@ -543,7 +543,7 @@ void Base::doBase() {
 			continue;
 		}
 		if (expression == "define") {
-			newInput(numbers);
+			input(numbers);
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			continue;
 		}
