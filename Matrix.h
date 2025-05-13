@@ -94,6 +94,7 @@ public:
 	Matrix integC(const Matrix& other)const;
 	Matrix integD(const Matrix& other)const;
 	static Matrix identity(const int& n);
+	static double perma(const Matrix& m);
 	double norm()const;
 
 	//新版操作系统
@@ -149,6 +150,7 @@ public:
 	static Matrix norm1(const Matrix& m);
 	static Matrix expm(const Matrix& m);
 	static Matrix condition(const Matrix& m);
+	static Matrix permanent(const Matrix& m);
 
 	//二参数函数
 	static Matrix integR(const Matrix& m1, const Matrix& m2);

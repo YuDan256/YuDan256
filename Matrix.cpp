@@ -13,7 +13,8 @@ map<string, Matrix(*)(const Matrix&)> Matrix::functionm = {
 	{"sin",sinm},{"cos",cosm},{"tan",tanm},{"ln",lnm},{"log",lnm},{"sqrt",sqrtm},{"sum",sum},{"pro",product},
 	{"deg",deg},{"rad",rad},{"row",row},{"col",col},{"ones",ones},{"zero",zero},{"exp",expm},{"P",pForDiag},
 	{"N",norm},{"norm",norm},{ "sinh",sinh },{"cosh",cosh},{"tanh",tanh},{"sh",sinh},{"ch",cosh},{"th",tanh},
-	{"magic",magic},{"random",random},{"randint",randint},{"abs",norm},{"n",norm1},{"cond",condition},
+	{"magic",magic},{"random",random},{"randint",randint},{"abs",norm},{"n",norm1},{"cond",condition},{"perm",permanent},
+	{"per",permanent},
 };
 
 map<string, Matrix(*)(const Matrix&, const Matrix&)>Matrix::functionm2 = {
@@ -619,6 +620,10 @@ Matrix Matrix::condition(const Matrix& m) {
 	if (m.rows != m.cols)throw invalid_argument("The matrix must be square.");
 	if (m.determinant() == 0)throw invalid_argument("The matrix must be invertible.");
 	return m.norm() * inverse(m).norm();
+}
+
+Matrix Matrix::permanent(const Matrix& m){
+	return Matrix(perma(m));
 }
 
 Matrix Matrix::integR(const Matrix& m1, const Matrix& m2) {
@@ -1441,6 +1446,17 @@ Matrix Matrix::tr(const Matrix& m) {
 	return Matrix(m.trace());
 }
 
+double Matrix::perma(const Matrix& m) {
+	if (m.rows != m.cols)throw invalid_argument("The matrix must be square.");
+	if (m.getRows() == 1) return m.get(0, 0);
+	double perm = 0.0;
+	for (int j = 0; j < m.getCols(); ++j) {
+		Matrix sub = m.subMatrix(0, j);
+		perm += m.get(0, j) * perma(sub);
+	}
+	return perm;
+}
+
 Matrix Matrix::diagonalize(const Matrix& m) {
 	if (m.rows != m.cols)throw invalid_argument("The matrix must be square.");
 	vector<double>evalue = eigenvalue(m).data[0];
@@ -1912,6 +1928,7 @@ void Matrix::doMatrix() {
 			cout << "Frobenius norm with square sum - N(M) or norm(M)" << endl;
 			cout << "Frobenius norm with trace - n(M)" << endl;
 			cout << "Frobenius condition - cond(M)" << endl;
+			cout << "Permanent - per(M) or perm(M)" << endl;
 			cout << "Diagonalization - diag(M)" << endl;
 			cout << "Eigenvalue - E(M) or eig(M)" << endl;
 			cout << "Sum of all elements - sum(M)" << endl;
