@@ -21,7 +21,6 @@ void initialize();
 
 int main() {
 	initialize();
-	char choice = 0;
 	cout << "Junk Calculator [1.9.3] By YuDan" << endl << endl
 		<< "Welcome to My Calculator!" << endl
 		<< "This calculator has an extremely user-unfriendly operating system, please bear with it." << endl;
