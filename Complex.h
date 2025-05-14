@@ -36,7 +36,7 @@ public:
 	double argument()const;
 	bool isNumber()const;
 	bool isInteger()const;
-	int compare(const Complex& c)const;
+	int compare(const Complex& z)const;
 
 	//ÔËËã·ûÖØÔØ
 	Complex operator+(const Complex& other)const;

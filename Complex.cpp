@@ -248,10 +248,10 @@ bool Complex::isInteger() const{
 	return isNumber() && (fabs(real - round(real)) < 1e-15);
 }
 
-int Complex::compare(const Complex& c) const {
-	if (!isNumber() || !c.isNumber())throw invalid_argument("Cannot compare imaginary numbers.");
-	if (fabs(real - c.real) < 1e-15)return 0;
-	else if (real > c.real)return 1;
+int Complex::compare(const Complex& z) const {
+	if (!isNumber() || !z.isNumber())throw invalid_argument("Cannot compare imaginary numbers.");
+	if (fabs(real - z.real) < 1e-15)return 0;
+	else if (real > z.real)return 1;
 	else return -1;
 }
 
