@@ -27,6 +27,7 @@ public:
 	void setBase(const Integer& b) { base = b; }
 	void setData(const Integer& d) { data = d; }
 
+	int compare(const Base& b)const;
 	//ÔËËã·ûÖØÔØ
 	Base operator+(const Base& b)const;
 	Base operator-(const Base& b)const;

@@ -400,6 +400,13 @@ void Matrix::print(const string& end1, const string& end2) const {
 	}
 }
 
+int Matrix::compare(const Matrix& m) const{
+	if (!isNumber() || !m.isNumber())throw invalid_argument("Cannot compare matrices.");
+	if (fabs(get(0, 0) - m.get(0, 0)) < 1e-15)return 0;
+	else if (get(0, 0) > m.get(0, 0))return 1;
+	else return -1;
+}
+
 bool Matrix::upper()const {
 	Matrix A(*this);
 	double limit;

@@ -14,6 +14,15 @@ map<string, Vector(*)(const Vector&, const Vector&)>Vector::functionv2 = {
 	{"dot",dotProduct},{"SP",SP},{"PV",PV},{"ang",ang}
 };
 
+bool Vector::isNumber() const{
+	return n == 1;
+}
+
+bool Vector::isInteger() const{
+	if(!isNumber())return false;
+	return (fabs(get(0) - round(get(0))) < 1e-15);
+}
+
 void Vector::print(const string& end)const {
 	if (n == 0)return;
 	if (n == 1) {
@@ -29,6 +38,13 @@ void Vector::print(const string& end)const {
 	int m = n - 1;//±ÜÃâÒç³ö
 	if (fabs(data[m]) < 1e-10)cout << 0 << ")" << end;
 	else std::cout << data[m] << ")" << end;
+}
+
+int Vector::compare(const Vector& v) const{
+	if (!isNumber() || !v.isNumber())throw invalid_argument("Cannot compare vectors.");
+	if (fabs(get(0) - v.get(0)) < 1e-15)return 0;
+	else if (get(0) > v.get(0))return 1;
+	else return -1;
 }
 
 double Vector::modulus()const {

@@ -240,6 +240,21 @@ double Complex::argument()const {
 	else return atan2(image, real);
 }
 
+bool Complex::isNumber() const {
+	return fabs(image) < 1e-15;
+}
+
+bool Complex::isInteger() const{
+	return isNumber() && (fabs(real - round(real)) < 1e-15);
+}
+
+int Complex::compare(const Complex& c) const {
+	if (!isNumber() || !c.isNumber())throw invalid_argument("Cannot compare imaginary numbers.");
+	if (fabs(real - c.real) < 1e-15)return 0;
+	else if (real > c.real)return 1;
+	else return -1;
+}
+
 Complex Complex::powc(const int& n)const {
 	Complex result(1, 0);
 	Complex z(real, image);
@@ -412,7 +427,7 @@ void Complex::input(map<string, Complex>& numbers) {
 Complex Complex::parseFunctionc(const string& expr, const map<string, Complex>& numbers) {
 	size_t currentPos = 0;
 	string identifier, number;
-	Complex z;
+	Complex z, z1;
 	int n = 0;
 	while (currentPos < expr.length() && (isalpha(expr[currentPos]) || expr[currentPos] == '_')) {
 		identifier += expr[currentPos++];
@@ -422,15 +437,15 @@ Complex Complex::parseFunctionc(const string& expr, const map<string, Complex>& 
 		z = parseExpressionc(expr, currentPos, numbers);
 		if (expr[currentPos] == ',') {
 			++currentPos;
-			number = "";
-			while (currentPos < expr.length() && isdigit(expr[currentPos])) {
-				number += expr[currentPos++];
-			}
-			n = stoi(number);
+			z1 = parseExpressionc(expr, currentPos, numbers);
 			if (expr[currentPos] == ')' && currentPos + 1 == expr.length()) {
 				if (identifier == "root") {
-					z.root(n);
-					throw true;
+					if (fabs(z1.image) < 1e-15 && fabs(z1.real - round(z1.real)) < 1e-15) {
+						int n = static_cast<int>(z1.real);
+						z.root(n);
+						throw true;
+					}
+					else throw invalid_argument("The second parameter must be an integer.");
 				}
 			}
 		}

@@ -31,7 +31,10 @@ public:
 	void set(const int& place, const double& value) { data[place] = value; }
 	double get(const int& place)const { return data[place]; }
 	int getDimension()const { return n; }
+	bool isNumber()const;
+	bool isInteger()const;
 	void print(const string& end = "\n")const;
+	int compare(const Vector& v)const;
 
 	//ÔËËã·ûÖØÔØ
 	Vector operator+(const Vector& other)const;

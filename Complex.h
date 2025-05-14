@@ -34,6 +34,9 @@ public:
 	Complex powc(const int& n)const;
 	Complex firstRoot(const int& n)const;
 	double argument()const;
+	bool isNumber()const;
+	bool isInteger()const;
+	int compare(const Complex& c)const;
 
 	//ÔËËã·ûÖØÔØ
 	Complex operator+(const Complex& other)const;

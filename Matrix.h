@@ -40,6 +40,7 @@ public:
 	bool isNumber()const;
 	bool isInteger()const;
 	void print(const string& end1 = " ", const string& end2 = "\n") const;
+	int compare(const Matrix& m)const;
 
 	//³õµÈ±ä»»
 	void swapRows(const int& row1, const int& row2);
