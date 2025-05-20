@@ -246,7 +246,7 @@ Integer Integer::operator/(const int& divisor) const {
 		throw invalid_argument("Division by zero error.");
 	}
 	bool b = (divisor >= 0) == (this->sign);
-	int d = static_cast<int>(std::fabs(divisor));
+	int d = std::abs(divisor);
 	vector<int> result;
 	int remainder = 0;
 	for (int i = static_cast<int>(data.size()) - 1; i >= 0; i--) {

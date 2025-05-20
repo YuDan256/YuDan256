@@ -446,7 +446,7 @@ Complex Complex::parseFunctionc(const string& expr, const map<string, Complex>& 
 			if (expr[currentPos] == ')' && currentPos + 1 == expr.length()) {
 				if (identifier == "root") {
 					if (fabs(z1.image) < 1e-15 && fabs(z1.real - round(z1.real)) < 1e-15) {
-						int n = static_cast<int>(z1.real);
+						int n = static_cast<int>(round(z1.real));
 						z.root(n);
 						throw true;
 					}
@@ -578,7 +578,7 @@ Complex Complex::parsePowerc(const string& expr, size_t& currentPos, const map<s
 						++currentPos;
 						if (identifier == "fr") {
 							if (!a1.isInteger())throw invalid_argument("The parameter must be an integer.");
-							int n = static_cast<int>(a1.real);
+							int n = static_cast<int>(round(a1.real));
 							result = argument.firstRoot(n);
 						}
 						else if (identifier == "log") {

@@ -158,7 +158,7 @@ Matrix Matrix::operator^(const Matrix& n) const {
 		return expm(n * log(get(0, 0)));
 	}
 	else if (n.isInteger()) {
-		return (*this) ^ static_cast<int>(n.get(0, 0));
+		return (*this) ^ static_cast<int>(round(n.get(0, 0)));
 	}
 	else {
 		return expm(n * lnm(*this));
@@ -380,7 +380,7 @@ Matrix& Matrix::operator^=(const Matrix& n) {
 		return *this;
 	}
 	else if (n.isInteger()) {
-		*this ^= static_cast<int>(n.get(0, 0));
+		*this ^= static_cast<int>(round(n.get(0, 0)));
 		return *this;
 	}
 	else {
@@ -475,9 +475,9 @@ double Matrix::norm() const {
 }
 
 Matrix Matrix::identity(const Matrix& m) {
-	if (m.rows != 1 || m.cols != 1)throw invalid_argument("This function cannot affect matrices.");
-	int n = static_cast<int>(floor(m.data[0][0]));
-	if (fabs(m.data[0][0] - n) > 1e-10 || n < 1)throw invalid_argument("The size of the matrix can only be a positive integer.");
+	if (!m.isInteger())throw invalid_argument("The size of the identity matrix must be an integer.");
+	int n = static_cast<int>(round(m.data[0][0]));
+	if (n < 1)throw invalid_argument("The size of the matrix can only be positive.");
 	return identity(n);
 }
 
@@ -536,10 +536,10 @@ Matrix Matrix::norm1(const Matrix& m) {
 }
 
 Matrix Matrix::magic(const Matrix& m) {
-	if (!m.isInteger() || m.get(0, 0) <= 0) {
+	if (!m.isInteger() || round(m.get(0, 0)) <= 0) {
 		throw invalid_argument("The size of the matrix must be a positive integer.");
 	}
-	int n = static_cast<int>(m.get(0, 0));
+	int n = static_cast<int>(round(m.get(0, 0)));
 	if (n < 3)throw runtime_error("The size must be greater than 2.");
 	Matrix result(n, n);
 
@@ -655,7 +655,7 @@ Matrix Matrix::Ldivide(const Matrix& m1, const Matrix& m2) {
 
 Matrix Matrix::ones(const Matrix& r, const Matrix& c) {
 	if (!r.isInteger() || !c.isInteger())throw invalid_argument("The numbers of rows and columns must be integers.");
-	int _r = static_cast<int>(r.get(0, 0)), _c = static_cast<int>(c.get(0, 0));
+	int _r = static_cast<int>(round(r.get(0, 0))), _c = static_cast<int>(round(c.get(0, 0)));
 	if (_r < 1 || _c < 1)throw invalid_argument("The numbers of rows and columns must be positive integers.");
 	Matrix result(_r, _c);
 	for (int i = 0; i < _r; i++) {
@@ -668,7 +668,7 @@ Matrix Matrix::ones(const Matrix& r, const Matrix& c) {
 
 Matrix Matrix::zero(const Matrix& r, const Matrix& c) {
 	if (!r.isInteger() || !c.isInteger())throw invalid_argument("The numbers of rows and columns must be integers.");
-	int _r = static_cast<int>(r.get(0, 0)), _c = static_cast<int>(c.get(0, 0));
+	int _r = static_cast<int>(round(r.get(0, 0))), _c = static_cast<int>(round(c.get(0, 0)));
 	if (_r < 1 || _c < 1)throw invalid_argument("The numbers of rows and columns must be positive integers.");
 	return Matrix(_r, _c);
 }
@@ -683,7 +683,7 @@ Matrix Matrix::randint(const Matrix& r, const Matrix& c) {
 
 Matrix Matrix::getRow(const Matrix& m, const Matrix& row) {
 	if (!row.isInteger())throw invalid_argument("The row number must be an integer.");
-	int r = static_cast<int>(row.get(0, 0));
+	int r = static_cast<int>(round(row.get(0, 0)));
 	if (r < 0 || r >= m.rows)throw invalid_argument("Index out of bounds.");
 	Matrix result(1, m.cols);
 	for (int i = 0; i < m.cols; i++) {
@@ -694,7 +694,7 @@ Matrix Matrix::getRow(const Matrix& m, const Matrix& row) {
 
 Matrix Matrix::getCol(const Matrix& m, const Matrix& col) {
 	if (!col.isInteger())throw invalid_argument("The column number must be an integer.");
-	int c = static_cast<int>(col.get(0, 0));
+	int c = static_cast<int>(round(col.get(0, 0)));
 	if (c < 0 || c >= m.cols)throw invalid_argument("Index out of bounds.");
 	Matrix result(m.rows, 1);
 	for (int i = 0; i < m.rows; i++) {
@@ -706,7 +706,7 @@ Matrix Matrix::getCol(const Matrix& m, const Matrix& col) {
 Matrix Matrix::deleteRow(const Matrix& m, const Matrix& row) {
 	if (m.rows == 1)throw invalid_argument("The result matrix must have at least one row.");
 	if (!row.isInteger())throw invalid_argument("The row number must be an integer.");
-	int r = static_cast<int>(row.get(0, 0));
+	int r = static_cast<int>(round(row.get(0, 0)));
 	if (r < 0 || r >= m.rows)throw invalid_argument("Index out of bounds.");
 	Matrix result(m.rows - 1, m.cols);
 	int _r = 0;
@@ -723,7 +723,7 @@ Matrix Matrix::deleteRow(const Matrix& m, const Matrix& row) {
 Matrix Matrix::deleteCol(const Matrix& m, const Matrix& col) {
 	if (m.cols == 1)throw invalid_argument("The result matrix must have at least one column.");
 	if (!col.isInteger())throw invalid_argument("The column number must be an integer.");
-	int c = static_cast<int>(col.get(0, 0));
+	int c = static_cast<int>(round(col.get(0, 0)));
 	if (c < 0 || c >= m.cols)throw invalid_argument("Index out of bounds.");
 	Matrix result(m.rows, m.cols - 1);
 	for (int i = 0; i < m.rows; i++) {
@@ -964,7 +964,7 @@ void Matrix::addCols(const int& col1, const int& col2, const double& scalar) {
 Matrix Matrix::swapRows(const Matrix& m, const Matrix& row1, const Matrix& row2) {
 	if (!row1.isInteger() || !row2.isInteger())throw invalid_argument("The two parameters must be integers.");
 	Matrix result = m;
-	int r1 = static_cast<int>(row1.get(0, 0)), r2 = static_cast<int>(row2.get(0, 0));
+	int r1 = static_cast<int>(round(row1.get(0, 0))), r2 = static_cast<int>(round(row2.get(0, 0)));
 	result.swapRows(r1, r2);
 	return result;
 }
@@ -972,7 +972,7 @@ Matrix Matrix::swapRows(const Matrix& m, const Matrix& row1, const Matrix& row2)
 Matrix Matrix::swapCols(const Matrix& m, const Matrix& col1, const Matrix& col2) {
 	if (!col1.isInteger() || !col2.isInteger())throw invalid_argument("The two parameters must be integers.");
 	Matrix result = m;
-	int c1 = static_cast<int>(col1.get(0, 0)), c2 = static_cast<int>(col2.get(0, 0));
+	int c1 = static_cast<int>(round(col1.get(0, 0))), c2 = static_cast<int>(round(col2.get(0, 0)));
 	result.swapCols(c1, c2);
 	return result;
 }
@@ -980,7 +980,7 @@ Matrix Matrix::swapCols(const Matrix& m, const Matrix& col1, const Matrix& col2)
 Matrix Matrix::multiplyRows(const Matrix& m, const Matrix& row, const Matrix& scalar) {
 	if (!row.isInteger())throw invalid_argument("The number of row must be an integer.");
 	if (!scalar.isNumber())throw invalid_argument("The scalar must be a real number.");
-	int r = static_cast<int>(row.get(0, 0));
+	int r = static_cast<int>(round(row.get(0, 0)));
 	double s = scalar.get(0, 0);
 	Matrix result = m;
 	result.multiplyRows(r, s);
@@ -990,7 +990,7 @@ Matrix Matrix::multiplyRows(const Matrix& m, const Matrix& row, const Matrix& sc
 Matrix Matrix::multiplyCols(const Matrix& m, const Matrix& col, const Matrix& scalar) {
 	if (!col.isInteger())throw invalid_argument("The number of column must be an integer.");
 	if (!scalar.isNumber())throw invalid_argument("The scalar must be a real number.");
-	int c = static_cast<int>(col.get(0, 0));
+	int c = static_cast<int>(round(col.get(0, 0)));
 	double s = scalar.get(0, 0);
 	Matrix result = m;
 	result.multiplyCols(c, s);
@@ -999,7 +999,7 @@ Matrix Matrix::multiplyCols(const Matrix& m, const Matrix& col, const Matrix& sc
 
 Matrix Matrix::subMatrix(const Matrix& m, const Matrix& excludeRow, const Matrix& excludeCol) {
 	if (!excludeRow.isInteger() || !excludeCol.isInteger())throw invalid_argument("The two parameters must be integers.");
-	int r = static_cast<int>(excludeRow.get(0, 0)), c = static_cast<int>(excludeCol.get(0, 0));
+	int r = static_cast<int>(round(excludeRow.get(0, 0))), c = static_cast<int>(round(excludeCol.get(0, 0)));
 	if (r < 0 || r >= m.rows || c < 0 || c >= m.cols)throw invalid_argument("Index out of bounds.");
 	Matrix result = m.subMatrix(r, c);
 	return result;
@@ -1007,7 +1007,7 @@ Matrix Matrix::subMatrix(const Matrix& m, const Matrix& excludeRow, const Matrix
 
 Matrix Matrix::cofactor(const Matrix& m, const Matrix& row, const Matrix& col) {
 	if (!row.isInteger() || !col.isInteger())throw invalid_argument("The two parameters must be integers.");
-	int r = static_cast<int>(row.get(0, 0)), c = static_cast<int>(col.get(0, 0));
+	int r = static_cast<int>(round(row.get(0, 0))), c = static_cast<int>(round(col.get(0, 0)));
 	if (r < 0 || r >= m.rows || c < 0 || c >= m.cols)throw invalid_argument("Index out of bounds.");
 	Matrix subMatrix = m.subMatrix(r, c);
 	double result = subMatrix.determinant();
@@ -1016,7 +1016,7 @@ Matrix Matrix::cofactor(const Matrix& m, const Matrix& row, const Matrix& col) {
 
 Matrix Matrix::Acofactor(const Matrix& m, const Matrix& row, const Matrix& col) {
 	if (!row.isInteger() || !col.isInteger())throw invalid_argument("The two parameters must be integers.");
-	int r = static_cast<int>(row.get(0, 0)), c = static_cast<int>(col.get(0, 0));
+	int r = static_cast<int>(round(row.get(0, 0))), c = static_cast<int>(round(col.get(0, 0)));
 	if (r < 0 || r >= m.rows || c < 0 || c >= m.cols)throw invalid_argument("Index out of bounds.");
 	Matrix subMatrix = m.subMatrix(r, c);
 	double result = pow(-1, r + c) * subMatrix.determinant();
@@ -1026,7 +1026,7 @@ Matrix Matrix::Acofactor(const Matrix& m, const Matrix& row, const Matrix& col) 
 Matrix Matrix::addRows(const Matrix& m, const Matrix& row1, const Matrix& row2, const Matrix& scalar) {
 	if (!row1.isInteger() || !row2.isInteger())throw invalid_argument("The numbers of rows must be integers.");
 	if (!scalar.isNumber())throw invalid_argument("The scalar must be a real number.");
-	int r1 = static_cast<int>(row1.get(0, 0)), r2 = static_cast<int>(row2.get(0, 0));
+	int r1 = static_cast<int>(round(row1.get(0, 0))), r2 = static_cast<int>(round(row2.get(0, 0)));
 	double s = scalar.get(0, 0);
 	Matrix result = m;
 	result.addRows(r1, r2, s);
@@ -1036,7 +1036,7 @@ Matrix Matrix::addRows(const Matrix& m, const Matrix& row1, const Matrix& row2, 
 Matrix Matrix::addCols(const Matrix& m, const Matrix& col1, const Matrix& col2, const Matrix& scalar) {
 	if (!col1.isInteger() || !col2.isInteger())throw invalid_argument("The numbers of columns must be integers.");
 	if (!scalar.isNumber())throw invalid_argument("The scalar must be a real number.");
-	int c1 = static_cast<int>(col1.get(0, 0)), c2 = static_cast<int>(col2.get(0, 0));
+	int c1 = static_cast<int>(round(col1.get(0, 0))), c2 = static_cast<int>(round(col2.get(0, 0)));
 	double s = scalar.get(0, 0);
 	Matrix result = m;
 	result.addCols(c1, c2, s);
@@ -1046,7 +1046,7 @@ Matrix Matrix::addCols(const Matrix& m, const Matrix& col1, const Matrix& col2, 
 Matrix Matrix::set(const Matrix& m, const Matrix& row, const Matrix& col, const Matrix& num) {
 	if (!row.isInteger() || !col.isInteger())throw invalid_argument("The coordinates of the nummber must be integers.");
 	if (!num.isNumber())throw invalid_argument("The number cannot be a matrix.");
-	int r = static_cast<int>(row.get(0, 0)), c = static_cast<int>(col.get(0, 0));
+	int r = static_cast<int>(round(row.get(0, 0))), c = static_cast<int>(round(col.get(0, 0)));
 	double n = num.get(0, 0);
 	Matrix result = m;
 	result.set(r, c, n);
@@ -1056,7 +1056,7 @@ Matrix Matrix::set(const Matrix& m, const Matrix& row, const Matrix& col, const 
 Matrix Matrix::random(const Matrix& r, const Matrix& c, const Matrix& min, const Matrix& max) {
 	if (!r.isInteger() || !c.isInteger())throw invalid_argument("The numbers of rows and columns must be integers.");
 	if (!min.isNumber() || !max.isNumber())throw invalid_argument("The minimum and maximum values must be real numbers.");
-	int _r = static_cast<int>(r.get(0, 0)), _c = static_cast<int>(c.get(0, 0));
+	int _r = static_cast<int>(round(r.get(0, 0))), _c = static_cast<int>(round(c.get(0, 0)));
 	double _min = min.get(0, 0), _max = max.get(0, 0);
 	if (_r < 1 || _c < 1)throw invalid_argument("The numbers of rows and columns must be positive integers.");
 	if (_min > _max)throw invalid_argument("The minimum value must be less than or equal to the maximum value.");
@@ -1073,8 +1073,8 @@ Matrix Matrix::random(const Matrix& r, const Matrix& c, const Matrix& min, const
 Matrix Matrix::randint(const Matrix& r, const Matrix& c, const Matrix& min, const Matrix& max) {
 	if (!r.isInteger() || !c.isInteger())throw invalid_argument("The numbers of rows and columns must be integers.");
 	if (!min.isInteger() || !max.isInteger())throw invalid_argument("The minimum and maximum values must be integers.");
-	int _r = static_cast<int>(r.get(0, 0)), _c = static_cast<int>(c.get(0, 0));
-	int _min = static_cast<int>(min.get(0, 0)), _max = static_cast<int>(max.get(0, 0));
+	int _r = static_cast<int>(round(r.get(0, 0))), _c = static_cast<int>(round(c.get(0, 0)));
+	int _min = static_cast<int>(round(min.get(0, 0))), _max = static_cast<int>(round(max.get(0, 0)));
 	if (_r < 1 || _c < 1)throw invalid_argument("The numbers of rows and columns must be positive integers.");
 	if (_min > _max)throw invalid_argument("The minimum value must be less than or equal to the maximum value.");
 	Matrix result(_r, _c);
