@@ -407,6 +407,11 @@ int Matrix::compare(const Matrix& m) const {
 	else return -1;
 }
 
+int Matrix::to_int() const {
+	if (!isInteger())throw invalid_argument("Not an integer.");
+	return static_cast<int>(round(get(0, 0)));
+}
+
 bool Matrix::upper()const {
 	Matrix A(*this);
 	double limit;

@@ -41,6 +41,7 @@ public:
 	bool isInteger()const;
 	void print(const string& end1 = " ", const string& end2 = "\n") const;
 	int compare(const Matrix& m)const;
+	int to_int()const;
 
 	//³õµÈ±ä»»
 	void swapRows(const int& row1, const int& row2);
