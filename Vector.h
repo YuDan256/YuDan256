@@ -98,6 +98,7 @@ public:
 	static Vector PV(const Vector& v1, const Vector& v2);
 	static Vector deg(const Vector& rad);
 	static Vector rad(const Vector& deg);
+	static Vector logv(const Vector& v1, const Vector& v2);
 };
 
 #endif

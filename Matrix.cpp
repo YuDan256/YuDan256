@@ -19,7 +19,7 @@ map<string, Matrix(*)(const Matrix&)> Matrix::functionm = {
 
 map<string, Matrix(*)(const Matrix&, const Matrix&)>Matrix::functionm2 = {
 	{"integR",integR},{"integC",integC},{"ones",ones},{"zero",zero},{"getR",getRow},{"getC",getCol},{"delR",deleteRow},{"delC",deleteCol},
-	{"LD",Ldivide},{"integD",integD},{"random",random},{"randint",randint}
+	{"LD",Ldivide},{"integD",integD},{"random",random},{"randint",randint},{"log",logm},
 };
 
 map<string, Matrix(*)(const Matrix&, const Matrix&, const Matrix&)>Matrix::functionm3 = {
@@ -734,6 +734,10 @@ Matrix Matrix::deleteCol(const Matrix& m, const Matrix& col) {
 		}
 	}
 	return result;
+}
+
+Matrix Matrix::logm(const Matrix& m1, const Matrix& m2){
+	return lnm(m2) / lnm(m1);
 }
 
 double Matrix::determinant() const {
@@ -1948,6 +1952,7 @@ void Matrix::doMatrix() {
 			cout << "Cosh - cosh(M) or ch(M)" << endl;
 			cout << "Tanh - tanh(M) or th(M)" << endl;
 			cout << "Square root - sqrt(M)" << endl;
+			cout << "Logarithm - log(M,M)" << endl;
 			cout << "Natural logarithm - ln(M) or log(M)" << endl;
 			cout << "Exponential function - exp(M)" << endl;
 			cout << "Integrate by rows - integR(M)" << endl;

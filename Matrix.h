@@ -166,6 +166,7 @@ public:
 	static Matrix getCol(const Matrix& m, const Matrix& col);
 	static Matrix deleteRow(const Matrix& m, const Matrix& row);
 	static Matrix deleteCol(const Matrix& m, const Matrix& col);
+	static Matrix logm(const Matrix& m1, const Matrix& m2);
 
 	//三参数函数
 	static Matrix get(const Matrix& m, const Matrix& row, const Matrix& col);

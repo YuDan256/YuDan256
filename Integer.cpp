@@ -729,6 +729,7 @@ Integer Integer::length(const Integer& n) {
 }
 
 Integer Integer::prime(const Integer& n) {
+	if (n < 1)throw invalid_argument("The number must be positive.");
 	string filename = "D:\\Calculator\\Prime.txt";
 	ifstream file(filename);
 	if (!file.is_open()) {

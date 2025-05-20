@@ -11,7 +11,7 @@ map<string, Vector(*)(const Vector&)>Vector::functionv1 = {
 	{"exp",expv},{"abs",R}
 };
 map<string, Vector(*)(const Vector&, const Vector&)>Vector::functionv2 = {
-	{"dot",dotProduct},{"SP",SP},{"PV",PV},{"ang",ang}
+	{"dot",dotProduct},{"SP",SP},{"PV",PV},{"ang",ang},{"log",logv}
 };
 
 bool Vector::isNumber() const{
@@ -646,6 +646,7 @@ void Vector::doVector() {
 			cout << "Degree - deg(R)" << endl;
 			cout << "Radian - rad(R)" << endl;
 			cout << "Exponential - exp(R)" << endl;
+			cout << "Logarithm - log(R,R)" << endl;
 			cout << "Natural logarithm - ln(R) or log(R)" << endl << endl;
 			continue;
 		}
@@ -734,6 +735,11 @@ Vector Vector::deg(const Vector& rad) {
 Vector Vector::rad(const Vector& deg) {
 	if (deg.getDimension() != 1)throw invalid_argument("The degree must be a real number.");
 	return Vector(deg / 180 * PI);
+}
+
+Vector Vector::logv(const Vector& v1, const Vector& v2){
+	if (!v1.isNumber() || !v2.isNumber())throw invalid_argument("The two parameters cannot be vectors.");
+	return lnv(v2)/lnv(v1);
 }
 
 Vector Vector::sqrtv(const Vector& v) {

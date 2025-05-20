@@ -376,6 +376,11 @@ Complex Complex::rad(const Complex& deg) {
 	return Complex(deg * PI / 180);
 }
 
+Complex Complex::logc(const Complex& base, const Complex& argument){
+	if (lnc(base).modulus() < 1e-15 || base.modulus() < 1e-15 || argument.modulus() < 1e-15)throw runtime_error("Invalid base or argument.");
+	return lnc(argument) / lnc(base);
+}
+
 Complex Complex::firstRoot(const int& n)const {
 	if (n <= 0)throw runtime_error("The n for nth roots must be positive.");
 	if ((modulus()) < 1e-15)return Complex(0);
@@ -568,13 +573,16 @@ Complex Complex::parsePowerc(const string& expr, size_t& currentPos, const map<s
 				}
 				else if (expr[currentPos] == ',') {
 					++currentPos;
-					string number;
-					while (currentPos < expr.length() && isdigit(expr[currentPos])) number += expr[currentPos++];
-					int n = stoi(number);
+					Complex a1 = parseExpressionc(expr, currentPos, numbers);
 					if (expr[currentPos] == ')') {
 						++currentPos;
 						if (identifier == "fr") {
+							if (!a1.isInteger())throw invalid_argument("The parameter must be an integer.");
+							int n = static_cast<int>(a1.real);
 							result = argument.firstRoot(n);
+						}
+						else if (identifier == "log") {
+							result = logc(argument, a1);
 						}
 						else throw runtime_error("Unknown function: " + identifier);
 					}
@@ -693,6 +701,7 @@ void Complex::doComplex() {
 			cout << "Cosine - cos(C)" << endl;
 			cout << "Tangent - tan(C)" << endl;
 			cout << "Exponential - exp(C)" << endl;
+			cout << "Logarithm - log(C,C)" << endl;
 			cout << "Natural logarithm - ln(C) or log(C)" << endl;
 			cout << "Arcsin - arcsin(C) or asin(C)" << endl;
 			cout << "Arccos - arccos(C) or acos(C)" << endl;
