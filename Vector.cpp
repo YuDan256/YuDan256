@@ -14,12 +14,12 @@ map<string, Vector(*)(const Vector&, const Vector&)>Vector::functionv2 = {
 	{"dot",dotProduct},{"SP",SP},{"PV",PV},{"ang",ang},{"log",logv}
 };
 
-bool Vector::isNumber() const{
+bool Vector::isNumber() const {
 	return n == 1;
 }
 
-bool Vector::isInteger() const{
-	if(!isNumber())return false;
+bool Vector::isInteger() const {
+	if (!isNumber())return false;
 	return (fabs(get(0) - round(get(0))) < 1e-15);
 }
 
@@ -40,7 +40,7 @@ void Vector::print(const string& end)const {
 	else std::cout << data[m] << ")" << end;
 }
 
-int Vector::compare(const Vector& v) const{
+int Vector::compare(const Vector& v) const {
 	if (!isNumber() || !v.isNumber())throw invalid_argument("Cannot compare vectors.");
 	if (fabs(get(0) - v.get(0)) < 1e-15)return 0;
 	else if (get(0) > v.get(0))return 1;
@@ -737,9 +737,9 @@ Vector Vector::rad(const Vector& deg) {
 	return Vector(deg / 180 * PI);
 }
 
-Vector Vector::logv(const Vector& v1, const Vector& v2){
+Vector Vector::logv(const Vector& v1, const Vector& v2) {
 	if (!v1.isNumber() || !v2.isNumber())throw invalid_argument("The two parameters cannot be vectors.");
-	return lnv(v2)/lnv(v1);
+	return lnv(v2) / lnv(v1);
 }
 
 Vector Vector::sqrtv(const Vector& v) {

@@ -138,7 +138,7 @@ Base Base::enterBase3(const Integer& base, const string& num) {
 	return Base(base, result);
 }
 
-int Base::compare(const Base& b) const{
+int Base::compare(const Base& b) const {
 	if (data - b.data == 0)return 0;
 	else if (data > b.data)return 1;
 	else return -1;

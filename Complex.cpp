@@ -244,7 +244,7 @@ bool Complex::isNumber() const {
 	return fabs(image) < 1e-15;
 }
 
-bool Complex::isInteger() const{
+bool Complex::isInteger() const {
 	return isNumber() && (fabs(real - round(real)) < 1e-15);
 }
 
@@ -376,7 +376,7 @@ Complex Complex::rad(const Complex& deg) {
 	return Complex(deg * PI / 180);
 }
 
-Complex Complex::logc(const Complex& base, const Complex& argument){
+Complex Complex::logc(const Complex& base, const Complex& argument) {
 	if (lnc(base).modulus() < 1e-15 || base.modulus() < 1e-15 || argument.modulus() < 1e-15)throw runtime_error("Invalid base or argument.");
 	return lnc(argument) / lnc(base);
 }

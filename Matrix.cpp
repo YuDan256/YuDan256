@@ -400,7 +400,7 @@ void Matrix::print(const string& end1, const string& end2) const {
 	}
 }
 
-int Matrix::compare(const Matrix& m) const{
+int Matrix::compare(const Matrix& m) const {
 	if (!isNumber() || !m.isNumber())throw invalid_argument("Cannot compare matrices.");
 	if (fabs(get(0, 0) - m.get(0, 0)) < 1e-15)return 0;
 	else if (get(0, 0) > m.get(0, 0))return 1;
@@ -629,7 +629,7 @@ Matrix Matrix::condition(const Matrix& m) {
 	return m.norm() * inverse(m).norm();
 }
 
-Matrix Matrix::permanent(const Matrix& m){
+Matrix Matrix::permanent(const Matrix& m) {
 	return Matrix(perma(m));
 }
 
@@ -736,7 +736,7 @@ Matrix Matrix::deleteCol(const Matrix& m, const Matrix& col) {
 	return result;
 }
 
-Matrix Matrix::logm(const Matrix& m1, const Matrix& m2){
+Matrix Matrix::logm(const Matrix& m1, const Matrix& m2) {
 	return lnm(m2) / lnm(m1);
 }
 
