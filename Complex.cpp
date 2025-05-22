@@ -294,14 +294,14 @@ void Complex::root(const int& n)const {
 	else {
 		double a = argument(), r = modulus();
 		for (int i = 0; i < n; i++) {
-			double x = std::pow(r, 1 / k) * cos(((i + 1) * 2 * PI + a) / k), y = std::pow(r, 1 / k) * sin(((i + 1) * 2 * PI + a) / k);
-			if (fabs(x) < 1e-5)x = 0; if (fabs(y) < 1e-5)y = 0;
+			double x = std::pow(r, 1 / k) * cos((i * 2 * PI + a) / k), y = std::pow(r, 1 / k) * sin((i * 2 * PI + a) / k);
 			Complex root_i(x, y);
 			result[i] = root_i;
 		}
 	}
-	cout << "The all nth roots of Complex Number 1 are:" << endl;
+	cout << "The all nth roots of the complex number are:" << endl;
 	for (int i = 0; i < n; i++) {
+		cout << "z" << i + 1<<" = ";
 		result[i].print();
 	}
 }
