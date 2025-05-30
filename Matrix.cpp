@@ -1979,10 +1979,10 @@ void Matrix::doMatrix() {
 			cout << "Set Element - set(M,N,N,R)" << endl;
 			cout << "Random matrix with max and min - random(N+,N+,Z,Z)" << endl;
 			cout << "Random matrix (0~1) - random(N+,N+)" << endl;
-			cout << "Random square matrix (0~1) - random(N+,N+)" << endl;
+			cout << "Random square matrix (0~1) - random(N+)" << endl;
 			cout << "Random integer matrix with max and min - randint(N+,N+,Z,Z)" << endl;
 			cout << "Random integer matrix (0~10) - randint(N+,N+)" << endl;
-			cout << "Random integer square matrix (0~10) - randint(N+,N+)" << endl;
+			cout << "Random integer square matrix (0~10) - randint(N+)" << endl;
 			cout << "Cofactor - cof(M,N,N)" << endl;
 			cout << "Algebric cofactor - Acof(M,N,N)" << endl;
 			cout << "All one matrix - ones(N+,N+)" << endl;
