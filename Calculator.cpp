@@ -18,6 +18,7 @@ void instructions();
 void easterEgg();
 void doCalculation();
 void initialize();
+void test();
 
 int main() {
 	initialize();
@@ -71,6 +72,7 @@ void doCalculation() {
 			break;
 		}
 		else if (mode == "E")easterEgg();
+		else if (mode == "T")test();
 		else cout << "Invalid mode." << endl;
 	}
 }
@@ -88,4 +90,8 @@ void instructions() {
 void easterEgg() {
 	cout << "There are no Easter eggs in this calculator." << endl;
 	cout << "(^u^)" << endl;
+}
+
+void test() {
+	return;
 }
