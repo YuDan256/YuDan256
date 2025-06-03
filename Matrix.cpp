@@ -24,7 +24,7 @@ map<string, Matrix(*)(const Matrix&, const Matrix&)>Matrix::functionm2 = {
 
 map<string, Matrix(*)(const Matrix&, const Matrix&, const Matrix&)>Matrix::functionm3 = {
 	{"get",get},{"swapR",swapRows},{"swapC",swapCols},{"multiR",multiplyRows},{"multiC",multiplyCols},{"sub",subMatrix},
-	{"cof",cofactor},{"Acof",Acofactor}
+	{"cof",cofactor},{"Acof",Acofactor},{"reshape",reshape},
 };
 
 map<string, Matrix(*)(const Matrix&, const Matrix&, const Matrix&, const Matrix&)>Matrix::functionm4 = {
@@ -1028,6 +1028,19 @@ Matrix Matrix::Acofactor(const Matrix& m, const Matrix& row, const Matrix& col) 
 	return Matrix(result);
 }
 
+Matrix Matrix::reshape(const Matrix& m, const Matrix& row, const Matrix& col){
+	if (!row.isInteger() || !col.isInteger())throw invalid_argument("The numbers of rows and cols cannot be matrices.");
+	int r = row.to_int(), c = col.to_int();
+	if (r * c != m.rows * m.cols)throw invalid_argument("The numbers of elements do not match.");
+	Matrix result(r, c);
+	for (int i = 0; i < r; i++) {
+		for (int j = 0; j < c; j++) {
+			result(i, j) = m((i * c + j) / m.cols, (i * c + j) % m.cols);
+		}
+	}
+	return result;
+}
+
 Matrix Matrix::addRows(const Matrix& m, const Matrix& row1, const Matrix& row2, const Matrix& scalar) {
 	if (!row1.isInteger() || !row2.isInteger())throw invalid_argument("The numbers of rows must be integers.");
 	if (!scalar.isNumber())throw invalid_argument("The scalar must be a real number.");
@@ -1977,6 +1990,7 @@ void Matrix::doMatrix() {
 			cout << "delete a Column - delC(M,N)" << endl;
 			cout << "Get Element - get(M,N,N)" << endl;
 			cout << "Set Element - set(M,N,N,R)" << endl;
+			cout << "Reshape - reshape(M,N+,N+)" << endl;
 			cout << "Random matrix with max and min - random(N+,N+,Z,Z)" << endl;
 			cout << "Random matrix (0~1) - random(N+,N+)" << endl;
 			cout << "Random square matrix (0~1) - random(N+)" << endl;

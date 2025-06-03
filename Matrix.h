@@ -178,6 +178,7 @@ public:
 	static Matrix subMatrix(const Matrix& m, const Matrix& excludeRow, const Matrix& excludeCol);
 	static Matrix cofactor(const Matrix& m, const Matrix& row, const Matrix& col);
 	static Matrix Acofactor(const Matrix& m, const Matrix& row, const Matrix& col);
+	static Matrix reshape(const Matrix& m, const Matrix& row, const Matrix& col);
 
 	//四参数函数
 	static Matrix addRows(const Matrix& m, const Matrix& row1, const Matrix& row2, const Matrix& scalar);
