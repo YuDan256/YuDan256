@@ -1028,7 +1028,7 @@ Matrix Matrix::Acofactor(const Matrix& m, const Matrix& row, const Matrix& col) 
 	return Matrix(result);
 }
 
-Matrix Matrix::reshape(const Matrix& m, const Matrix& row, const Matrix& col){
+Matrix Matrix::reshape(const Matrix& m, const Matrix& row, const Matrix& col) {
 	if (!row.isInteger() || !col.isInteger())throw invalid_argument("The numbers of rows and cols cannot be matrices.");
 	int r = row.to_int(), c = col.to_int();
 	if (r * c != m.rows * m.cols)throw invalid_argument("The numbers of elements do not match.");
