@@ -151,8 +151,6 @@ public:
 	static void add_prime(const ull& interval);
 	static ull getLastPrime(const std::string& filePath);
 
-	
-
 	static Integer parseFunctioni(const string& expr, const map<string, Integer>& numbers);
 	static Integer parseExpressioni(const string& expr, size_t& currentPos, const map<string, Integer>& numbers);
 	static Integer parseTermi(const string& expr, size_t& currentPos, const map<string, Integer>& numbers);
