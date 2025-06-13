@@ -4,7 +4,7 @@ using namespace std;
 
 map<char, int> Integer::iop = { {'+',1},{'-',1},{'*',2},{'/',2},{'%',2},{ '^',3 } };
 map<string, Integer(*)(const Integer&)>Integer::functioni1 = {
-	{"abs",fabs},{"sqrt",sqrt},{"sgn",sgn},{"length",length},{"len",length},{"digit",length},{"prime",prime},{"pi",primePi},
+	{"abs",abs},{"sqrt",sqrt},{"sgn",sgn},{"length",length},{"len",length},{"digit",length},{"prime",prime},{"pi",primePi},
 	{"log",log},{"primePi",primePi},{"phi",phi},{"F",factorial},{"d",d},{"fibonacci",fibonacci},{"fib",fibonacci},
 	{"Omega",Omega},{"omega",omega},{"sigma",sigma}
 };
@@ -214,7 +214,7 @@ Integer Integer::operator-(const Integer& n) const {
 }
 
 Integer Integer::operator*(const Integer& n) const {
-	Integer a = fabs(*this), b = fabs(n);
+	Integer a = abs(*this), b = abs(n);
 	bool result_sign = sign == n.sign;
 	size_t a_size = a.data.size();
 	size_t b_size = b.data.size();
@@ -275,13 +275,13 @@ Integer Integer::operator%(const Integer& n) const {
 	if (n.isZero()) {
 		throw invalid_argument("Division by zero error.");
 	}
-	Integer a = fabs(*this), b = fabs(n);
+	Integer a = abs(*this), b = abs(n);
 	Integer result = a - (a / b * b);
 	return result * (result_sign ? Integer(1) : Integer(-1));
 }
 
 Integer Integer::operator^(const Integer& n) const {
-	Integer A = fabs(*this), B = fabs(n), result;
+	Integer A = abs(*this), B = abs(n), result;
 	vector<int>a, b;
 	do {
 		bool i = A % 2 == 1;
@@ -306,7 +306,7 @@ Integer Integer::operator^(const Integer& n) const {
 }
 
 Integer Integer::operator|(const Integer& n) const {
-	Integer A = fabs(*this), B = fabs(n), result;
+	Integer A = abs(*this), B = abs(n), result;
 	vector<int>a, b;
 	do {
 		bool i = A % 2 == 1;
@@ -331,7 +331,7 @@ Integer Integer::operator|(const Integer& n) const {
 }
 
 Integer Integer::operator&(const Integer& n) const {
-	Integer A = fabs(*this), B = fabs(n), result;
+	Integer A = abs(*this), B = abs(n), result;
 	vector<int>a, b;
 	do {
 		bool i = A % 2 == 1;
@@ -460,7 +460,7 @@ Integer Integer::operator+() const {
 	return *this;
 }
 
-Integer Integer::fabs(const Integer& n) {
+Integer Integer::abs(const Integer& n) {
 	return Integer(n.data, true);
 }
 
@@ -517,8 +517,8 @@ Integer Integer::division2(const Integer& n) const {
 		throw invalid_argument("Division by zero error.");
 	}
 
-	Integer dividend = fabs(*this);
-	Integer divisor = fabs(n);
+	Integer dividend = abs(*this);
+	Integer divisor = abs(n);
 	vector<int> quotient_data;
 	bool quotient_sign = sign == n.sign;
 
@@ -601,8 +601,8 @@ Integer Integer::pow(const Integer& n) const {
 }
 
 Integer Integer::gcd(const Integer& n) const {
-	Integer a = fabs(*this);
-	Integer b = fabs(n);
+	Integer a = abs(*this);
+	Integer b = abs(n);
 
 	if (b.isZero()) {
 		return a;
@@ -619,7 +619,7 @@ Integer Integer::gcd(const Integer& n) const {
 }
 
 Integer Integer::lcm(const Integer& n) const {
-	Integer a = fabs(*this), b = fabs(n);
+	Integer a = abs(*this), b = abs(n);
 	return a * b / gcd(a, b);
 }
 

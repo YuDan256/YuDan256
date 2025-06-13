@@ -16,7 +16,7 @@ Base::Base(const Integer& _base, const Integer& _data) {
 
 Integer Base::length()const {
 	if (data == 0)return 1;
-	Integer temp = Integer::fabs(data), len = 0;
+	Integer temp = Integer::abs(data), len = 0;
 	while (temp > 0) {
 		temp /= base;
 		len++;
@@ -33,7 +33,7 @@ void Base::print(const string& end) const {
 		ull len = length().uvalue();
 		std::vector<Integer> print(len, 0);
 
-		Integer temp = Integer::fabs(data);
+		Integer temp = Integer::abs(data);
 		ull i = 0;
 		while (temp > 0 && i < len) {
 			print[i++] = temp % base;

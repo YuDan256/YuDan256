@@ -21,7 +21,7 @@ public:
 	Fraction reciprocal()const;
 	void print(const string& end = "\n") const;
 	double value() const;
-	Fraction fabs() const;
+	Fraction abs() const;
 	Fraction pow(const Integer& n) const;
 	Fraction floor() const;
 	Fraction ceil() const;

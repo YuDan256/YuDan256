@@ -6,12 +6,12 @@ Fraction::Fraction(const Integer& n, const Integer& d) {
 	Integer _num = n / c;
 	Integer _den = d / c;
 	if (_num.getSign() == _den.getSign()) {
-		num = Integer::fabs(_num);
-		den = Integer::fabs(_den);
+		num = Integer::abs(_num);
+		den = Integer::abs(_den);
 	}
 	else {
-		num = -Integer::fabs(_num);
-		den = Integer::fabs(_den);
+		num = -Integer::abs(_num);
+		den = Integer::abs(_den);
 	}
 }
 
@@ -23,12 +23,12 @@ void Fraction::reduction() {
 	num /= c;
 	den /= c;
 	if (num.getSign() == den.getSign()) {
-		num = Integer::fabs(num);
-		den = Integer::fabs(den);
+		num = Integer::abs(num);
+		den = Integer::abs(den);
 	}
 	else {
-		num = -Integer::fabs(num);
-		den = Integer::fabs(den);
+		num = -Integer::abs(num);
+		den = Integer::abs(den);
 	}
 }
 
@@ -49,8 +49,8 @@ double Fraction::value() const {
 	return static_cast<double>(num.value()) / static_cast<double>(den.value());
 }
 
-Fraction Fraction::fabs() const {
-	return Fraction(Integer::fabs(num), Integer::fabs(den));
+Fraction Fraction::abs() const {
+	return Fraction(Integer::abs(num), Integer::abs(den));
 }
 
 Fraction Fraction::pow(const Integer& n) const {

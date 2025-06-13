@@ -116,7 +116,7 @@ public:
 	static vector<Integer> read_primes(const string& filename, const Integer& max_size);
 	static string to_string(const Integer& n);
 
-	static Integer fabs(const Integer& n);
+	static Integer abs(const Integer& n);
 	static Integer pow(const Integer& n1, const Integer& n2);
 	static Integer sqrt(const Integer& n);
 	static Integer gcd(const Integer& n1, const Integer& n2);
@@ -150,6 +150,8 @@ public:
 	static void writePrimesToFile(const std::vector<ull>& primes, const std::string& filePath, bool append);
 	static void add_prime(const ull& interval);
 	static ull getLastPrime(const std::string& filePath);
+
+	
 
 	static Integer parseFunctioni(const string& expr, const map<string, Integer>& numbers);
 	static Integer parseExpressioni(const string& expr, size_t& currentPos, const map<string, Integer>& numbers);
