@@ -1,6 +1,6 @@
-#include"Matrix.h"
-#include"Vector.h"
-#include"Normal.h"
+#include "Matrix.h"
+#include "Vector.h"
+#include "Normal.h"
 
 using namespace std;
 

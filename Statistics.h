@@ -1,11 +1,11 @@
 #ifndef STATISTICS_H
 #define STATISTICS_H
 
-#include<iostream>
-#include<cmath>
-#include<vector>
-#include<stdexcept>
-#include<map>
+#include <iostream>
+#include <cmath>
+#include <vector>
+#include <stdexcept>
+#include <map>
 #include <string>
 
 using namespace std;

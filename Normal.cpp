@@ -1,4 +1,4 @@
-#include"Normal.h"
+#include "Normal.h"
 #include <cmath>
 
 using namespace std;

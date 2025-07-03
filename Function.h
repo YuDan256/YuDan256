@@ -1,10 +1,10 @@
 #ifndef FUNCTION_H
 #define FUNCTION_H
 
-#include<iostream>
-#include<string>
-#include<stdexcept>
-#include<map>
+#include <iostream>
+#include <string>
+#include <stdexcept>
+#include <map>
 
 using namespace std;
 

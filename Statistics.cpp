@@ -1,5 +1,5 @@
 #include "Statistics.h"
-#include"Normal.h"
+#include "Normal.h"
 
 using namespace std;
 

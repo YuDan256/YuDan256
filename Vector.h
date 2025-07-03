@@ -1,12 +1,12 @@
 #ifndef VECTOR_H
 #define VECTOR_H
 
-#include<iostream>
-#include<vector>
-#include<cmath>
-#include<stdexcept>
-#include<string>
-#include<map>
+#include <iostream>
+#include <vector>
+#include <cmath>
+#include <stdexcept>
+#include <string>
+#include <map>
 
 using namespace std;
 
