@@ -42,6 +42,9 @@
     <ClInclude Include="Fraction.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Real.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Base.cpp">
@@ -83,6 +86,9 @@
     <ClCompile Include="Fraction.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Real.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd">
@@ -115,6 +121,9 @@
       <Filter>资源文件</Filter>
     </Text>
     <Text Include="D:\Calculator\Prime.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="D:\Calculator\Real.txt">
       <Filter>资源文件</Filter>
     </Text>
   </ItemGroup>

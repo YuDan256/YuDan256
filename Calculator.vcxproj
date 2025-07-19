@@ -26,6 +26,7 @@
     <ClInclude Include="Function.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="Normal.h" />
+    <ClInclude Include="Real.h" />
     <ClInclude Include="Statistics.h" />
     <ClInclude Include="Vector.h" />
   </ItemGroup>
@@ -43,6 +44,7 @@
     <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="Normal.cpp" />
     <ClCompile Include="Polynomial.cpp" />
+    <ClCompile Include="Real.cpp" />
     <ClCompile Include="Statistics.cpp" />
     <ClCompile Include="Vector.cpp" />
   </ItemGroup>
@@ -57,6 +59,7 @@
     <Text Include="D:\Calculator\Matrix.txt" />
     <Text Include="D:\Calculator\Normal.txt" />
     <Text Include="D:\Calculator\Prime.txt" />
+    <Text Include="D:\Calculator\Real.txt" />
     <Text Include="D:\Calculator\Statistics.txt" />
     <Text Include="D:\Calculator\Vector.txt" />
   </ItemGroup>

@@ -1,6 +1,6 @@
 ﻿//Calculator Program
 //Developed by Yu Liangyang, Tsinghua University
-//Recently updated on May 3rd, 2025.
+//Recently updated on July 19th, 2025.
 
 #include "Complex.h"
 #include "Matrix.h"
@@ -11,6 +11,7 @@
 #include "Normal.h"
 #include "Integer.h"
 #include "Fraction.h"
+#include "Real.h"
 
 using namespace std;
 
@@ -22,7 +23,7 @@ void test();
 
 int main() {
 	initialize();
-	cout << "Junk Calculator [1.9.3] By YuDan" << endl << endl
+	cout << "Junk Calculator [1.10.1] By YuDan" << endl << endl
 		<< "Welcome to My Calculator!" << endl
 		<< "This calculator has an extremely user-unfriendly operating system, please bear with it." << endl;
 	doCalculation();
@@ -50,10 +51,7 @@ void doCalculation() {
 
 		std::cin >> mode;
 
-		if (mode == "N") {
-			cin.ignore(numeric_limits<streamsize>::max(), '\n');
-			Normal::doNormal();
-		}
+		if (mode == "N") Real::doReal();
 		else if (mode == "M")Matrix::doMatrix();
 		else if (mode == "C")Complex::doComplex();
 		else if (mode == "V")Vector::doVector();

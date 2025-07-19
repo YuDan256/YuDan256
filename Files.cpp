@@ -8,6 +8,7 @@
 #include "Normal.h"
 #include "Function.h"
 #include "Integer.h"
+#include "Real.h"
 
 using namespace std;
 
@@ -73,6 +74,10 @@ void Function::storef(const map<string, Function>& functions) {
 
 void Integer::storei(const map<string, Integer>& numbers) {
 	store(numbers, "Integer.txt");
+}
+
+void Real::storer(const map<string, Real>& numbers) {
+	store(numbers, "Real.txt");
 }
 //分解字符串
 static vector<string>getTokens(const string& _line) {
@@ -222,6 +227,21 @@ map<string, Integer>Integer::loadi() {
 	}
 	return numbers;
 }
+
+map<string, Real>Real::loadr() {
+	string filename = R"(D:\Calculator\Real.txt)";
+	ifstream fin(filename);
+	if (!fin.is_open())throw invalid_argument("The file " + filename + " cannot be opened.");
+	map<string, Real>numbers;
+	string number;
+	while (getline(fin, number)) {
+		vector<string>tokens = getTokens(number);
+		string name = tokens[0];
+		double value = stod(tokens[1]);
+		numbers[name] = Real(value);
+	}
+	return numbers;
+}
 //删除变量
 template<typename T>
 void deleteVariable(map<string, T>& variables, const string& name, const string& fileName) {
@@ -328,6 +348,18 @@ void Integer::deletei(map<string, Integer>& variables) {
 	}
 }
 
+void Real::deleter(map<string, Real>& variables) {
+	string name;
+	cout << "Enter end to finish delete." << endl;
+	while (1) {
+		showr(variables);
+		cout << "Enter the name of the variable you want to delete:" << endl;
+		cin >> name;
+		if (name == "end")break;
+		else deleteVariable(variables, name, "Real.txt");
+	}
+}
+
 //展示变量
 template<typename T>
 void show(const map<string, T>& variables) {
@@ -370,6 +402,10 @@ void Function::showf(const map<string, Function>& variables) {
 }
 
 void Integer::showi(const map<string, Integer>& variables) {
+	show(variables);
+}
+
+void Real::showr(const map<string, Real>& variables) {
 	show(variables);
 }
 
@@ -454,6 +490,14 @@ void Vector::processv(const string& expression, map<string, Vector>& variables) 
 		variables,
 		[](const string& expr, const map<string, Vector>& vars) {return parseFunctionv(expr, vars); },
 		[](const map<string, Vector>& vars) {storev(vars); });
+}
+
+void Real::processr(const string& expression, map<string, Real>& variables) {
+	process(
+		expression,
+		variables,
+		[](const string& expr, const map<string, Real>& vars) {return parseFunctionr(expr, vars); },
+		[](const map<string, Real>& vars) {storer(vars); });
 }
 
 void Normal::processn(const string& expression, map<string, double>& variables) {
