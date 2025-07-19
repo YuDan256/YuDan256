@@ -18,7 +18,7 @@ void initialize() {
 
 	vector<string> fileNames = {
 		"Complex.txt", "Vector.txt", "Matrix.txt", "Prime.txt",
-		"Base.txt", "Statistics.txt", "Normal.txt", "Function.txt"
+		"Base.txt", "Statistics.txt", "Real.txt", "Function.txt"
 	};
 
 	for (const auto& fileName : fileNames) {
@@ -62,10 +62,6 @@ void Base::storeb(const map<string, Base>& baseNumbers) {
 
 void Statistics::stores(const map<string, Statistics>& datasets) {
 	store(datasets, "Statistics.txt");
-}
-
-void Normal::storen(const map<string, double>& numbers) {
-	store(numbers, "Normal.txt");
 }
 
 void Function::storef(const map<string, Function>& functions) {
@@ -185,21 +181,6 @@ map<string, Statistics>Statistics::loads() {
 	return datasets;
 }
 
-map<string, double>Normal::loadn() {
-	string filename = R"(D:\Calculator\Normal.txt)";
-	ifstream fin(filename);
-	if (!fin.is_open())throw invalid_argument("The file " + filename + " cannot be opened.");
-	map<string, double>variables;
-	string variable;
-	while (getline(fin, variable)) {
-		vector<string>tokens = getTokens(variable);
-		string name = tokens[0];
-		double num = stod(tokens[1]);
-		variables[name] = num;
-	}
-	return variables;
-}
-
 map<string, Function>Function::loadf() {
 	string filename = R"(D:\Calculator\Function.txt)";
 	ifstream fin(filename);
@@ -312,18 +293,6 @@ void Statistics::deletes(map<string, Statistics>& variables) {
 	}
 }
 
-void Normal::deleten(map<string, double>& variables) {
-	string name;
-	cout << "Enter end to finish delete." << endl;
-	while (1) {
-		shown(variables);
-		cout << "Enter the name of the variable you want to delete:" << endl;
-		cin >> name;
-		if (name == "end")break;
-		else deleteVariable(variables, name, "Normal.txt");
-	}
-}
-
 void Function::deletef(map<string, Function>& variables) {
 	string name;
 	cout << "Enter end to finish delete." << endl;
@@ -388,13 +357,6 @@ void Base::showb(const map<string, Base>& variables) {
 
 void Statistics::shows(const map<string, Statistics>& variables) {
 	show(variables);
-}
-
-void Normal::shown(const map<string, double>& variables) {
-	cout << "All the variables you store are:" << endl;
-	for (auto it = variables.begin(); it != variables.end(); it++) {
-		cout << "Name: " << it->first << endl << it->second << endl;
-	}
 }
 
 void Function::showf(const map<string, Function>& variables) {
@@ -498,40 +460,4 @@ void Real::processr(const string& expression, map<string, Real>& variables) {
 		variables,
 		[](const string& expr, const map<string, Real>& vars) {return parseFunctionr(expr, vars); },
 		[](const map<string, Real>& vars) {storer(vars); });
-}
-
-void Normal::processn(const string& expression, map<string, double>& variables) {
-	size_t pos = expression.find('=');
-	string name = expression.substr(0, pos);
-	string expr = expression.substr(pos + 1);
-
-	if (name.empty() || expr.empty()) {
-		cerr << "Error: Invalid expression." << endl;
-		return;
-	}
-
-	bool invalidName = false;
-	for (char i : name) {
-		if (!isalpha(i)) {
-			cerr << "Error: Invalid name." << endl;
-			invalidName = true;
-			break;
-		}
-	}
-	if (invalidName) return;
-
-	double result;
-	try {
-		result = parsen(expr, variables);
-	}
-	catch (const exception& e) {
-		cout << "Error: " << e.what() << endl;
-		return;
-	}
-	cout << "The result is: " << endl;
-	cout << result << endl;
-	variables[name] = result;
-	variables["ANS"] = result;
-	storen(variables);
-	cout << "The result is successfully saved in Variable " + name << endl;
 }

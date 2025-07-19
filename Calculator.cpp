@@ -37,7 +37,7 @@ void doCalculation() {
 	while (1) {
 		cout << endl << "Type an uppercase letter to choose a mode:" << endl
 			<< "I - instructions" << endl
-			<< "N - normal calculation" << endl
+			<< "R - real number" << endl
 			<< "M - matrix" << endl
 			<< "C - complex number" << endl
 			<< "V - vector" << endl
@@ -51,7 +51,7 @@ void doCalculation() {
 
 		std::cin >> mode;
 
-		if (mode == "N") Real::doReal();
+		if (mode == "R") Real::doReal();
 		else if (mode == "M")Matrix::doMatrix();
 		else if (mode == "C")Complex::doComplex();
 		else if (mode == "V")Vector::doVector();

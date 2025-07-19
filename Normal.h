@@ -18,13 +18,6 @@ public:
 	static double parseExpressionn(const string& expr, size_t& currentPos, const map<string, double>& variables);
 	static double parseTermn(const string& expr, size_t& currentPos, const map<string, double>& variables);
 	static double parsePowern(const string& expr, size_t& currentPos, const map<string, double>& variables);
-	static void input(map<string, double>& variables);
-	static void doNormal();
-	static void storen(const map<string, double>& numbers);
-	static map<string, double>loadn();
-	static void deleten(map<string, double>& variables);
-	static void shown(const map<string, double>& variables);
-	static void processn(const string& expression, map<string, double>& variables);
 
 	static double deg(double rad);
 	static double rad(double deg);
