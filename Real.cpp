@@ -1,7 +1,17 @@
 #include "Real.h"
 
 map<char, int> Real::rop = { {'+', 1}, {'-', 1}, {'*', 2}, {'/', 2}, {'^', 3} };
-map<string, Real(*)(const Real&)>Real::functionr1;
+map<string, Real(*)(const Real&)>Real::functionr1 = {
+	{"sin", sinr},{"cos", cosr},{"tan", tanr},{"exp", expr},{"ln",lnr},{"log",lnr},{"sqrt",sqrt},{"abs",abs},
+	{"sgn",sgn},{"floor",floor},{"ceil",ceil},{"round",round},{"trunc",trunc},{"asin",asinr},{"acos",acosr},
+	{"atan",atanr},{"arcsin",asinr},{"arccos",acosr},{"arctan",atanr},{"sinh",sinhr},{"cosh",coshr},{"tanh",tanhr},
+	{"sh",sinhr},{"ch",coshr},{"th",tanhr},{"asinh",asinhr},{"acosh",acoshr},{"atanh",atanhr},{"arcsinh",asinhr},
+	{"arccosh",acoshr},{"arctanh",atanhr},{"lg",lgr}
+};
+
+map<string, Real(*)(const Real&, const Real&)>Real::functionr2 = {
+	{"log", logr},{"root", root},{"pow", powr}
+};
 
 Real Real::operator+(const Real& r) {
 	return Real(value + r.value);
@@ -72,7 +82,7 @@ Real& Real::operator/=(const Real& r) {
 }
 
 Real& Real::operator^=(const Real& r) {
-	value = pow(value, r.value);
+	value = std::pow(value, r.value);
 	return *this;
 }
 
@@ -146,9 +156,7 @@ Real Real::parseFunctionr(const string& expr, const map<string, Real>& variables
 				z.print();
 				throw true;
 			}
-			else throw runtime_error("Unknown function: " + identifier);
 		}
-		else throw runtime_error("Missing closing parenthesis.");
 	}
 	currentPos = 0;
 	Real result = parseExpressionr(expr, currentPos, variables);
@@ -243,10 +251,10 @@ Real Real::parsePowerr(const string& expr, size_t& currentPos, const map<string,
 				identifier += expr[currentPos++];
 			}
 			if (expr[currentPos] == '(') { // 检查是否为函数
-				++currentPos; // 消耗 '('
+				++currentPos;
 				Real argument = parseExpressionr(expr, currentPos, variables);
 				if (expr[currentPos] == ')') {
-					++currentPos; // 消耗 ')'
+					++currentPos;
 					auto it = functionr1.find(identifier);
 					if (it != functionr1.end()) {
 						result = it->second(argument);
@@ -254,6 +262,19 @@ Real Real::parsePowerr(const string& expr, size_t& currentPos, const map<string,
 					else {
 						throw runtime_error("Unknown function: " + identifier);
 					}
+				}
+				else if (expr[currentPos] == ',') { // 检查是否为二元函数
+					++currentPos;
+					Real secondArgument = parseExpressionr(expr, currentPos, variables);
+					if (expr[currentPos] == ')') {
+						++currentPos;
+						auto it = functionr2.find(identifier);
+						if (it != functionr2.end()) {
+							result = it->second(argument, secondArgument);
+						}
+						else throw runtime_error("Unknown function: " + identifier);
+					}
+					else throw runtime_error("Missing closing parenthesis.");
 				}
 				else throw runtime_error("Missing closing parenthesis.");
 			}
@@ -311,11 +332,11 @@ void Real::input(map<string, Real>& variables) {
 	}
 }
 
-Real Real::stor(const string& expr){
+Real Real::stor(const string& expr) {
 	return Real(stod(expr));
 }
 
-void Real::doReal(){
+void Real::doReal() {
 	map<string, Real>variables;
 	string choice;
 
@@ -375,9 +396,9 @@ void Real::doReal(){
 		if (expression == "function_list") {
 			cout << endl;
 			cout << "The following functions can only be used individually with defined variables:" << endl;
-			cout  << endl;
+			cout << endl;
 			cout << "The following functions can be used with expressions:" << endl;
-			cout  << endl;
+			cout << endl;
 			continue;
 		}
 		if (expression == "save") {
@@ -408,6 +429,123 @@ void Real::doReal(){
 			if (b)cout << "The result cannot be saved." << endl;
 		}
 	}
+}
+
+Real Real::sinr(const Real& r) {
+	return Real(std::sin(r.value));
+}
+
+Real Real::cosr(const Real& r) {
+	return Real(std::cos(r.value));
+}
+
+Real Real::tanr(const Real& r) {
+	if (fabs(std::cos(r.value)) < 1e-15) throw runtime_error("Tangent undefined for this value.");
+	return Real(std::tan(r.value));
+}
+
+Real Real::expr(const Real& r) {
+	return Real(exp(r.value));
+}
+
+Real Real::lnr(const Real& r) {
+	return Real(log(r.value));
+}
+
+Real Real::sqrt(const Real& r) {
+	return Real(std::sqrt(r.value));
+}
+
+Real Real::abs(const Real& r) {
+	return Real(std::fabs(r.value));
+}
+
+Real Real::sgn(const Real& r) {
+	if (r.value > 0) return Real(1);
+	else if (r.value < 0) return Real(-1);
+	else return Real(0);
+}
+
+Real Real::floor(const Real& r) {
+	return Real(std::floor(r.value));
+}
+
+Real Real::ceil(const Real& r) {
+	return Real(std::ceil(r.value));
+}
+
+Real Real::round(const Real& r) {
+	return Real(std::round(r.value));
+}
+
+Real Real::trunc(const Real& r) {
+	return Real(std::trunc(r.value));
+}
+
+Real Real::asinr(const Real& r) {
+	if (r.value < -1 || r.value > 1) throw runtime_error("Arcsine undefined for this value.");
+	return Real(std::asin(r.value));
+}
+
+Real Real::acosr(const Real& r) {
+	if (r.value < -1 || r.value > 1) throw runtime_error("Arccosine undefined for this value.");
+	return Real(std::acos(r.value));
+}
+
+Real Real::atanr(const Real& r) {
+	return Real(std::atan(r.value));
+}
+
+Real Real::sinhr(const Real& r) {
+	return Real(std::sinh(r.value));
+}
+
+Real Real::coshr(const Real& r) {
+	return Real(std::cosh(r.value));
+}
+
+Real Real::tanhr(const Real& r) {
+	if (fabs(std::cosh(r.value)) < 1e-15) throw runtime_error("Hyperbolic tangent undefined for this value.");
+	return Real(std::tanh(r.value));
+}
+
+Real Real::asinhr(const Real& r) {
+	if (r.value < -1 || r.value > 1) throw runtime_error("Hyperbolic arcsine undefined for this value.");
+	return Real(std::asinh(r.value));
+}
+
+Real Real::acoshr(const Real& r) {
+	if (r.value < 1) throw runtime_error("Hyperbolic arccosine undefined for this value.");
+	return Real(std::acosh(r.value));
+}
+
+Real Real::atanhr(const Real& r) {
+	if (r.value < -1 || r.value > 1) throw runtime_error("Hyperbolic arctangent undefined for this value.");
+	return Real(std::atanh(r.value));
+}
+
+Real Real::lgr(const Real& r) {
+	return logr(10, r);
+}
+
+Real Real::logr(const Real& r1, const Real& r2) {
+	if (r1 <= 0 || r2 <= 0 || r1 == 1) throw runtime_error("Logarithm undefined for this base or value.");
+	return Real(log(r2.value) / log(r1.value));
+}
+
+Real Real::root(const Real& r1, const Real& r2) {
+	if (abs(round(r2) - r2).value < 1e-15) {
+		int n = static_cast<int>(r2.value);
+		if (r1 < 0 && n % 2 == 0) throw runtime_error("Even root of a negative number is undefined.");
+		return Real(std::pow(r1.value, 1.0 / n));
+	}
+	else if (r1 < 0)throw runtime_error("Root of a negative number is undefined for non-integer exponents.");
+	else if (r2.value == 0) throw runtime_error("Root with zero exponent is undefined.");
+	return Real(std::pow(r1.value, 1.0 / r2.value));
+}
+
+Real Real::powr(const Real& r1, const Real& r2) {
+	return Real(std::pow(r1.value, r2.value));
 }
 
 bool Real::isValidName(const string& name) {
