@@ -8,7 +8,6 @@
 #include "Base.h"
 #include "Statistics.h"
 #include "Function.h"
-#include "Normal.h"
 #include "Integer.h"
 #include "Fraction.h"
 #include "Real.h"

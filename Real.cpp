@@ -6,7 +6,8 @@ map<string, Real(*)(const Real&)>Real::functionr1 = {
 	{"sgn",sgn},{"floor",floor},{"ceil",ceil},{"round",round},{"trunc",trunc},{"asin",asinr},{"acos",acosr},
 	{"atan",atanr},{"arcsin",asinr},{"arccos",acosr},{"arctan",atanr},{"sinh",sinhr},{"cosh",coshr},{"tanh",tanhr},
 	{"sh",sinhr},{"ch",coshr},{"th",tanhr},{"asinh",asinhr},{"acosh",acoshr},{"atanh",atanhr},{"arcsinh",asinhr},
-	{"arccosh",acoshr},{"arctanh",atanhr},{"lg",lgr}
+	{"arccosh",acoshr},{"arctanh",atanhr},{"arcsh",asinhr},{"arcch",acoshr},{"arcth",atanhr},{"ash",asinhr},
+	{"ach",acoshr},{"ath",atanhr},{ "lg",lgr }
 };
 
 map<string, Real(*)(const Real&, const Real&)>Real::functionr2 = {
@@ -240,7 +241,7 @@ Real Real::parsePowerr(const string& expr, size_t& currentPos, const map<string,
 		}
 		else if (isdigit(expr[currentPos])) {
 			string number;
-			while (currentPos < expr.length() && isdigit(expr[currentPos])) {
+			while (currentPos < expr.length() && (isdigit(expr[currentPos]) || expr[currentPos] == '.')) {
 				number += expr[currentPos++];
 			}
 			result = Real(stod(number));
@@ -278,7 +279,7 @@ Real Real::parsePowerr(const string& expr, size_t& currentPos, const map<string,
 				}
 				else throw runtime_error("Missing closing parenthesis.");
 			}
-			else { // 否则视为整数
+			else { // 否则视为变量
 				auto it = variables.find(identifier);
 				if (it != variables.end()) {
 					result = it->second;

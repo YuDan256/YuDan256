@@ -5,7 +5,6 @@
 #include "Matrix.h"
 #include "Vector.h"
 #include "Statistics.h"
-#include "Normal.h"
 #include "Function.h"
 #include "Integer.h"
 #include "Real.h"
