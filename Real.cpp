@@ -341,7 +341,7 @@ void Real::doReal() {
 	map<string, Real>variables;
 	string choice;
 
-	cout << "Welcome to the Real Calculator!" << endl << endl;
+	cout << "Welcome to the Real Number Calculator!" << endl << endl;
 	cout << "Do you want to use the variables you defined before?(Y/N)" << endl
 		<< "If no,the variable list will be cleared." << endl;
 	do {
