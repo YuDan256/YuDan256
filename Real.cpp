@@ -316,20 +316,39 @@ istream& operator>>(istream& in, Real& r) {
 	return in;
 }
 
-void Real::input(map<string, Real>& variables) {
-	string line;
-	while (getline(cin, line)) {
-		if (line.empty()) continue;
-		size_t pos = line.find('=');
-		if (pos == string::npos) {
-			throw runtime_error("Invalid input format. Expected 'name = value'.");
+void Real::input(map<string, Real>& numbers) {
+	cout << "Enter the name and the value of real numbers you need." << endl;
+	cout << "The name of the real numbers can only consist of letters." << endl;
+	cout << "Enter 'end' to finish definition." << endl;
+	map<string, double>p = { {"PI",3.141592653589793238462643383279502},{"E",2.7182818284590452353602874} };
+	string name, _a;
+	double a;
+	while (1) {
+		bool invalidInput = false;
+		cout << "Name (enter \"end\" to finish): " << endl;
+		cin >> name;
+		for (char i : name) {
+			if (!isalpha(i)) {
+				cout << "Invalid name." << endl;
+				invalidInput = true;
+				break;
+			}
 		}
-		string name = line.substr(0, pos);
-		string valueStr = line.substr(pos + 1);
-		if (!isValidName(name)) {
-			throw runtime_error("Invalid variable name: " + name);
+		if (name == "end")break;
+		if (invalidInput)continue;
+		cout << "Value: " << endl;
+		cin >> _a;
+		try {
+			a = Normal::parsen(_a, p);
 		}
-		variables[name] = Real(stod(valueStr));
+		catch (const exception& e) {
+			cerr << "Error: " << e.what() << endl;
+			continue;
+		}
+		Real z(a);
+		numbers[name] = z;
+		cout << "The Real Number " + name + " is successfully created." << endl;
+		storer(numbers);
 	}
 }
 
