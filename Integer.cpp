@@ -725,7 +725,8 @@ Integer Integer::randint(const Integer& n1, const Integer& n2) {
 }
 
 Integer Integer::length(const Integer& n) {
-	return n.data.size();
+	if (n == 0)return 0;
+	else return n.data.size();
 }
 
 Integer Integer::prime(const Integer& n) {
