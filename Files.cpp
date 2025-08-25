@@ -232,105 +232,63 @@ void deleteVariable(map<string, T>& variables, const string& name, const string&
 	else cout << "The variable " + name + " is not found." << endl;
 }
 
-void Complex::deletec(map<string, Complex>& variables) {
+
+template<typename T>
+void deleteVariables(map<string, T>& variables, const string& fileName) {
 	string name;
 	cout << "Enter end to finish delete." << endl;
 	while (1) {
-		showc(variables);
+		if(variables.empty()) {
+			cout << "No variable to delete." << endl;
+			break;
+		}
+		show(variables);
 		cout << "Enter the name of the variable you want to delete:" << endl;
 		cin >> name;
 		if (name == "end")break;
-		else deleteVariable(variables, name, "Complex.txt");
+		else deleteVariable(variables, name, fileName);
 	}
+}
+
+void Complex::deletec(map<string, Complex>& variables) {
+	deleteVariables(variables, "Complex.txt");
 }
 
 void Matrix::deletem(map<string, Matrix>& variables) {
-	string name;
-	cout << "Enter end to finish delete." << endl;
-	while (1) {
-		showm(variables);
-		cout << "Enter the name of the variable you want to delete:" << endl;
-		cin >> name;
-		if (name == "end")break;
-		else deleteVariable(variables, name, "Matrix.txt");
-	}
+	deleteVariables(variables, "Matrix.txt");
 }
 
 void Vector::deletev(map<string, Vector>& variables) {
-	string name;
-	cout << "Enter end to finish delete." << endl;
-	while (1) {
-		showv(variables);
-		cout << "Enter the name of the variable you want to delete:" << endl;
-		cin >> name;
-		if (name == "end")break;
-		else deleteVariable(variables, name, "Vector.txt");
-	}
+	deleteVariables(variables, "Vector.txt");
 }
 
 void Base::deleteb(map<string, Base>& variables) {
-	string name;
-	cout << "Enter end to finish delete." << endl;
-	while (1) {
-		showb(variables);
-		cout << "Enter the name of the variable you want to delete:" << endl;
-		cin >> name;
-		if (name == "end")break;
-		else deleteVariable(variables, name, "Base.txt");
-	}
+	deleteVariables(variables, "Base.txt");
 }
 
 void Statistics::deletes(map<string, Statistics>& variables) {
-	string name;
-	cout << "Enter end to finish delete." << endl;
-	while (1) {
-		shows(variables);
-		cout << "Enter the name of the variable you want to delete:" << endl;
-		cin >> name;
-		if (name == "end")break;
-		else deleteVariable(variables, name, "Statistics.txt");
-	}
+	deleteVariables(variables, "Statistics.txt");
 }
 
 void Function::deletef(map<string, Function>& variables) {
-	string name;
-	cout << "Enter end to finish delete." << endl;
-	while (1) {
-		showf(variables);
-		cout << "Enter the name of the variable you want to delete:" << endl;
-		cin >> name;
-		if (name == "end")break;
-		else deleteVariable(variables, name, "Function.txt");
-	}
+	deleteVariables(variables, "Function.txt");
 }
 
 void Integer::deletei(map<string, Integer>& variables) {
-	string name;
-	cout << "Enter end to finish delete." << endl;
-	while (1) {
-		showi(variables);
-		cout << "Enter the name of the variable you want to delete:" << endl;
-		cin >> name;
-		if (name == "end")break;
-		else deleteVariable(variables, name, "Function.txt");
-	}
+	deleteVariables(variables, "Integer.txt");
 }
 
 void Real::deleter(map<string, Real>& variables) {
-	string name;
-	cout << "Enter end to finish delete." << endl;
-	while (1) {
-		showr(variables);
-		cout << "Enter the name of the variable you want to delete:" << endl;
-		cin >> name;
-		if (name == "end")break;
-		else deleteVariable(variables, name, "Real.txt");
-	}
+	deleteVariables(variables, "Real.txt");
 }
 
 //展示变量
 template<typename T>
 void show(const map<string, T>& variables) {
+	if(variables.empty()) {
+		cout << "No variable stored." << endl;
+		return;
+	}
 	cout << "All the variables you store are:" << endl;
 	for (auto it = variables.begin(); it != variables.end(); it++) {
 		cout << "Name: " << it->first << endl;
