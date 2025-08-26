@@ -383,12 +383,12 @@ void Real::doReal() {
 
 	cin.ignore(numeric_limits<streamsize>::max(), '\n');
 	cout << endl << "There are some commands you can use:" << endl;
-	cout << "define - to define some matrix variables." << endl;
-	cout << "delete - to delete some matrix variables." << endl;
+	cout << "define - to define some variables." << endl;
+	cout << "delete - to delete some variables." << endl;
 	cout << "show - to find out which variables are available." << endl;
 	cout << "function_list - to find out which functions are available." << endl;
 	cout << "end - to quit this mode." << endl;
-	cout << "save - to save the result in a matrix." << endl;
+	cout << "save - to save the result in a variable." << endl;
 	cout << "The result of the previous calculation is automatically stored in \"ANS\"." << endl << endl;
 
 	while (1) {
