@@ -155,7 +155,6 @@ public:
 	static Integer parseExpressioni(const string& expr, size_t& currentPos, const map<string, Integer>& numbers);
 	static Integer parseTermi(const string& expr, size_t& currentPos, const map<string, Integer>& numbers);
 	static Integer parsePoweri(const string& expr, size_t& currentPos, const map<string, Integer>& numbers);
-
 };
 
 #endif

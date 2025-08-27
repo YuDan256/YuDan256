@@ -1209,11 +1209,11 @@ void Integer::doInteger() {
 		if (expression == "function_list") {
 			cout << endl << "The following functions can only be used individually:" << endl;
 			cout << "Print - print(Z)" << endl;
-			cout << "Extend prime list - add_prime(Z)" << endl;
-			cout << "Factorization - fact(Z)" << endl << endl;
+			cout << "Extend prime list - add_prime(N+)" << endl;
+			cout << "Factorization - fact(N+)" << endl << endl;
 			cout << "The following functions can be used with expressions:" << endl;
 			cout << "Absolute value - abs(Z)" << endl;
-			cout << "Square root - sqrt(Z)" << endl;
+			cout << "Square root - sqrt(N)" << endl;
 			cout << "Sign - sgn(Z)" << endl;
 			cout << "Power - pow(Z,Z)" << endl;
 			cout << "GCD - gcd(Z,Z)" << endl;
@@ -1221,14 +1221,15 @@ void Integer::doInteger() {
 			cout << "Logarithm - log(N+,N+)" << endl;
 			cout << "Logarithm base 2 - log(N+)" << endl;
 			cout << "Prime number - prime(N+)" << endl;
-			cout << "Prime number pi - primePi(Z) or pi(Z)" << endl;
-			cout << "Euler's totient function - phi(Z)" << endl;
-			cout << "Factorial - F(Z)" << endl;
-			cout << "Divisor count - d(Z)" << endl;
-			cout << "Omega - omega(Z)" << endl;
-			cout << "Big Omega - Omega(Z)" << endl;
-			cout << "Sigma - sigma(Z)" << endl;
-			cout << "Fibonacci - fib(Z)" << endl;
+			cout << "Prime number pi - primePi(N+) or pi(N+)" << endl;
+			cout << "Euler's totient function - phi(N+)" << endl;
+			cout << "Factorial - F(N)" << endl;
+			cout << "Divisor count - d(N+)" << endl;
+			cout << "Omega - omega(N+)" << endl;
+			cout << "Big Omega - Omega(N+)" << endl;
+			cout << "Sigma - sigma(N+)" << endl;
+			cout << "Sigma with exponent - sigma(N+,Z)" << endl;
+			cout << "Fibonacci - fib(N+)" << endl;
 			cout << "Random integer - random(Z,Z) or randint(Z,Z)" << endl;
 			cout << "Length - length(Z), len(Z) or digit(Z)" << endl;
 			cout << endl;
