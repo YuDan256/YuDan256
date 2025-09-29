@@ -605,7 +605,8 @@ Integer Integer::gcd(const Integer& n) const {
 	Integer b = abs(n);
 
 	if (b.isZero()) {
-		return a;
+		if(!a.isZero())return a;
+		else throw invalid_argument("gcd(0,0) is undefined.");
 	}
 
 	while (true) {
@@ -619,6 +620,8 @@ Integer Integer::gcd(const Integer& n) const {
 }
 
 Integer Integer::lcm(const Integer& n) const {
+	if (isZero() && n.isZero())throw invalid_argument("lcm(0,0) is undefined.");
+	if (isZero() || n.isZero())return 0;
 	Integer a = abs(*this), b = abs(n);
 	return a * b / gcd(a, b);
 }
